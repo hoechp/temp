@@ -10,6 +10,7 @@ from dataclasses import dataclass, field
 from typing import ClassVar
 
 from .core import EPS, I, J, Scalar, Ultra
+from .numbers import Binary, Complex, Dual, Hypercomplex
 
 
 class ExpressionError(ValueError):
@@ -34,12 +35,61 @@ _FUNCTIONS.update(
         "cub": lambda x: x * x * x,
     }
 )
+
+
+def _pair(value: Ultra) -> Hypercomplex:
+    for kind in (Complex, Binary, Dual):
+        if all(c == 0 for k, c in enumerate(value) if k not in (0, kind.unit_index)):
+            return kind(value.real, value.coefficients[kind.unit_index])
+    raise ExpressionError("This geometric operation requires a two-dimensional number")
+
+
+def _dot(a: Ultra, b: Ultra) -> Ultra:
+    return Ultra(math.fsum(x * y for x, y in zip(a, b, strict=True)))
+
+
+def _project(a: Ultra, b: Ultra) -> Ultra:
+    return b * (_dot(a, b).real / _dot(b, b).real)
+
+
+_FUNCTIONS.update(
+    {
+        "IM": lambda x: Ultra(_pair(x).imag),
+        "im": lambda x: Ultra(_pair(x).imag),
+        "length": lambda x: Ultra(abs(x)),
+        "angle": lambda x: Ultra(_pair(x).angle),
+        "eulerlength": lambda x: Ultra(_pair(x).euler_length),
+        "eulerangle": lambda x: Ultra(_pair(x).euler_angle),
+        "det": lambda x: Ultra(_pair(x).determinant),
+        "normalized": lambda x: x / abs(x),
+        "round": lambda x: Ultra(math.floor(x.real + 0.5)),
+        "floor": lambda x: Ultra(math.floor(x.real)),
+        "ceil": lambda x: Ultra(math.ceil(x.real)),
+        "dot": _dot,
+        "project": _project,
+        "reject": lambda a, b: a - _project(a, b),
+        "mirror_radial": lambda a, b: a - 2 * _project(a, b),
+        "mirror_orthogonal": lambda a, b: 2 * _project(a, b) - a,
+        "logbase": lambda a, b: b.log(a),
+        "pairconjugate": lambda x: _pair(x).conjugate().to_ultra(),
+    }
+)
+_TWO_ARGUMENTS = {"dot", "project", "reject", "mirror_radial", "mirror_orthogonal", "logbase"}
+
+
+def _modulo(a: Ultra, b: Ultra) -> Ultra:
+    if any(a.coefficients[1:]) or any(b.coefficients[1:]):
+        raise ExpressionError("Modulo requires real operands")
+    return Ultra(a.real % b.real)
+
+
 _BINARY = {
     ast.Add: operator.add,
     ast.Sub: operator.sub,
     ast.Mult: operator.mul,
     ast.Div: operator.truediv,
     ast.Pow: operator.pow,
+    ast.Mod: _modulo,
 }
 _ALIASES = str.maketrans(
     {"^": "**", "²": "**2", "³": "**3", "π": "pi", "ε": "eps", "î": "i", "Ê": "j", "ê": "eps"}
@@ -100,7 +150,9 @@ class Formula:
                 name = node.func.id
                 if name not in _FUNCTIONS:
                     raise ExpressionError(f"Unknown function: {name}")
-                arities = (1, 2) if name in ("log", "ln") else (1,)
+                arities = (
+                    (1, 2) if name in ("log", "ln") else (2,) if name in _TWO_ARGUMENTS else (1,)
+                )
                 if node.keywords or len(node.args) not in arities:
                     raise ExpressionError(f"Wrong arguments for {name}")
                 for argument in node.args:

@@ -14,9 +14,19 @@ def main() -> None:
         "expression", help="Formula with explicit multiplication; quote in your shell"
     )
     parser.add_argument("--json", action="store_true", help="Print all eight coefficients as JSON")
+    parser.add_argument(
+        "--legacy",
+        action="store_true",
+        help="Accept implicit multiplication and original word operators",
+    )
     args = parser.parse_args()
     try:
-        result = evaluate(args.expression)
+        if args.legacy:
+            from .expressions import Calculation
+
+            result = Calculation(args.expression).result()
+        else:
+            result = evaluate(args.expression)
     except (ArithmeticError, ValueError, TypeError) as error:
         parser.exit(2, f"error: {error}\n")
     print(json.dumps(result.coefficients, allow_nan=False) if args.json else str(result))

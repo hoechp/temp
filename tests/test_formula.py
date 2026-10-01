@@ -66,7 +66,6 @@ def test_string_round_trip_all_components():
         "x:=1",
         "[x for x in y]",
         "1//2",
-        "1%2",
         "3j",
         "2i",
         "1e999",

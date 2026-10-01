@@ -82,5 +82,9 @@ release makes no benchmark claim against Java and is not a speed-optimized
 vectorized engine.
 
 The highest priority was correctness of algebra and domains, then immutable
-value semantics and a testable parser. Full preservation of every historical
-utility and GUI requires further staged work, recorded in the inventory.
+value semantics and a testable parser. Version 0.2.0 adds the remaining
+implemented utility and UI feature families. The inventory and migration guide
+record their replacements and intentional semantic changes. Additional Java
+fixtures are in `legacy-extended.json`; reproduce them with
+`tools/legacy_extended_probe.py`. This includes frame and mechanism conventions
+as well as the closed number types and the polynomial guesser.

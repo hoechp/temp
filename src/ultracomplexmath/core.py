@@ -141,6 +141,21 @@ class Ultra:
     def __bool__(self) -> bool:
         return any(self)
 
+    @property
+    def nonzero_components(self) -> tuple[tuple[int, float], ...]:
+        return tuple((i, c) for i, c in enumerate(self) if c)
+
+    def euler_angle_component(self, index: int) -> float:
+        Ultra.unit(index)  # Validate the public basis index.
+        return self.log().coefficients[index]
+
+    def euler_length_component(self, index: int) -> float:
+        return math.exp(self.euler_angle_component(index))
+
+    @property
+    def euler_length(self) -> float:
+        return self.euler_length_component(0)
+
     def __abs__(self) -> float:
         """Euclidean coefficient norm; not a multiplicative algebra norm."""
         return math.hypot(*self)

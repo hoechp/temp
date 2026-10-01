@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.2.0 — complete feature migration, unpublished on PyPI
+
+- Restore closed Complex/Binary/Dual types, roots, branches and geometric APIs.
+- Add coordinates, vectors, lines, matrices and the historical M2R experiment.
+- Add joint/actor/mechanism trees with freedoms, cycle checks and axis mode.
+- Add rectangular/free/inconsistent systems and polynomial interpolation.
+- Restore legacy expression syntax, live shared parameters and formula systems.
+- Migrate integer/RSA exercises, modular rings, all five clustering methods,
+  conditional classification, association rules and concept hierarchies.
+- Replace applets/Swing with interactive desktop formula, domain, vector,
+  clustering and mechanism explorers; keep plotting optional.
+- Add deterministic regressions, compiled Java geometry fixtures and a checked
+  inventory for all 74 Java sources and 11 ancillary files.
+- Preserve the historical README and document all deliberate API differences.
+
 ## 0.1.0 — prepared, unpublished
 
 - Port the eight-component algebra to immutable, typed Python values.
