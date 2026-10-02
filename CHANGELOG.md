@@ -7,6 +7,12 @@
 - Visualize hypercomplex angles, eight coefficient traces and nine Newton basins.
 - Demonstrate two coupled modes and their parameter derivatives in one exponential.
 - Document the mathematics, sample grids and color encodings; add independent checks.
+- Restore the original cosine color mapping and domain; add a direct comparison
+  of hyperbola, circle and line slices through the three cosine functions.
+- Add travelling waves, planar robot inverse kinematics and interference-based
+  parameter reconstruction, with four figures, two animations and scalar oracles.
+- Use channel-specific dual seeds to obtain both robot Jacobian columns in one
+  evaluation; use source-field derivatives to fit noisy intensity measurements.
 
 ## 0.2.0 — complete feature migration, unpublished on PyPI
 

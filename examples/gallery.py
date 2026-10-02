@@ -24,7 +24,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.animation import FuncAnimation, PillowWriter
 from matplotlib.collections import LineCollection
-from matplotlib.colors import hsv_to_rgb, to_rgb
+from matplotlib.colors import to_rgb
 from mpl_toolkits.mplot3d.art3d import Line3DCollection
 from PIL import Image
 
@@ -116,9 +116,9 @@ def save(fig, path):
     print(f"Rendered {path}", flush=True)
 
 
-def cosine_grid(kind, resolution=320):
+def cosine_grid(kind, resolution=320, half_range=math.pi):
     """Return the two real output coefficients, using Ultra.cos at every pixel."""
-    coordinates = np.linspace(-math.pi, math.pi, resolution)
+    coordinates = np.linspace(-half_range, half_range, resolution)
     component = {Complex: 2, Binary: 1, Dual: 4}[kind]
     result = np.empty((resolution, resolution, 2))
     for row, y in enumerate(coordinates):
@@ -129,16 +129,14 @@ def cosine_grid(kind, resolution=320):
 
 
 def coefficient_colors(values):
-    """Common Euclidean coefficient-plane hue, not split/dual algebraic phase."""
-    a, b = values[..., 0], values[..., 1]
-    radius = np.hypot(a, b)
-    angle = np.arctan2(b, a)
-    hue = (angle / math.tau + 0.60) % 1
-    rings = 0.5 + 0.5 * np.cos(math.tau * np.log2(1 + radius))
-    rays = 0.5 + 0.5 * np.cos(12 * angle)
-    brightness = (0.43 + 0.40 * radius / (0.35 + radius)) * (0.78 + 0.22 * rings)
-    brightness *= 0.91 + 0.09 * rays
-    return hsv_to_rgb(np.stack([hue, np.full_like(hue, 0.67), brightness], axis=-1))
+    """The migrated Java color map: zero is white, large magnitudes get dark."""
+    shape = values.shape[:-1] + (3,)
+    return (
+        np.array([Complex(float(a), float(b)).color() for a, b in values.reshape(-1, 2)]).reshape(
+            shape
+        )
+        / 255
+    )
 
 
 def render_cosine(output, resolution):
@@ -148,7 +146,7 @@ def render_cosine(output, resolution):
         fig,
         "01",
         "One cosine. Three different worlds.",
-        "The same input square and the same color key reveal three distinct multiplication rules.",
+        "The original color map and ±2π input range make growth, periodicity and linearity visible.",
     )
     names = ["COMPLEX  /  i² = −1", "SPLIT-COMPLEX  /  j² = +1", "DUAL  /  ε² = 0"]
     identities = [
@@ -159,20 +157,23 @@ def render_cosine(output, resolution):
     for ax, kind, name, identity in zip(
         axes, [Complex, Binary, Dual], names, identities, strict=True
     ):
-        _, values = cosine_grid(kind, resolution)
+        _, values = cosine_grid(kind, resolution, half_range=math.tau)
         ax.imshow(
             coefficient_colors(values),
-            extent=(-math.pi, math.pi, -math.pi, math.pi),
+            extent=(-math.tau, math.tau, -math.tau, math.tau),
             origin="lower",
-            interpolation="bilinear",
+            interpolation="nearest",
         )
         ax.set_title(name, loc="left", fontsize=11, pad=12)
-        ax.set_xticks([-math.pi, 0, math.pi], ["−π", "0", "π"])
-        ax.set_yticks([-math.pi, 0, math.pi], ["−π", "0", "π"])
+        ax.set_xticks([-math.tau, 0, math.tau], ["−2π", "0", "2π"])
+        ax.set_yticks([-math.tau, 0, math.tau], ["−2π", "0", "2π"])
         ax.set_xlabel("real input x", fontsize=9)
         ax.set_ylabel("generator input y", fontsize=9)
         ax.text(0.5, -0.29, identity, transform=ax.transAxes, ha="center", color=FG, fontsize=10)
-    footer(fig, "Hue = atan2(generator coefficient, real coefficient) · bands = output magnitude")
+    footer(
+        fig,
+        "Original Java colors · white = zero · darker = larger magnitude · no added contour bands",
+    )
     save(fig, output / "assets/cosine-atlas.png")
 
 

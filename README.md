@@ -25,6 +25,14 @@ a Newton fractal with **nine roots of a cubic**. The coupled-mode experiment
 uses one ultracomplex exponential for two complex states and their parameter
 sensitivities.
 
+**[Three new applications](docs/gallery/applications.md):** travelling waves and
+their speed sensitivity, a robot arm that follows a prescribed curve, and
+reconstruction of a source separation from noisy interference measurements.
+The examples evaluate the migrated `Ultra` arithmetic and use its derivatives
+in the numerical solvers.
+
+![A planar robot follows a curve using an ultracomplex Jacobian](docs/gallery/assets/robot-path.gif)
+
 [Download the interactive offline lab](https://raw.githubusercontent.com/hoechp/temp/master/docs/gallery/lab.html)
 and open the saved HTML file in a browser. Its sliders explore time, coupling
 and the accuracy of a derivative-based prediction. All data comes from the
@@ -33,7 +41,8 @@ migrated Python engine.
 ![Cosine maps in the three base algebras](docs/gallery/assets/cosine-atlas.png)
 
 Rebuild the figures and interactive lab with
-`python examples/gallery.py` after installing `.[plot]`.
+`python examples/gallery.py` and `python -m examples.applications` after
+installing `.[plot]`.
 The [gallery notes](docs/gallery/README.md) explain the equations, color keys,
 projections and independent verification.
 

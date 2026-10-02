@@ -1,9 +1,11 @@
 # Ultracomplex visual laboratory
 
-Six reproducible figures, an animation and an offline interactive experiment,
+Ten reproducible figures, three animations and an offline interactive experiment,
 computed with the migrated Python library. The cosine maps and Euler curves
 revisit the original Java README; the angle surfaces, full-algebra Newton
-basins and sensitivity experiment develop those ideas further.
+basins and sensitivity experiment develop those ideas further. The new
+[application demonstrations](applications.md) use the algebra for travelling
+waves, robot inverse kinematics and reconstruction from an interference pattern.
 
 ![Two coupled modes exchanging intensity](assets/coupled-modes.gif)
 
@@ -20,11 +22,14 @@ From the repository root, with Python 3.12+:
 ```sh
 python -m pip install -e '.[plot]'
 python examples/gallery.py
+python -m examples.applications
 # Faster preview in a separate directory:
 python examples/gallery.py --quick --output /tmp/ultra-gallery
+python -m examples.applications --quick --output /tmp/ultra-applications
 # Rebuild one demonstration:
 python examples/gallery.py --only coupling
 python examples/gallery.py --only newton
+python -m examples.applications --only robot
 ```
 
 The normal render evaluates 360 × 360 samples per domain image. The Newton
@@ -38,6 +43,8 @@ For the project's pinned Python packages, use `requirements-plot.lock` or
 `uv sync --frozen --extra plot`. The core remains dependency-free. NumPy,
 Matplotlib and Pillow are used by this optional example to arrange data and
 render graphics. Pixel appearance can differ between plotting-library versions.
+The application renderer uses 145 × 400 wave samples, 361 robot targets and
+a 260 × 260 interference grid in its full render.
 
 ## 1. The cosine atlas
 
@@ -51,12 +58,25 @@ For the same real inputs x and y:
 | x + jy | cos(x) cos(y) − j sin(x) sin(y) |
 | x + εy | cos(x) − εy sin(x) |
 
-Every pixel calls the migrated `Ultra.cos()`. All panels use the same color
-encoding: hue is the **Euclidean direction of the two output coefficients**,
-computed with `atan2`; brightness depends on their Euclidean magnitude. Subtle
-bands show magnitude and angular levels. This display angle is not a claim
-that split-complex or dual numbers have an ordinary complex argument or a
-multiplicative Euclidean norm.
+Every pixel calls the migrated `Ultra.cos()`, on the original square
+`−2π ≤ x,y ≤ 2π`. Colors now reproduce the original Java `Complex.color()`
+mapping: the **Euclidean direction of the two output coefficients** controls
+the RGB phases, zero is white, and large magnitudes become darker. The added
+rings and spokes of the first gallery version have been removed. This display
+angle does not assert a multiplicative Euclidean norm or an ordinary complex
+argument for the split-complex and dual algebras.
+
+The formulas explain the differences directly: complex cosine grows
+exponentially along the imaginary direction, split-complex cosine stays bounded
+and is periodic in both inputs, and the dual coefficient varies linearly with y.
+
+![A fixed-real-input slice of cosine in each algebra](assets/trigonometry-slices.png)
+
+Fixing `x = π/4` makes a particularly simple coefficient-plane comparison:
+complex cosine follows a hyperbola branch, split-complex cosine a circle, and
+dual cosine a line. These are the **outputs of cosine**, so the circle/hyperbola
+roles differ from the generator exponentials below. All three use
+`−π ≤ y ≤ π`, with equal aspect within each panel and independent panel scales.
 
 ## 2. Three Euler geometries
 
@@ -187,9 +207,13 @@ not apply.
 ## Verification and source
 
 - [Renderer and all numerical sampling](../../examples/gallery.py)
+- [Three further applications, formulas and model assumptions](applications.md)
+- [Application renderer](../../examples/applications.py)
 - [HTML template](../../examples/gallery_lab.html)
 - [Independent mathematical tests](../../tests/test_gallery.py)
+- [Independent application tests](../../tests/test_applications.py)
 - [Numerical verification from the full render](verification.json)
+- [Application verification from the full render](applications-verification.json)
 
 `verify_math()` checks the closed-form solution and derivatives, intensity
 conservation, all nine root residuals, and the second-order remainder of the
