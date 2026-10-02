@@ -15,6 +15,28 @@ in the [inventory](docs/inventory.md). The [migration guide](docs/migration.md)
 records API mappings and intentional differences. This is a functional migration,
 not a Java API compatibility layer or a pixel-identical Swing port.
 
+## Visual laboratory
+
+![Two coupled modes computed with the ultracomplex exponential](docs/gallery/assets/coupled-modes.gif)
+
+**[Explore the complete gallery](docs/gallery/README.md)**: cosine color maps,
+Euler curves, hypercomplex angle surfaces, all eight coefficient traces and
+a Newton fractal with **nine roots of a cubic**. The coupled-mode experiment
+uses one ultracomplex exponential for two complex states and their parameter
+sensitivities.
+
+[Download the interactive offline lab](https://raw.githubusercontent.com/hoechp/temp/master/docs/gallery/lab.html)
+and open the saved HTML file in a browser. Its sliders explore time, coupling
+and the accuracy of a derivative-based prediction. All data comes from the
+migrated Python engine.
+
+![Cosine maps in the three base algebras](docs/gallery/assets/cosine-atlas.png)
+
+Rebuild the figures and interactive lab with
+`python examples/gallery.py` after installing `.[plot]`.
+The [gallery notes](docs/gallery/README.md) explain the equations, color keys,
+projections and independent verification.
+
 ## Install and calculate
 
 Python 3.12+. The mathematical library has **no runtime dependencies**.

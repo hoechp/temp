@@ -12,3 +12,6 @@ build/
 dist/
 *.png
 *.pdf
+
+# Published, reproducible gallery figures.
+!docs/gallery/assets/*.png

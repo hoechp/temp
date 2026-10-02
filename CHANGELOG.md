@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased — visual laboratory
+
+- Add six reproducible figures, a coupled-mode animation and an offline HTML lab.
+- Revisit the original cosine maps and Euler curves with the migrated engine.
+- Visualize hypercomplex angles, eight coefficient traces and nine Newton basins.
+- Demonstrate two coupled modes and their parameter derivatives in one exponential.
+- Document the mathematics, sample grids and color encodings; add independent checks.
+
 ## 0.2.0 — complete feature migration, unpublished on PyPI
 
 - Restore closed Complex/Binary/Dual types, roots, branches and geometric APIs.
