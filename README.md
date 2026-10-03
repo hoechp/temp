@@ -1,6 +1,7 @@
 # Ultracomplex Math
 
-A typed Python library for the eight-dimensional **commutative** real algebra
+A typed Python library for the eight-dimensional **commutative** algebra over
+real or exact rational coefficients
 
 $$i^2=-1,\qquad j^2=1,\qquad \varepsilon^2=0.$$
 
@@ -8,8 +9,23 @@ Modernized from [Philipp Kolodziej's Java project](https://github.com/hoechp/ult
 The original multiplication and basis order are retained; numerical algorithms,
 value semantics, parsers, project tooling and the desktop UI have been redesigned.
 
-**Version 0.2.0:** all implemented Java feature areas have Python replacements,
-including geometry, mechanisms, knowledge discovery and interactive visuals.
+**Version 0.3.0: exact arithmetic and unified geometry.** Integer/Fraction
+coefficients now cover all eight directions, linear systems, polynomials and
+geometric constructions. Circular rotations, hyperbolic boosts and parabolic
+shears share an exact rational interface. Coupled operators and projective maps
+extend their combined applications. Large integer exponents and unstable
+geometric edge cases are corrected.
+
+- [Exact arithmetic guide](docs/exact-arithmetic.md): exact types, formulas, CLI,
+  matrices, solution families, interpolation and explicit numerical conversion.
+- [Unified geometry guide](docs/unified-geometry.md): metrics, angles, rational
+  isometries, exact intersections, coupled motion and projective charts.
+- Run `python -m examples.exact_geometry` for a dependency-free demonstration;
+  add `--plot` with the optional plotting dependencies to rebuild its figure.
+
+The version 0.2.0 migration already supplied Python replacements for all
+implemented Java feature areas, including geometry, mechanisms, knowledge
+discovery and interactive visuals.
 All **74 Java source files** and the remaining repository files are accounted for
 in the [inventory](docs/inventory.md). The [migration guide](docs/migration.md)
 records API mappings and intentional differences. This is a functional migration,
@@ -25,8 +41,9 @@ angles, trigonometry, calculus, roots and exact arithmetic. Seven
 critical-damping calculus, interacting optical modes, projective geometry and
 the link between dual root sensitivities and modular lifting.
 The [source-grounded backlog](docs/research/roadmap.md) separates existing
-features, implementation gaps, a reproduced integer-exponent defect and
-mathematical limits. These are documented proposals, not additional shipped APIs.
+features, implementation gaps and mathematical limits. Its 0.3.0 status table
+records the corrected integer-exponent defect and newly implemented parts;
+the original audit remains available as a dated baseline.
 
 ## Visual laboratory
 

@@ -43,7 +43,13 @@ def length(a: Sequence[float]) -> float:
 
 
 def unit(a: Sequence[float]) -> Vector:
-    return scale(a, 1 / length(a))
+    values = vector(a)
+    magnitude = max(map(abs, values))
+    if magnitude == 0:
+        raise DomainError("A zero vector has no direction")
+    scaled = tuple(x / magnitude for x in values)
+    norm = math.hypot(*scaled)
+    return tuple(x / norm for x in scaled)
 
 
 def cross(a: Sequence[float], b: Sequence[float]) -> Vector:
@@ -57,7 +63,8 @@ def isclose(a: Sequence[float], b: Sequence[float], *, tolerance: float = 1e-10)
 
 
 def project(a: Sequence[float], direction: Sequence[float]) -> Vector:
-    return scale(direction, dot(a, direction) / dot(direction))
+    axis = unit(direction)
+    return scale(axis, dot(a, axis))
 
 
 def reject(a: Sequence[float], direction: Sequence[float]) -> Vector:
@@ -65,7 +72,9 @@ def reject(a: Sequence[float], direction: Sequence[float]) -> Vector:
 
 
 def angle(a: Sequence[float], b: Sequence[float]) -> float:
-    return math.acos(max(-1.0, min(1.0, dot(unit(a), unit(b)))))
+    u, v = unit(a), unit(b)
+    # The half-angle formula retains small angles and is stable near pi.
+    return 2 * math.atan2(length(sub(u, v)), length(add(u, v)))
 
 
 def rotate(value: Sequence[float], axis: Sequence[float], radians: float) -> Vector:
@@ -76,7 +85,7 @@ def rotate(value: Sequence[float], axis: Sequence[float], radians: float) -> Vec
 
 def frame(normal: Sequence[float], compare: Sequence[float]) -> Frame:
     z = unit(normal)
-    y = unit(cross(z, compare))
+    y = unit(cross(z, unit(compare)))
     return unit(cross(y, z)), y, z
 
 
@@ -142,7 +151,8 @@ def angle_from_vector(
         return kind(a, z / radial), radial
     if radial <= abs(z):
         raise DomainError("Complex angles require x²+y² > z²")
-    magnitude = math.sqrt((radial - abs(z)) * (radial + abs(z)))
+    ratio = abs(z) / radial
+    magnitude = radial * math.sqrt(1 - ratio) * math.sqrt(1 + ratio)
     return kind(a, math.asinh(z / magnitude)), magnitude
 
 

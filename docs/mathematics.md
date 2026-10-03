@@ -162,7 +162,7 @@ and a basis of free directions parameterized by real scalars, or raises
 chosen subspace while still enforcing every component of each equation.
 Both solvers are numerical and use explicit rank/pivot tolerances.
 
-## Numerical contract
+## Numerical contract (`Ultra`)
 
 - Real coefficients and complex channels use binary64, not symbolic or arbitrary precision.
 - Inputs and computed coefficients must be finite. `NonFiniteError` or
@@ -177,11 +177,31 @@ Both solvers are numerical and use explicit rank/pivot tolerances.
 - `abs(x)` is a Euclidean norm of eight coefficients, not a multiplicative norm.
 - `==` and hashing use exact normalized coefficients, and compare Ultra values
   only. `isclose` provides explicit coefficientwise relative/absolute tolerances.
-- Integer constructor arguments are converted to binary64 coefficients. Use
-  this package for numerical work, not exact arithmetic on huge integers.
+- Integer constructor arguments are converted to binary64 coefficients.
+  Integer **exponents** are dispatched before this conversion and retain every
+  bit. Choose `ExactUltra` for exact integer/rational **coefficients**.
 
 The algebraic derivation above explains the algorithm. It does not establish
 any proposed physical interpretation or novelty claim.
+
+## Exact coefficient and geometric extensions (0.3.0)
+
+`ExactUltra` realizes the identical algebra over Q using eight Fraction
+coefficients. Its [contract](exact-arithmetic.md) covers exact arithmetic,
+inversion, supported rational roots, linear solution families, polynomials and
+explicit conversion to the numerical specialization above.
+
+The [geometry contract](unified-geometry.md) specifies quadratic forms, sector
+angles, rational isometries, coupled operators and projective coordinates.
+Operators may compose noncommutatively while scalar multiplication remains
+commutative. Projective points require unimodular coordinates, not merely a
+nonzero pair. Exact and approximate equality are kept separate.
+
+`primal` and `tangent` extract the epsilon decomposition. `real_part`,
+`imag_part` and `abs2` retain first variations. Numerical `amplitude` and `phase`
+use real directional derivatives; phase at zero and amplitude at a zero with
+nonzero tangent are rejected. At a phase cut, the tangent follows a local
+continuous phase lift rather than the discontinuous principal-value function.
 
 ## Beyond the current contract
 
@@ -189,6 +209,6 @@ The [research agenda](research/README.md) treats the algebra as a union of
 complex, split-complex and dual structures, with several equivalent useful
 representations. Its [operations atlas](research/operations.md) distinguishes
 geometric angle/metric choices, analytic functions and derivative-preserving
-measurements. The [backlog](research/roadmap.md) documents unsupported operations
-and a known integer-exponent coercion defect; proposals there do not change
-the current API described on this page.
+measurements. The [backlog](research/roadmap.md) now distinguishes implemented
+0.3.0 features from remaining proposals. The integer-exponent defect recorded
+in the original audit is corrected.

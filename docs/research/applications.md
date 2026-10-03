@@ -2,6 +2,12 @@
 
 [Agenda](README.md) · [Operations atlas](operations.md) · [Backlog](roadmap.md)
 
+**Version note:** these proposals originate in the 0.2.0 audit. Version 0.3.0
+now supplies exact rational coefficients, plane isometries, coupled operators,
+Cayley maps, projective charts and derivative-preserving measurements. The
+[geometry guide](../unified-geometry.md#most-promising-next-projects) explains
+which application steps these enable and what remains to be built.
+
 These proposals start with the union of the three algebras. Representations
 are selected afterwards to suit the geometry or computation. “New” below means
 new to this project unless explicitly stated otherwise; the underlying physical

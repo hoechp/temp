@@ -262,22 +262,28 @@ class Ultra:
         return self.coerce(other) / self
 
     def __pow__(self, exponent: Scalar) -> Ultra:
+        # An exact Python integer must never pass through binary64: parity and
+        # the exponent itself may be lost, even for bounded results such as i**n.
+        if type(exponent) is int:
+            return self._integer_power(exponent)
         power = self.coerce(exponent)
         if not any(power.coefficients[1:]) and power.real.is_integer():
-            n = int(power.real)
-            factor = self if n >= 0 else self.inverse()
-            n = abs(n)
-            result = ONE
-            while n:
-                if n & 1:
-                    result = result * factor
-                n >>= 1
-                if n:
-                    factor = factor * factor
-            return result
+            return self._integer_power(int(power.real))
         if power == Ultra(0.5):
             return self.sqrt()
         return (self.log() * power).exp()
+
+    def _integer_power(self, n: int) -> Ultra:
+        factor = self if n >= 0 else self.inverse()
+        n = abs(n)
+        result = ONE
+        while n:
+            if n & 1:
+                result = result * factor
+            n >>= 1
+            if n:
+                factor = factor * factor
+        return result
 
     def __rpow__(self, base: Scalar) -> Ultra:
         return self.coerce(base) ** self
@@ -299,6 +305,61 @@ class Ultra:
         if not math.isfinite(result):
             raise NonFiniteError("Determinant overflow")
         return result
+
+    @property
+    def primal(self) -> Ultra:
+        return Ultra(*self.coefficients[:4])
+
+    @property
+    def tangent(self) -> Ultra:
+        """Coefficient of eps, as a value in the complex/split body algebra."""
+        return Ultra(*self.coefficients[4:])
+
+    def with_tangent(self, value: Scalar) -> Ultra:
+        seed = self.coerce(value)
+        if any(seed.coefficients[4:]):
+            raise ValueError("A tangent seed must not itself contain epsilon")
+        return self.primal + EPS * seed
+
+    def real_part(self) -> Ultra:
+        """Complex-real part retaining split structure and epsilon derivatives."""
+        return Ultra(self.real, self.j, eps=self.eps, eps_j=self.eps_j)
+
+    def imag_part(self) -> Ultra:
+        return Ultra(self.i, self.ij, eps=self.eps_i, eps_j=self.eps_ij)
+
+    def abs2(self) -> Ultra:
+        """Intensity, including 2*Re(conj(z)*dz) in each tangent channel."""
+        return self * self.conjugate("i")
+
+    def amplitude(self) -> Ultra:
+        """Per-mode |z| and its real directional derivative (not holomorphic)."""
+        result: list[Channel] = []
+        for z, w in self.channels():
+            radius = abs(z)
+            if not radius:
+                if w:
+                    raise DomainError(
+                        "Amplitude is not differentiable at a zero with nonzero tangent"
+                    )
+                result.append((0j, 0j))
+            else:
+                derivative = (z.real / radius) * w.real + (z.imag / radius) * w.imag
+                result.append((_finite(complex(radius)), _finite(complex(derivative))))
+        return Ultra.from_channels(result[0], result[1])
+
+    def phase(self) -> Ultra:
+        """Per-mode principal phase and local unwrapped derivative Im(dz/z).
+
+        At the negative real cut the value is +pi; the tangent describes a
+        continuous local lift, not the discontinuous principal-value map.
+        """
+        result: list[Channel] = []
+        for z, w in self.channels():
+            if not z:
+                raise DomainError("Phase is undefined at a zero body channel")
+            result.append((complex(math.atan2(z.imag, z.real)), _finite(complex((w / z).imag))))
+        return Ultra.from_channels(result[0], result[1])
 
     def _lift(self, name: str, function: ComplexFunction, derivative: ComplexFunction) -> Ultra:
         result = []

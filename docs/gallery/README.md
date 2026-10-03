@@ -1,5 +1,10 @@
 # Ultracomplex visual laboratory
 
+**New in 0.3.0:** the [unified geometry laboratory](../unified-geometry.md)
+constructs exact rational rotations, boosts, shears and coupled motion through
+the parabolic transition. Run `python -m examples.exact_geometry --plot` to
+reproduce its four-panel figure.
+
 Ten reproducible figures, three animations and an offline interactive experiment,
 computed with the migrated Python library. The cosine maps and Euler curves
 revisit the original Java README; the angle surfaces, full-algebra Newton

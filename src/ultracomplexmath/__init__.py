@@ -13,6 +13,19 @@ from .core import (
     NonInvertibleError,
     Ultra,
 )
+from .exact import QEPS, QI, QJ, QONE, QZERO, ExactBinary, ExactComplex, ExactDual, ExactUltra
+from .exact_formula import ExactFormula, evaluate_exact
+from .exact_geometry import (
+    barycentric2d,
+    circumcircle2d,
+    incircle2d,
+    line_intersection2d,
+    orientation2d,
+    rational_point2,
+    segment_intersection2d,
+)
+from .exact_linalg import ExactLinearSolution, ExactMatrix, exact_solution_space, exact_solve
+from .exact_polynomial import ExactPolynomial
 from .expressions import BoundFormula, Calculation, FormulaSystem, Parameter, SimpleCalculation
 from .formula import ExpressionError, Formula, evaluate, evaluate_system
 from .linalg import (
@@ -25,9 +38,21 @@ from .linalg import (
 from .matrix import M2R, Matrix
 from .mechanisms import Actor, Freedom, Joint, Machine, Mechanism
 from .numbers import Binary, Complex, Dual, Hypercomplex, RootSet
+from .plane_geometry import (
+    CIRCULAR,
+    HYPERBOLIC,
+    PARABOLIC,
+    PlaneIsometry,
+    PlanePolar,
+    QuadraticPlane,
+    metric_dot,
+    metric_project,
+    metric_reflect,
+)
 from .polynomial import Polynomial, guess
+from .transformations import Mobius, ModeOperator, ProjectivePoint, cross_ratio
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 __all__ = [
     "Actor",
     "Binary",
@@ -69,4 +94,40 @@ __all__ = [
     "guess",
     "solution_space",
     "solve",
+    "ExactUltra",
+    "ExactComplex",
+    "ExactBinary",
+    "ExactDual",
+    "QZERO",
+    "QONE",
+    "QI",
+    "QJ",
+    "QEPS",
+    "ExactFormula",
+    "evaluate_exact",
+    "ExactMatrix",
+    "ExactLinearSolution",
+    "exact_solve",
+    "exact_solution_space",
+    "ExactPolynomial",
+    "CIRCULAR",
+    "HYPERBOLIC",
+    "PARABOLIC",
+    "PlaneIsometry",
+    "PlanePolar",
+    "QuadraticPlane",
+    "metric_dot",
+    "metric_project",
+    "metric_reflect",
+    "Mobius",
+    "ModeOperator",
+    "ProjectivePoint",
+    "cross_ratio",
+    "rational_point2",
+    "orientation2d",
+    "line_intersection2d",
+    "segment_intersection2d",
+    "barycentric2d",
+    "circumcircle2d",
+    "incircle2d",
 ]

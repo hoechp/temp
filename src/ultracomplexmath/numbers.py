@@ -25,6 +25,10 @@ class Hypercomplex:
     symbol: ClassVar[str] = "i"
 
     def __post_init__(self) -> None:
+        if any(
+            isinstance(x, bool) or not isinstance(x, (int, float)) for x in (self.real, self.imag)
+        ):
+            raise TypeError("Coefficients must be real int or float values")
         if not all(map(math.isfinite, (self.real, self.imag))):
             raise ValueError("Coefficients must be finite")
 
@@ -116,6 +120,8 @@ class Hypercomplex:
         return bool(self.real or self.imag)
 
     def _coerce(self, other: Hypercomplex | float) -> Self:
+        if isinstance(other, bool):
+            raise TypeError("Boolean values are not algebra scalars")
         if isinstance(other, (int, float)):
             return type(self)(other)
         if type(other) is not type(self):
@@ -159,6 +165,8 @@ class Hypercomplex:
         return self._coerce(other) / self
 
     def __pow__(self, exponent: Hypercomplex | float) -> Self:
+        if type(exponent) is int:
+            return type(self).from_ultra(self.to_ultra() ** exponent)
         v = self._coerce(exponent)
         return type(self).from_ultra(self.to_ultra() ** v.to_ultra())
 
@@ -166,7 +174,13 @@ class Hypercomplex:
         return self._coerce(base) ** self
 
     def power(self, exponent: Hypercomplex | float, *, branch: int = 0) -> Self:
-        if branch == 0 and isinstance(exponent, (int, float)) and float(exponent).is_integer():
+        if type(branch) is not int:
+            raise TypeError("Logarithm branch must be an integer")
+        if branch and self.square != -1:
+            raise DomainError("Real split/dual logarithms have no integer branches")
+        # Integer powers are independent of the complex logarithm branch and
+        # remain defined at zero without taking its logarithm.
+        if type(exponent) is int or isinstance(exponent, float) and exponent.is_integer():
             return self**exponent
         return (self.log(branch=branch) * exponent).exp()
 
@@ -270,7 +284,7 @@ class Hypercomplex:
     ln = log
 
     def roots(self, degree: int) -> RootSet:
-        if not isinstance(degree, int) or degree <= 0:
+        if type(degree) is not int or degree <= 0:
             raise ValueError("Root degree must be a positive integer")
         if degree == 1:
             return RootSet((self,))
@@ -332,7 +346,10 @@ class Hypercomplex:
         return self.real * other.real + self.imag * other.imag
 
     def normalized(self) -> Self:
-        return self / self.length
+        from .geometry import unit
+
+        x, y = unit((self.real, self.imag))
+        return type(self)(x, y)
 
     def r(self, exponent: float) -> Self:
         magnitude: float = self.length**exponent
@@ -348,7 +365,10 @@ class Hypercomplex:
         return self.dot(other) > 0
 
     def part_in_direction(self, other: Hypercomplex) -> Self:
-        return type(self).reinterpret(other) * (self.dot(other) / other.dot(other))
+        from .geometry import project
+
+        x, y = project((self.real, self.imag), (other.real, other.imag))
+        return type(self)(x, y)
 
     def part_orthogonal_to(self, other: Hypercomplex) -> Self:
         return self - self.part_in_direction(other)
@@ -415,15 +435,19 @@ class Binary(Hypercomplex):
         return self.imag
 
     def hyperbolic_form(self) -> tuple[float, Binary, float]:
-        if self.determinant == 0:
+        scale = max(abs(self.real), abs(self.imag))
+        if scale == 0 or abs(self.real) == abs(self.imag):
             raise DomainError("Null rays have no finite hyperbolic angle")
         direction = (
             Binary(math.copysign(1, self.real))
             if abs(self.real) > abs(self.imag)
             else Binary(0, math.copysign(1, self.imag))
         )
-        length = self.euler_length
-        return length, direction, math.asinh((self / length * direction).imag)
+        a, b = self.real / scale, self.imag / scale
+        norm = math.sqrt(abs(a - b)) * math.sqrt(abs(a + b))
+        length = scale * norm
+        parameter = math.atanh(b / a if abs(a) > abs(b) else a / b)
+        return length, direction, parameter
 
     @property
     def euler_angle(self) -> float:

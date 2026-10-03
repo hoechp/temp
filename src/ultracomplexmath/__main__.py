@@ -14,13 +14,25 @@ def main() -> None:
         "expression", help="Formula with explicit multiplication; quote in your shell"
     )
     parser.add_argument("--json", action="store_true", help="Print all eight coefficients as JSON")
-    parser.add_argument(
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument(
+        "--exact",
+        action="store_true",
+        help="Use exact integer/rational coefficients and decimal literals",
+    )
+    mode.add_argument(
         "--legacy",
         action="store_true",
         help="Accept implicit multiplication and original word operators",
     )
     args = parser.parse_args()
     try:
+        if args.exact:
+            from .exact_formula import evaluate_exact
+
+            exact = evaluate_exact(args.expression)
+            print(exact.to_json() if args.json else str(exact))
+            return
         if args.legacy:
             from .expressions import Calculation
 

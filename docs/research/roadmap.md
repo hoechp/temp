@@ -2,13 +2,49 @@
 
 [Agenda](README.md) · [Operations](operations.md) · [Applications](applications.md)
 
-This is a source audit against commit `2a3caef`, not a promise that the proposed
-APIs already exist. “Missing” means absent as a reusable library capability;
-some operations can already be assembled manually or appear in a single demo.
-The work in this change documents and probes these gaps; it does not implement
-the proposed production features.
+The original source audit below refers to commit `2a3caef` (0.2.0).
+The following status table supersedes its implementation-gap claims where
+0.3.0 has supplied working APIs. The original requirements and evidence are
+retained so completion remains traceable rather than being inferred from a
+feature name.
 
-## Current capability map
+## Implementation status in 0.3.0
+
+The owner's priorities are **correctness first, then exact integer/rational
+coefficients and substantial geometry**. The implemented work follows those
+priorities; it does not postpone exact arithmetic behind the original P1/P2
+ordering. See [exact arithmetic](../exact-arithmetic.md) and
+[unified geometry](../unified-geometry.md) for the public contracts and examples.
+
+| Backlog item | Implemented and verified | Remaining scope |
+| --- | --- | --- |
+| G01 | Fixed integer dispatch in Ultra and closed types, including huge negative exponents; additional scale/angle/projection regressions fixed | No known open case in this reproduced defect; normal floating range limits remain |
+| G02–G03 | Exact closed embeddings/common promotion, explicit coefficient conversion, intrinsic metric and sector APIs; legacy geometric conventions preserved | Broader physical-domain conventions need application-specific contracts |
+| G04 | Numerical and exact `primal`, `tangent`, `with_tangent` | General JVP/Jacobian façade and public analytic lift |
+| G05 | Derivative-preserving real/imaginary parts and intensity; numerical amplitude and local phase derivatives | General real-linear lift and automatic path unwrapping |
+| G06–G07 | Explicit geometry/sector angles; phase measurement; rational Cayley maps regular through kappa zero | Stable elementary limit functions, continuous `C_kappa/S_kappa`, general dual atan2 and path continuation |
+| G09 | Exact coefficient polynomial algebra, derivatives, integrals, division by unit-leading polynomials, interpolation and Hermite interpolation | Root solver/classification, lifting and general multiplicities |
+| G11 | Exact dense matrices, determinant, inverse and complete rational solution families, including zero divisors | Numerical Ultra matrix backend, factorization reuse, least squares, matrix exp/log and Fréchet derivatives |
+| G12 | Exact/numerical coupled operators, independent matrix representation, composition/inverse, quadratic examples and Cayley steps with sensitivities | Continuous-time quadratic propagators and physically specified component models |
+| G15 | Arbitrary-size integer/Fraction coefficients across the full algebra, exact parser and serialization | Arbitrary-precision numerical and symbolic irrational backends |
+| G17 | Exact/numerical Möbius maps, valid unimodular points, mixed projective charts, cross-ratio invariance; exact Euclidean predicates and affine isometries | Automatic chart continuation, complete chain/circle incidence geometry and higher-dimensional geometry |
+| G18 | Restricted exact formula API, CLI and coefficient-domain JSON metadata; numerical measurement functions exposed | General function/domain registry |
+
+G08, G10, G13, G14 and G16 remain open. No implicit claim is made that
+an entire backlog family is complete because part of it has shipped.
+
+Validation: 666 passing tests, including 186 new regression/feature tests;
+independent basis, matrix, determinant, derivative and invariant oracles;
+exact demonstration and reproducible geometry figure. The original
+[`verification.json`](verification.json) is a preserved 0.2.0 snapshot.
+The [current probe report](verification-0.3.0.json) records the corrected
+integer-power result and currently available methods.
+
+## Original 0.2.0 audit and requirements
+
+In the tables below, “missing” describes the audited baseline, not 0.3.0.
+
+### Baseline capability map
 
 | Area | Existing source and capability | Remaining distinction |
 | --- | --- | --- |
@@ -26,7 +62,7 @@ the proposed production features.
 
 | ID | Gap and proposed change | Acceptance evidence |
 | --- | --- | --- |
-| G01 | **Confirmed defect:** `Ultra.__pow__` coerces a Python integer exponent to float before deciding it is integral. Dispatch exact Python ints first, preserving sign/parity; audit closed-type power forwarding. Keep approximate float exponents a separate contract. | `I**(2**53+1)==I`, `(-ONE)**(2**53+1)==-ONE`, large positive/negative powers of units, zero-divisor negative powers rejected, bool policy explicit |
+| G01 | **Fixed in 0.3.0. Historical defect:** `Ultra.__pow__` coerced a Python integer exponent to float before deciding it was integral. Dispatch exact Python ints first, preserving sign/parity; audit closed-type power forwarding. Keep approximate float exponents a separate contract. | `I**(2**53+1)==I`, `(-ONE)**(2**53+1)==-ONE`, large positive/negative powers of units, zero-divisor negative powers rejected, bool policy explicit |
 | G02 | Define embeddings and mixed-type promotion. Keep `reinterpret` explicitly a coordinate reinterpretation, never an algebra-preserving conversion. Add an explicit common promotion path for C/S/D. | Each embedding preserves sums/products; mixed examples reach A; `Complex(0,1)` cannot silently become a split unit; exact-to-float conversion is visible |
 | G03 | Separate Euclidean display geometry, intrinsic quadratic forms and physical measurements. Preserve old names with clear documentation or an intentional deprecation path. | C length, S null vectors and four sectors, D degeneracy; coefficient norm remains a diagnostic; no silent change to migration conventions |
 
@@ -43,8 +79,9 @@ print(Ultra(n) == Ultra(n - 1))  # True: documented binary64 coefficient limitat
 The second observation is a representation limitation already documented by the
 core. The first is avoidable loss of an **exact input exponent**; preserving
 integer coefficients everywhere is not required to fix it. A broad existing
-test suite can pass without covering this case. This agenda records the defect
-without silently changing arithmetic while conducting a documentation task.
+test suite can pass without covering this case. Version 0.3.0 fixes the first
+observation and adds exact coefficient types for the second; the reproduction
+above intentionally describes the historical baseline.
 
 ## P1: make existing mathematics reusable
 
@@ -80,7 +117,7 @@ small. Complete algebraic root classification and robust continuation can be
 substantial. The two-mode operator is relatively contained; general projective
 geometry, sparse solvers and arbitrary jets are larger research tracks.
 
-## Proposed implementation sequence
+## Original proposed sequence (superseded by the priorities above)
 
 1. **Foundation:** G01–G03, then G04–G07. Acceptance is reliable arithmetic and
    unambiguous, derivative-preserving measurements and angle semantics.

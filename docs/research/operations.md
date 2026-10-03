@@ -2,9 +2,15 @@
 
 [Agenda](README.md) · [Applications](applications.md) · [Backlog](roadmap.md)
 
+**Version note:** this atlas describes the 0.2.0 audit and research programme.
+Version 0.3.0 implements a substantial part of its exact-arithmetic and geometric
+agenda. The [status table](roadmap.md#implementation-status-in-030),
+[exact guide](../exact-arithmetic.md) and [geometry guide](../unified-geometry.md)
+supersede baseline statements that those APIs are absent.
+
 Notation: C = complex, S = split-complex (`Binary`), D = dual, A = `Ultra`.
-All exact statements below concern the mathematical algebras; the implementation
-uses floating-point coefficients. Domains and branch choices are part of an
+All exact statements below concern the mathematical algebras; the audited 0.2.0
+implementation used floating-point coefficients. Domains and branch choices are part of an
 operation, not afterthoughts. Source keys refer to [references.md](references.md).
 
 ## 1. Arithmetic, division and equations

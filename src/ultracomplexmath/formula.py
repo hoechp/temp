@@ -22,7 +22,8 @@ _FUNCTIONS = {
     name: getattr(Ultra, name)
     for name in (
         "exp log ln sqrt sin cos tan sinh cosh tanh sec csc cot sech csch coth "
-        "asin acos atan asinh acosh atanh asec acsc acot asech acsch acoth inverse conjugate"
+        "asin acos atan asinh acosh atanh asec acsc acot asech acsch acoth inverse conjugate "
+        "real_part imag_part abs2 amplitude phase"
     ).split()
 }
 _FUNCTIONS.update(
@@ -49,7 +50,9 @@ def _dot(a: Ultra, b: Ultra) -> Ultra:
 
 
 def _project(a: Ultra, b: Ultra) -> Ultra:
-    return b * (_dot(a, b).real / _dot(b, b).real)
+    from .geometry import project
+
+    return Ultra.from_coefficients(project(a.coefficients, b.coefficients))
 
 
 _FUNCTIONS.update(

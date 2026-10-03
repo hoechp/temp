@@ -1,4 +1,4 @@
-"""Check selected research-agenda identities; report, but do not fix, baseline gaps.
+"""Check selected research-agenda identities and report the installed API status.
 
 Run after installing the package: python tools/research_probe.py
 Only the standard library and ultracomplexmath are required. The local series
@@ -10,7 +10,7 @@ import json
 import math
 import random
 
-from ultracomplexmath import EPS, ONE, ZERO, Binary, I, J, Ultra
+from ultracomplexmath import EPS, ONE, ZERO, Binary, I, J, Ultra, __version__
 
 BASELINE = "2a3caeffb29244e6f0289f0b0ea01d131c557155"
 
@@ -199,6 +199,7 @@ def main():
     n = 2**53 + 1
     report = {
         "audited_baseline": BASELINE,
+        "evaluated_package_version": __version__,
         "purpose": "Selected identity checks, not a complete audit or production API implementation",
         "absolute_error_limit": 1e-11,
         "max_absolute_errors": errors,
@@ -207,7 +208,7 @@ def main():
         "unit_cube_roots": len(roots),
         "minimum_root_separation": separation,
         "hensel_example": {"prime": p, "initial_root": a, "lifted_root": lifted, "modulus": p * p},
-        "baseline_observations": {
+        "current_observations": {
             "integer_exponent": n,
             "integer_power_actual": str(I**n),
             "integer_power_expected": str(I),

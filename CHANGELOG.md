@@ -1,6 +1,35 @@
 # Changelog
 
-## Unreleased — visual laboratory
+## 0.3.0 — exact coefficients and unified geometry, unpublished on PyPI
+
+- Fix integer exponent rounding before dispatch, including the closed types:
+  `I ** (2**53 + 1) == I`, and preserve arbitrarily large positive/negative ints.
+- Keep complex integer powers independent of the chosen logarithm branch,
+  including powers of zero; validate branch types consistently.
+- Fix scale-dependent normalization/projection in vectors, closed types and
+  formulas; retain tiny angles; avoid false split-polar and vector-angle
+  singularities from squaring extremely small or large lengths.
+- Make closed-type scalar and root-degree bool rejection consistent with Ultra.
+- Add Fraction-backed ExactUltra, ExactComplex, ExactBinary and ExactDual with
+  exact arithmetic, unit detection, inverses, rational principal square roots,
+  tangent operations and lossless rational coefficient JSON representation.
+- Add exact decimal formulas and `--exact` CLI; numerical conversion is explicit.
+- Add exact matrices, complete rational solution families, polynomial algebra,
+  calculus, interpolation and Hermite interpolation.
+- Add explicit circular/hyperbolic/parabolic metrics, sectors, angle parameters,
+  rational Cayley factors, affine isometries, reflections and homogeneous matrices.
+- Add exact orientation, line/segment intersections, barycentric coordinates,
+  circumcircles and winding-independent incircle predicates.
+- Add coupled ModeOperator composition/inversion and exact Cayley maps across
+  the elliptic/parabolic/hyperbolic transition, including parameter sensitivities.
+- Add Möbius transformations, unimodular projective points and cross ratios
+  over both numerical and exact eight-dimensional values.
+- Add derivative-preserving numerical amplitude, phase, real/imaginary parts
+  and intensity; make these measurements available to numerical formulas.
+- Add 186 tests, an executable exact-geometry demonstration and a reproducible
+  figure; update the research backlog with implemented and remaining scope.
+
+### Visual laboratory carried forward from the previous development snapshot
 
 - Add six reproducible figures, a coupled-mode animation and an offline HTML lab.
 - Revisit the original cosine maps and Euler curves with the migrated engine.

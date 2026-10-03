@@ -3,6 +3,16 @@
 Research and implementation agenda, 2026-10-03 (Europe/Berlin).
 Code baseline: [`2a3caeffb29244e6f0289f0b0ea01d131c557155`](https://github.com/hoechp/temp/tree/2a3caeffb29244e6f0289f0b0ea01d131c557155), version 0.2.0.
 
+**Implementation update, 0.3.0:** the integer-exponent defect is corrected.
+Exact integer/rational coefficients, polynomial and linear algebra, intrinsic
+plane geometry, rational isometries, exact geometric predicates, coupled
+operators and projective maps are now implemented. The
+[status table](roadmap.md#implementation-status-in-030) distinguishes completed
+work from partial and open items. The owner's revised priority is correctness,
+then exact coefficients and geometry. Start with the new
+[exact arithmetic](../exact-arithmetic.md) and [geometry](../unified-geometry.md)
+guides for actual APIs; the atlas below retains the original research scope.
+
 The goal is to make complex, split-complex and dual arithmetic useful together
 across as much mathematics as possible: ordinary calculation, geometry,
 trigonometry, analysis, exact arithmetic and applications. A completed migration
@@ -30,8 +40,8 @@ Status terms used here: **existing** means source-inspected functionality;
 **derived** means a consequence of the stated algebra, sometimes additionally
 checked numerically; **proposed** means an API or experiment not implemented;
 **research question** means an advantage still requiring evidence. Proposed API
-names are design sketches. No new production mathematical APIs are introduced
-by this documentation change.
+names in the original agenda are design sketches. The 0.3.0 guides and status
+table identify which capabilities now have production APIs and tests.
 
 ## 1. One algebra, several equally valid viewpoints
 
@@ -194,7 +204,11 @@ dual slope are different quantities with related composition laws. A typed
 angle/metric layer can preserve these differences while making the same
 calibration and optimization tools operate on each.
 
-## 4. Recommended order
+## 4. Original recommended order
+
+This was the original audit's order. The owner subsequently prioritized exact
+coefficients and geometry immediately after defect correction; 0.3.0 follows
+that direction, as recorded in the [implementation status](roadmap.md).
 
 | Order | Investment | Why now |
 | --- | --- | --- |

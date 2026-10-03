@@ -10,6 +10,37 @@ No Java binaries, applet permission files, Eclipse metadata, bundled Swing JAR
 or JVM crash dump are needed by the Python package. Their disposition is listed
 in the inventory. The Java repository remains unchanged.
 
+## Version 0.3.0 additions and corrections
+
+The [exact arithmetic](exact-arithmetic.md) and [unified geometry](unified-geometry.md)
+guides describe the new APIs. `Ultra` and existing closed types retain their
+numerical coefficient domain; choose `ExactUltra` or the exact closed types for
+integers/Fractions. Exact and numerical domains never mix implicitly.
+
+Python integer exponents are now dispatched before conversion to float. This
+intentionally corrects wrong answers for large exponents. Boolean operands and
+root degrees are consistently rejected in closed types. Normalization and
+projection now use scale-stable vector calculations; a zero direction raises
+`DomainError`. Tiny vector angles and non-null split polar forms no longer
+vanish just because an intermediate square underflows.
+
+Complex integer `.power(n, branch=k)` now returns the same integer power for
+every valid branch, including at zero. It does not take a logarithm just because
+`k` is nonzero. Branch arguments must be Python integers; nonzero logarithm
+branches remain unavailable in the real split and dual closed types.
+
+Existing `.angle`, `.angle_to()`, `.length`, Euclidean projection and mirror
+names keep their geometric conventions. Intrinsic metrics and the oriented
+start-to-end `QuadraticPlane.angle_between` have explicit new names.
+`PlaneIsometry` uses `A @ B` for applying B first, as do `ModeOperator` and
+`Mobius`. The `.real` coefficient and `abs(Ultra)` keep their old meanings;
+`real_part()`, `abs2()`, `amplitude()` and `phase()` are the new measurements
+that retain derivatives and split structure.
+
+The exact parser is separate from the numerical and legacy parsers. It reads
+decimal literals exactly but rejects transcendental constants/functions;
+`.approximate()` provides the existing numerical calculus explicitly.
+
 ## Numeric APIs
 
 | Java | Python | Contract |
