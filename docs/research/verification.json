@@ -1,11 +1,10 @@
 {
   "absolute_error_limit": 1e-11,
-  "audited_baseline": "2a3caeffb29244e6f0289f0b0ea01d131c557155",
-  "baseline_observations": {
+  "current_observations": {
     "abs_dual_returns": "float",
     "integer_exponent": 9007199254740993,
-    "integer_power_actual": "1.0",
-    "integer_power_correct": false,
+    "integer_power_actual": "1.0*i",
+    "integer_power_correct": true,
     "integer_power_expected": "1.0*i",
     "large_integer_coefficients_collide": true,
     "split_endpoint_square": "(1.0+0.0*j)",
@@ -13,12 +12,13 @@
       "atan2": false,
       "expm1": false,
       "log1p": false,
-      "primal": false,
+      "primal": true,
       "roots": false,
       "sinc": false,
-      "tangent": false
+      "tangent": true
     }
   },
+  "evaluated_package_version": "0.4.0",
   "hensel_example": {
     "initial_root": 3,
     "lifted_root": 10,
@@ -39,7 +39,7 @@
     "interferometer_minus_power": 2.220446049250313e-16,
     "interferometer_plus_derivative": 2.220446049250313e-16,
     "interferometer_plus_power": 3.3306690738754696e-16,
-    "mixed_euler_factorization": 2.391654643720554e-16,
+    "mixed_euler_factorization": 3.002224531865041e-16,
     "operator_circular_square": 0.0,
     "operator_composition": 1.8444410139024814e-15,
     "operator_matrix_action": 6.377745716588144e-16,
@@ -52,6 +52,7 @@
   },
   "minimum_root_separation": 1.4733736128730237,
   "operator_samples": 24,
+  "pre_review_commit": "fb4870cbf8a47a89b4ac10cf3ff34f37fe0cc541",
   "purpose": "Selected identity checks, not a complete audit or production API implementation",
   "tangent_ideal_zero_products": 16,
   "unit_cube_roots": 9

@@ -1,171 +1,51 @@
-# Implementation backlog and completeness criteria
+# Prioritized implementation roadmap
 
 [Agenda](README.md) · [Operations](operations.md) · [Applications](applications.md)
 
-The original source audit below refers to commit `2a3caef` (0.2.0).
-The following status table supersedes its implementation-gap claims where
-0.3.0 has supplied working APIs. The original requirements and evidence are
-retained so completion remains traceable rather than being inferred from a
-feature name.
+Reviewed against 0.3.0 and updated for 0.4.0. **P0** protects numerical correctness; **P1** continues exact coefficients and geometry; **P2** broadens application coverage. Proposed APIs below are not imports.
 
-## Implementation status in 0.3.0
+## Correctness before new promises
 
-The owner's priorities are **correctness first, then exact integer/rational
-coefficients and substantial geometry**. The implemented work follows those
-priorities; it does not postpone exact arithmetic behind the original P1/P2
-ordering. See [exact arithmetic](../exact-arithmetic.md) and
-[unified geometry](../unified-geometry.md) for the public contracts and examples.
+The huge-integer exponent bug is fixed: `I**(2**53+1)==I`. Rational coefficients, exact matrices/polynomials and geometry are implemented. The renewed review found a different defect: channel reconstruction erased the `j` coefficient of `exp(1+i*h+ij*h)`. Version 0.4.0 uses component-preserving factors and scaled real exponentials, with tests down to h=`1e-100` and large compensated split exponents.
 
-| Backlog item | Implemented and verified | Remaining scope |
-| --- | --- | --- |
-| G01 | Fixed integer dispatch in Ultra and closed types, including huge negative exponents; additional scale/angle/projection regressions fixed | No known open case in this reproduced defect; normal floating range limits remain |
-| G02–G03 | Exact closed embeddings/common promotion, explicit coefficient conversion, intrinsic metric and sector APIs; legacy geometric conventions preserved | Broader physical-domain conventions need application-specific contracts |
-| G04 | Numerical and exact `primal`, `tangent`, `with_tangent` | General JVP/Jacobian façade and public analytic lift |
-| G05 | Derivative-preserving real/imaginary parts and intensity; numerical amplitude and local phase derivatives | General real-linear lift and automatic path unwrapping |
-| G06–G07 | Explicit geometry/sector angles; phase measurement; rational Cayley maps regular through kappa zero | Stable elementary limit functions, continuous `C_kappa/S_kappa`, general dual atan2 and path continuation |
-| G09 | Exact coefficient polynomial algebra, derivatives, integrals, division by unit-leading polynomials, interpolation and Hermite interpolation | Root solver/classification, lifting and general multiplicities |
-| G11 | Exact dense matrices, determinant, inverse and complete rational solution families, including zero divisors | Numerical Ultra matrix backend, factorization reuse, least squares, matrix exp/log and Fréchet derivatives |
-| G12 | Exact/numerical coupled operators, independent matrix representation, composition/inverse, quadratic examples and Cayley steps with sensitivities | Continuous-time quadratic propagators and physically specified component models |
-| G15 | Arbitrary-size integer/Fraction coefficients across the full algebra, exact parser and serialization | Arbitrary-precision numerical and symbolic irrational backends |
-| G17 | Exact/numerical Möbius maps, valid unimodular points, mixed projective charts, cross-ratio invariance; exact Euclidean predicates and affine isometries | Automatic chart continuation, complete chain/circle incidence geometry and higher-dimensional geometry |
-| G18 | Restricted exact formula API, CLI and coefficient-domain JSON metadata; numerical measurement functions exposed | General function/domain registry |
+The same accuracy risk remains in other operations, including channel-based logarithm and inverse. A dominant body can be accurate while a tiny mixed coefficient is wrong. The frontier probe reports this explicitly; a general bicomplex Hessian API would currently promise too much.
 
-G08, G10, G13, G14 and G16 remain open. No implicit claim is made that
-an entire backlog family is complete because part of it has shipped.
+## Work packages
 
-Validation: 666 passing tests, including 186 new regression/feature tests;
-independent basis, matrix, determinant, derivative and invariant oracles;
-exact demonstration and reproducible geometry figure. The original
-[`verification.json`](verification.json) is a preserved 0.2.0 snapshot.
-The [current probe report](verification-0.3.0.json) records the corrected
-integer-power result and currently available methods.
+| ID / priority | Gap | Next deliverable | Completion evidence |
+| --- | --- | --- | --- |
+| G01 / P0 | Componentwise accuracy and near-zero functions | Audit inverse/division/log/trig; stable selected paths, `expm1`, `log1p`, `sinc`, `sinhc` | Independent analytic/high-precision scale sweeps; coefficient errors; branch, range, underflow and compensated-large cases |
+| G02 / P1 | Rational powers whose result is rational | Exact nth-root detection and explicit rational-power branches, starting with real/closed inputs | Cube root of 8, negative odd roots, reciprocals, irrational/singular cases and exact powered-back identities |
+| G03 / P1 | Coefficient-domain extensibility | Minimal shared coefficient protocol; scoped algebraic/high-precision adapters | Same basis laws, domains and serialization; no implicit float conversion |
+| G04 / P1 | Exact constraints and implicit geometry | Constraint graph, rational Jacobians, exact rank/free motions and regular implicit sensitivities | Closed linkage/CAD examples; independent singularity classification; infinitesimal versus finite motion distinguished |
+| G05 / P1 | Continuous dynamics and matrix functions | Entire `C_kappa/S_kappa`, operator exponential/Fréchet derivative, midpoint time-step interface | Critical limits, independent ODE/matrix oracle, convergence order, invariant and differentiated identities |
+| G06 / P1 | General derivative interface | JVP/seed helpers, real-linear contracts, scoped bicomplex Hessian entries and epsilon variations | Analytic oracles, non-holomorphic contracts, step/underflow diagnostics, repeated-seed Jacobians |
+| G07 / P1 | Angles and projective continuation | Derivative-aware `atan2`, phase/sector histories and chart events | Loops/cuts/zeros/null rays/mixed-chart poles; agreement with homogeneous evolution |
+| G08 / P1 | Conics and spatial geometry | Incidence, algebraic intersections, separate 3D pose/operator layer | Exact degeneracies/transformed incidence; noncommuting pose composition |
+| G09 / P2 | Polynomial algebra over a ring | Nonunit-leading division strategy, factor/root metadata, resultants and rational splines | Degenerate/zero-divisor examples; field assumptions explicitly checked |
+| G10 / P1 | Reusable and conditioned linear algebra | Factorizations, condition/rank diagnostics, repeated RHS, adjoints and sparse adapters | Exact residuals, independent references, singular families and scale tests |
+| G11 / P2 | Modular hypercomplex coefficients | Full `A_(Z/nZ)`, unit algorithms, Hensel/Hasse and reconstruction | Exhaustive small rings including F2, odd-prime factors, lifted residuals/nonunit failures |
+| G12 / P2 | Integration, transforms, special functions | Selected derivative-preserving quadrature/response APIs and FFT adapter | Scalar/complex references, branch/singularity contracts and convergence evidence |
+| G13 / P2 | Ecosystem interoperability | NumPy batching/ufunc policy, schemas, units and AD boundaries | Round trips, dtype/shape errors and benchmarks with equal requested work |
+| G14 / P2 | Validated application components | One transfer/scattering network, observations, fit and noise model | Model-specific conservation/passivity, independent solver, derivatives and identifiability |
+| G15 / P1 | Complete root families | Independent sheets, tangent families and singular classifications; exact counterparts where supported | n² unit roots, empty/infinite cases, residuals and path consistency |
 
-## Original 0.2.0 audit and requirements
+## Suggested sequence
 
-In the tables below, “missing” describes the audited baseline, not 0.3.0.
+**Milestone A: trustworthy exact geometry and derivatives.** G01, the small rational-root portion of G02, G04 linearized constraints and G06 first-order helpers. Deliver a closed-linkage showcase with exact residuals. Introduce G03 abstractions around concrete coefficient needs.
 
-### Baseline capability map
+**Milestone B: motion and charts.** G05 generalized functions with existing exact Cayley steps, plus G07 continuation. Show all three motion regimes and their parameter sensitivities.
 
-| Area | Existing source and capability | Remaining distinction |
-| --- | --- | --- |
-| Scalar calculus | [`core.py`](../../src/ultracomplexmath/core.py): arithmetic, all elementary trig/hyperbolic functions, log branches, `_lift`, channel conversion | `_lift` is private; no public AD façade, full root families or stable special limits |
-| Closed algebras | [`numbers.py`](../../src/ultracomplexmath/numbers.py): C/S/D, roots, rational powers, four split sectors | Mixed types reject implicit arithmetic; geometry names mix Euclidean and algebra-specific meanings |
-| Coordinates and geometry | [`coordinates.py`](../../src/ultracomplexmath/coordinates.py), [`geometry.py`](../../src/ultracomplexmath/geometry.py): polar forms, vectors, frames, lines, dual angles | No common geometry/metric/branch protocol or derivative-preserving angle API |
-| Linear equations | [`linalg.py`](../../src/ultracomplexmath/linalg.py): `solve`, rectangular/singular `solution_space` | No retained factorization, QR/SVD, conditioning report or matrix functions |
-| Matrices and mechanisms | [`matrix.py`](../../src/ultracomplexmath/matrix.py), [`mechanisms.py`](../../src/ultracomplexmath/mechanisms.py) | `Matrix` is real; `M2R` loses its similarity basis and is not associative |
-| Polynomials | [`polynomial.py`](../../src/ultracomplexmath/polynomial.py): interpolation and guessing | No complete polynomial algebra, Hermite interpolation or general root solver |
-| Discrete mathematics | [`number_theory.py`](../../src/ultracomplexmath/number_theory.py), [`modular.py`](../../src/ultracomplexmath/modular.py): exact Python-int utilities and scalar residues | Ultra converts coefficients to binary64; no shared exact or finite-ring algebra backend |
-| Applications | [`examples/applications.py`](../../examples/applications.py), [`gallery.py`](../../examples/gallery.py) | Demonstrations, not reusable optics/AD/optimization/ODE modules |
-| Formulas | [`formula.py`](../../src/ultracomplexmath/formula.py), [`expressions.py`](../../src/ultracomplexmath/expressions.py) | New APIs will need coordinated safe parser exposure and documented types |
+**Milestone C: a full-union application.** G14's transfer network using the relevant G10/G13 pieces. Compare transfer/scattering stability and solve an identifiable inverse problem.
 
-## P0: correctness and semantic contracts
+**Research branch:** after G01, investigate bicomplex/dual higher derivatives on a thermodynamic potential. Modular G11 work can proceed independently of the numerical calculus. These are dependency recommendations, not implementations already underway.
 
-| ID | Gap and proposed change | Acceptance evidence |
-| --- | --- | --- |
-| G01 | **Fixed in 0.3.0. Historical defect:** `Ultra.__pow__` coerced a Python integer exponent to float before deciding it was integral. Dispatch exact Python ints first, preserving sign/parity; audit closed-type power forwarding. Keep approximate float exponents a separate contract. | `I**(2**53+1)==I`, `(-ONE)**(2**53+1)==-ONE`, large positive/negative powers of units, zero-divisor negative powers rejected, bool policy explicit |
-| G02 | Define embeddings and mixed-type promotion. Keep `reinterpret` explicitly a coordinate reinterpretation, never an algebra-preserving conversion. Add an explicit common promotion path for C/S/D. | Each embedding preserves sums/products; mixed examples reach A; `Complex(0,1)` cannot silently become a split unit; exact-to-float conversion is visible |
-| G03 | Separate Euclidean display geometry, intrinsic quadratic forms and physical measurements. Preserve old names with clear documentation or an intentional deprecation path. | C length, S null vectors and four sectors, D degeneracy; coefficient norm remains a diagnostic; no silent change to migration conventions |
+## Decisions that remain explicit
 
-Minimal G01 reproduction on the audited baseline:
+- Full-algebra order, floor, remainder and probability need chosen semantics; naming them does not inherit real-number laws.
+- Exact coefficient domains must state their closure. Q excludes generic radicals; a small algebraic extension excludes generic transcendental values.
+- The epsilon ideal alone gives first-order jets. Arbitrary exact higher jets need a larger algebra; bicomplex finite steps are a different opportunity within the current algebra.
+- General 3D poses need noncommuting operators or another extension. Keep scalar, operator and point types distinct.
+- Accuracy contracts must identify protected components, not merely a body-dominated total norm.
 
-```python
-from ultracomplexmath import I, Ultra
-
-n = 2**53 + 1
-print(I**n)  # 1.0; mathematically it must be I
-print(Ultra(n) == Ultra(n - 1))  # True: documented binary64 coefficient limitation
-```
-
-The second observation is a representation limitation already documented by the
-core. The first is avoidable loss of an **exact input exponent**; preserving
-integer coefficients everywhere is not required to fix it. A broad existing
-test suite can pass without covering this case. Version 0.3.0 fixes the first
-observation and adds exact coefficient types for the second; the reproduction
-above intentionally describes the historical baseline.
-
-## P1: make existing mathematics reusable
-
-| ID | Proposed capability | Why it matters and how to verify it |
-| --- | --- | --- |
-| G04 | `primal`, `tangent`, seed/extract helpers, `jvp`, two-direction Jacobian helper, public analytic lift with derivative/domain metadata | Replaces repeated manual channel manipulation; compare composition and seed linearity with independent derivatives; specify when bodies must match |
-| G05 | Channel-preserving `real_part`, `imag_part`, `abs2`, `amplitude`, `phase`, and a real-linear lift | Connects complex fields to real losses; test conjugation and intensity analytically; reject undefined phase at zero and avoid confusing `.real` coefficient extraction with a differentiable projection |
-| G06 | Stable `expm1`, `log1p`, `sinc`, `sinhc`, exprel and `C_kappa/S_kappa`; optional `sinpi/cospi` and scaled forms | Remove false singularities and cancellation; test exact limits and first derivatives at zero against series/high precision, plus large-argument range behaviour |
-| G07 | Explicit angle results with geometry/sector/winding; dual-preserving `atan2`; per-channel log/root path continuation | Handles physical phase tracking and rapidity correctly; test loop windings, cut crossing, null directions, poles and unwrapping sampling assumptions |
-| G08 | `UltraRootSet` with discrete branches and complex/real affine parameters; rational-power and nonunit policies | Represent n² unit roots, empty sets and continuous families; verify completeness from channel equations and residuals for family samples |
-| G09 | Polynomial coefficient algebra, derivative/integral, Hermite interpolation and root lifting | Bridges integer utilities, AD and interpolation; use independently differentiated polynomials and exact small examples; detect zero-divisor denominators and identically zero body polynomials |
-| G10 | Implicit differentiation of equations, local Newton/Gauss–Newton adapters and continuation | Differentiate equilibria rather than solver iteration history where appropriate; compare implicit and explicit derivatives; detect rank loss and constrain claims to a local branch |
-
-A branch-tracking API needs a path and continuity assumptions. It cannot infer
-an arbitrary winding from two distant samples. A nondifferentiable primitive
-needs a chosen policy or a precise error, not a fabricated zero tangent.
-
-## P2: structures extending the scalar algebra
-
-| ID | Proposed capability | Boundary and acceptance evidence |
-| --- | --- | --- |
-| G11 | Ultra matrices, cached channel factorizations, weighted least squares, matrix exp/log and Fréchet derivatives | Scalars commute but matrices do not; test noncommuting tangent matrices with an independent block-matrix oracle; document metrics, rank tolerance and singular behavior |
-| G12 | Two-mode operator `T(X)=alpha*X+beta*swap(X)`; quadratic generator objects retaining `B²=kappa` | Exact complex-dual 2 × 2 matrix oracle, correct noncommutative composition and optical conservation laws; preserve state/operator dimension distinction |
-| G13 | Independent hyper-duals or general Taylor jets over suitable coefficient algebras | Keep Ultra's existing relations fixed; a full extra independent dual doubles real dimension to 16; test mixed Hessians and perturbation separation, not just repeated first derivatives |
-| G14 | Batched channel arrays, NumPy adapters, FFT/convolution and integration/ODE adapters | Define memory layout and derivative-preserving ufunc coverage; test every adapter for tangent loss; benchmark against direct complex arrays, including conversion costs |
-| G15 | Exact Z/Q coefficient backends, arbitrary precision as a separate numerical backend | Never route exact values through `float`; check integer growth and exact identities; transcendental results require an explicit numerical/symbolic backend |
-| G16 | Modular hypercomplex arithmetic, CRT and Hensel experiments | State characteristic and unit tests of the coefficient ring; handle p=2 separately; do not transplant real idempotents or analytic logarithms into finite rings |
-| G17 | Geometry-aware fractional transformations and projective charts | Retain metric and sector semantics; use unimodular coordinates over rings; independent matrix and invariant checks; do not mistake zero-divisor denominators for ordinary infinity |
-| G18 | Function/domain registry, parser integration and serialization metadata | Keep safe AST evaluation; disclose branches, coefficient ring and representation; build tests from actual domain partitions and identities rather than blanket inverse round trips |
-
-The P1/P2 distinction is architectural, not a claim that every P1 task is
-small. Complete algebraic root classification and robust continuation can be
-substantial. The two-mode operator is relatively contained; general projective
-geometry, sparse solvers and arbitrary jets are larger research tracks.
-
-## Original proposed sequence (superseded by the priorities above)
-
-1. **Foundation:** G01–G03, then G04–G07. Acceptance is reliable arithmetic and
-   unambiguous, derivative-preserving measurements and angle semantics.
-2. **Algebraic flagship:** the bounded part of G11/G12 needed for retained
-   quadratic generators, followed by the critical-damping demo and the basic
-   C/S/D geometry comparison. Prove regularity at the transition.
-3. **Engineering flagship:** two-mode operator composition, coherent measurements
-   and optical inverse design. Reuse the foundation rather than adding another
-   example-local derivative implementation.
-4. **Mathematical completion:** G08–G10, branch topology and root-family demo.
-5. **Two explicit expansion tracks:** G13 for higher-order modelling, and
-   G15–G16 for exact algebra and number theory. G14 follows real profiling needs;
-   G17 follows a written geometry specification. Apply G18 throughout.
-
-## What “complete” should mean for an operation
-
-Each operation needs a compact contract with these fields:
-
-| Field | Required question |
-| --- | --- |
-| Algebra and coefficient ring | C, S, D, A, an operator algebra, or an exact/modular variant? |
-| Meaning | Analytic function, geometric measurement, equation solver or policy-selected discrete operation? |
-| Domain | Units, sectors, regular body points, null directions, poles and branch points? |
-| Output | One value, branches, an affine family, no solution, or an explicit unsupported case? |
-| Differentiation | Holomorphic derivative, real-linear derivative, implicit derivative or a declared nonsmooth policy? |
-| Numerical guarantee | Tolerances, overflow, cancellation, conditioning and any certified bound? |
-| Interoperability | Closure in a base algebra versus explicit promotion to A; matrix/array behavior? |
-| Evidence | Exact example, independent oracle and singular/degenerate boundary cases? |
-
-No finite list of function names proves “all real operations” are complete.
-This contract makes systematic expansion possible without silently changing
-meaning between algebras. Symbolic antiderivatives and closed-form solutions
-also cannot be promised for arbitrary inputs merely by enlarging the scalars.
-
-## Validation and research gates
-
-- Preserve all basis products and the current explicit zero-divisor errors.
-- Use independent real/complex formulas and faithful matrix representations,
-  including degeneracies; do not just compare two wrappers over `_lift`.
-- For exact roots and modular arithmetic, use exact residuals; for numerical
-  calculus, report a scale-aware residual and condition estimate.
-- For an application, state the forward model, observables, unknowns and noise
-  assumptions; compare recovered parameters, not just an attractive picture.
-- For speed or compactness claims, compare equivalent mathematical work:
-  two complex bodies plus two complex tangents, including array overhead.
-- For a novelty claim, conduct a dedicated literature review. The sources in
-  this agenda establish precedents and feasibility, not absence of prior work.
-
-The [research probe](../../tools/research_probe.py) checks selected derived
-identities and records baseline gaps. It is evidence for this agenda, not a
-production solver or a substitute for the acceptance tests of future features.
+No existing benchmark establishes an advantage over specialized arrays or established AD libraries. Compare equal requested outputs and accuracy in each concrete application.

@@ -30,7 +30,9 @@ jobs:
       - run: python -m ruff check .
       - run: python -m ruff format --check .
       - run: python -m mypy
-      - run: python tools/check_migration.py
+      - run: python tools/check_docs.py
+      - run: python tools/research_probe.py
+      - run: python tools/frontier_probe.py
       - run: python -m build --no-isolation
       - name: Installed wheel smoke test outside source tree
         shell: bash

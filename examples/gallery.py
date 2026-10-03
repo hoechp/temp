@@ -1,4 +1,4 @@
-"""Rebuild the visual gallery using the migrated ultracomplex engine.
+"""Rebuild the visual gallery using the ultracomplex engine.
 
 Run from the repository root after installing .[plot]:
     python examples/gallery.py
@@ -231,7 +231,7 @@ def render_angles(output):
         fig,
         "03",
         "A family of hypercomplex angles.",
-        "The migrated angle map turns one coordinate construction into a sphere, cylinder or hyperboloid.",
+        "The hypercomplex angle map turns one coordinate construction into a sphere, cylinder or hyperboloid.",
     )
     for k, kind, color, name, formula, bmax in zip(
         range(3),

@@ -11,7 +11,9 @@ from ultracomplexmath.mechanisms import Joint, Mechanism
 from ultracomplexmath.numbers import Binary, Complex, Dual
 from ultracomplexmath.polynomial import guess
 
-FIXTURE = json.loads((Path(__file__).parents[1] / "docs/legacy-extended.json").read_text())["cases"]
+FIXTURE = json.loads(
+    (Path(__file__).parents[1] / "tests/fixtures/legacy-extended.json").read_text()
+)["cases"]
 
 
 @pytest.mark.parametrize("name,kind", [("complex", Complex), ("split", Binary), ("dual", Dual)])

@@ -5,7 +5,7 @@ import pytest
 
 from ultracomplexmath import EPS, ONE, ExpressionError, I, J, Ultra
 from ultracomplexmath.numbers import Binary, Dual
-from ultracomplexmath.visuals import cluster_domain, domain_color_grid, sample_curve
+from ultracomplexmath.visuals import domain_color_grid, sample_curve
 
 
 def test_curve_samples_and_domain_failures():
@@ -34,12 +34,12 @@ def test_graphical_controls(tmp_path):
     mpl.use("Agg")
     import matplotlib.pyplot as plt
 
-    from ultracomplexmath.gui import ClusteringExplorer, FormulaExplorer, MechanismExplorer
+    from ultracomplexmath.gui import FormulaExplorer, MechanismExplorer
 
     formula = FormulaExplorer()
     formula.range.set_val("-1, 1, 9")
     formula.phase.set_val(0.5)
-    for i in range(5):
+    for i in range(4):
         formula.mode.set_active(i)
         assert formula.status.get_color() != "#ad2323"
     marker = formula.marker
@@ -52,12 +52,6 @@ def test_graphical_controls(tmp_path):
     formula.formula.set_val("exp((x+t)*i)")
     formula.mode.set_active(0)
     formula.figure.savefig(tmp_path / "formula.png")
-    clustering = ClusteringExplorer()
-    for i in range(5):
-        clustering.method.set_active(i)
-        assert "clusters" in clustering.status.get_text()
-    clustering.new_data()
-    assert clustering.seed == 1
     mechanism = MechanismExplorer()
     mechanism.sliders[0].set_val(0.75)
     end = mechanism.machine.mechanisms["elbow"].adjusted_joint.endpoint
@@ -68,7 +62,7 @@ def test_graphical_controls(tmp_path):
     plt.close("all")
 
 
-def test_domain_projection_contours_and_feature_clustering():
+def test_domain_projection_and_contours():
     grid = domain_color_grid(
         "x*x", resolution=5, input_basis=(I + J, EPS), components=(0, 6), contours=(8, 1, 0)
     )
@@ -79,6 +73,3 @@ def test_domain_projection_contours_and_feature_clustering():
         "x", resolution=3, input_basis=(ONE, EPS), components=(None, 4)
     )
     assert projected_norm.values[0][0].real == pytest.approx(math.sqrt(8))
-    groups = cluster_domain(grid, 3, weights=(1, 1, 1, 1))
-    assert sum(len(g.data) for g in groups) == 25
-    assert len(groups) == 3

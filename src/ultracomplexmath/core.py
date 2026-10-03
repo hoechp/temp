@@ -376,7 +376,29 @@ class Ultra:
         return Ultra.from_channels(result[0], result[1])
 
     def exp(self) -> Ultra:
-        return self._lift("exp", cmath.exp, cmath.exp)
+        """Exponential retaining small mixed components in the defining basis.
+
+        Write the body as a + i*c + j*(b + i*d). Channel subtraction
+        loses the O(c*d) j coefficient when c and d are small. The product
+        exp(a+i*c) * (cosh(b+i*d) + j*sinh(b+i*d)) avoids that subtraction.
+        Scaled real factors also avoid an overflowing cosh(b) when a is
+        sufficiently negative that the complete result is representable.
+        """
+        if abs(self.j) < 0.5:
+            scale = math.exp(self.real)
+            even = scale * math.cosh(self.j)
+            odd = scale * math.sinh(self.j)
+        else:
+            plus = math.exp(self.real + self.j)
+            minus = math.exp(self.real - self.j)
+            even = _half_sum(plus, minus)
+            odd = _half_sum(plus, -minus)
+        phase = complex(math.cos(self.i), math.sin(self.i))
+        cosine, sine = math.cos(self.ij), math.sin(self.ij)
+        a = phase * complex(even * cosine, odd * sine)
+        b = phase * complex(odd * cosine, even * sine)
+        body = Ultra(real=a.real, i=a.imag, j=b.real, ij=b.imag)
+        return body.with_tangent(body * self.tangent)
 
     def log(self, base: Scalar | None = None, *, branches: tuple[int, int] = (0, 0)) -> Ultra:
         """Channelwise logarithm; independent integer branches for + and - channels."""

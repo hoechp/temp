@@ -1,235 +1,88 @@
 # Ultracomplex Math
 
-A typed Python library for the eight-dimensional **commutative** algebra over
-real or exact rational coefficients
+**Complex rotation, split-complex geometry and dual differentiation — united in one eight-dimensional algebra.**
 
-$$i^2=-1,\qquad j^2=1,\qquad \varepsilon^2=0.$$
+A Python library by **Philipp Kolodziej** for exploring what these geometries can do together: exact rational constructions, mixed trigonometry, coupled motion, parameter sensitivity and projective transformations.
 
-Modernized from [Philipp Kolodziej's Java project](https://github.com/hoechp/ultracomplexmath).
-The original multiplication and basis order are retained; numerical algorithms,
-value semantics, parsers, project tooling and the desktop UI have been redesigned.
+$$\mathcal A_K=K[i,j,\varepsilon]/(i^2+1,\;j^2-1,\;\varepsilon^2),\qquad ij=ji,\quad i\varepsilon=\varepsilon i,\quad j\varepsilon=\varepsilon j.$$
 
-**Version 0.3.0: exact arithmetic and unified geometry.** Integer/Fraction
-coefficients now cover all eight directions, linear systems, polynomials and
-geometric constructions. Circular rotations, hyperbolic boosts and parabolic
-shears share an exact rational interface. Coupled operators and projective maps
-extend their combined applications. Large integer exponents and unstable
-geometric edge cases are corrected.
+Choose numerical real coefficients (`Ultra`) or exact rational coefficients (`ExactUltra`). The mixed directions `ij`, `eps*i`, `eps*j` and `eps*i*j` are first-class parts of the same number. The goal is a coherent mathematical toolbox that brings the strengths of all three algebras into shared computations.
 
-- [Exact arithmetic guide](docs/exact-arithmetic.md): exact types, formulas, CLI,
-  matrices, solution families, interpolation and explicit numerical conversion.
-- [Unified geometry guide](docs/unified-geometry.md): metrics, angles, rational
-  isometries, exact intersections, coupled motion and projective charts.
-- Run `python -m examples.exact_geometry` for a dependency-free demonstration;
-  add `--plot` with the optional plotting dependencies to rebuild its figure.
+[Get started](docs/getting-started.md) · [Documentation](docs/README.md) · [Showcase](docs/gallery/README.md) · [Research agenda](docs/research/README.md)
 
-The version 0.2.0 migration already supplied Python replacements for all
-implemented Java feature areas, including geometry, mechanisms, knowledge
-discovery and interactive visuals.
-All **74 Java source files** and the remaining repository files are accounted for
-in the [inventory](docs/inventory.md). The [migration guide](docs/migration.md)
-records API mappings and intentional differences. This is a functional migration,
-not a Java API compatibility layer or a pixel-identical Swing port.
+![Exact circular, hyperbolic and parabolic geometry with coupled motion](docs/gallery/assets/rational-geometry.png)
 
-## Research and completion agenda
+## See the union at work
 
-**[Explore the research agenda](docs/research/README.md):** what is still needed
-to realize the full union of complex, split-complex and dual arithmetic.
-The [operations atlas](docs/research/operations.md) compares their geometry,
-angles, trigonometry, calculus, roots and exact arithmetic. Seven
-[application proposals](docs/research/applications.md) include a unified
-critical-damping calculus, interacting optical modes, projective geometry and
-the link between dual root sensitivities and modular lifting.
-The [source-grounded backlog](docs/research/roadmap.md) separates existing
-features, implementation gaps and mathematical limits. Its 0.3.0 status table
-records the corrected integer-exponent defect and newly implemented parts;
-the original audit remains available as a dated baseline.
+| Explore | What comes together | Run from a checkout |
+| --- | --- | --- |
+| [Exact geometry](docs/unified-geometry.md) | Rational rotations, boosts, shears, intersections and projective maps | `python -m examples.exact_geometry --plot` |
+| [Coupled motion](docs/gallery/README.md#coupled-motion-and-sensitivity) | Complex phase, split coupling and dual parameter derivatives | `python -m examples.gallery --only coupling` |
+| [Waves and inverse problems](docs/gallery/applications.md) | Travelling waves, robot Jacobians and interference-based geometry recovery | `python -m examples.applications` |
+| [Trigonometric atlas](docs/gallery/README.md#trigonometry-and-angles) | The same function in circular, hyperbolic, parabolic and mixed directions | `python -m examples.gallery --only cosine` |
 
-## Visual laboratory
+![Coupled complex modes](docs/gallery/assets/coupled-modes.gif)
 
-![Two coupled modes computed with the ultracomplex exponential](docs/gallery/assets/coupled-modes.gif)
+The [offline interactive lab](docs/gallery/lab.html) explores motion and sensitivity. Download the HTML and open it locally; GitHub displays its source. Every numerical plot is reproducible, with model assumptions and independent checks in the showcase.
 
-**[Explore the complete gallery](docs/gallery/README.md)**: cosine color maps,
-Euler curves, hypercomplex angle surfaces, all eight coefficient traces and
-a Newton fractal with **nine roots of a cubic**. The coupled-mode experiment
-uses one ultracomplex exponential for two complex states and their parameter
-sensitivities.
+## Try it
 
-**[Three new applications](docs/gallery/applications.md):** travelling waves and
-their speed sensitivity, a robot arm that follows a prescribed curve, and
-reconstruction of a source separation from noisy interference measurements.
-The examples evaluate the migrated `Ultra` arithmetic and use its derivatives
-in the numerical solvers.
-
-![A planar robot follows a curve using an ultracomplex Jacobian](docs/gallery/assets/robot-path.gif)
-
-[Download the interactive offline lab](https://raw.githubusercontent.com/hoechp/temp/master/docs/gallery/lab.html)
-and open the saved HTML file in a browser. Its sliders explore time, coupling
-and the accuracy of a derivative-based prediction. All data comes from the
-migrated Python engine.
-
-![Cosine maps in the three base algebras](docs/gallery/assets/cosine-atlas.png)
-
-Rebuild the figures and interactive lab with
-`python examples/gallery.py` and `python -m examples.applications` after
-installing `.[plot]`.
-The [gallery notes](docs/gallery/README.md) explain the equations, color keys,
-projections and independent verification.
-
-## Install and calculate
-
-Python 3.12+. The mathematical library has **no runtime dependencies**.
-No PyPI release has been published; install from this repository:
+Python **3.12+**. The mathematical core has **no external dependencies**. From the repository root:
 
 ```sh
 python -m venv .venv
-# Linux/macOS:
-source .venv/bin/activate
-# Windows PowerShell: .venv\Scripts\Activate.ps1
+. .venv/bin/activate
 python -m pip install -e .
+python -m ultracomplexmath 'exp(i*j*(1+eps))'
+python -m ultracomplexmath --exact '(1/3+i+j+eps)^3' --json
 ```
+
+One exponential combines complex oscillation, split coupling and its first variation:
 
 ```python
-from ultracomplexmath import Ultra, I, J, EPS, ONE, evaluate
+from ultracomplexmath import I, J, EPS
 
-assert I * I == -ONE
-assert J * J == ONE
-assert EPS * EPS == Ultra()
-
-x = Ultra(1, 1, 1, -1)
-assert x.inverse() == Ultra(0.25, 0.25, -0.25, 0.25)
-assert x * x.inverse() == ONE
-assert evaluate("exp(pi*i)").isclose(-ONE)
-print((2 + EPS).sin())  # sin(2) + eps*cos(2)
+omega, coupling, time = 1.8, 0.36, 5.0
+state = (time * I * (omega + J * (coupling + EPS))).exp()
+mode1 = complex(state.real, state.i)
+mode2 = complex(state.j, state.ij)
+sensitivity1 = complex(state.eps, state.eps_i)
+sensitivity2 = complex(state.eps_j, state.eps_ij)
+assert abs(abs(mode1) ** 2 + abs(mode2) ** 2 - 1) < 1e-12
 ```
 
-Coefficient order: `(1, j, i, i*j, eps, eps*j, eps*i, eps*i*j)`.
-Use `Ultra(real=2, i=3, eps=1)` for clarity. `Ultra.complex`, `.split` and `.dual`
-embed the two-dimensional algebras. Independent closed types are also available:
+Exact geometry uses the same algebraic laws without rounding coefficients:
 
 ```python
-from ultracomplexmath import Binary, Complex, Dual
+from fractions import Fraction as F
+from ultracomplexmath import CIRCULAR, QI, QJ, QEPS, QONE, evaluate_exact
 
-assert Binary(0, 1) ** 2 == Binary(1)
-assert Dual(0, 1) ** 2 == Dual()
-assert len(Binary(4).roots(2).values) == 4
-assert Complex(-1).sqrt() == Complex(0, 1)
+rotation = CIRCULAR.cayley(F(1, 2))
+assert rotation == CIRCULAR.exact(F(3, 5), F(4, 5))
+x = QONE + QI / 3 + QJ / 7 + QEPS / 11
+assert x * x.inverse() == QONE
+assert evaluate_exact("0.1 + 0.2 - 0.3") == 0 * QONE
 ```
 
-`Ultra`, `Complex`, `Binary` and `Dual` provide arithmetic, powers, exp/log/sqrt,
-all six trigonometric and hyperbolic functions and their inverses.
-Nonzero zero divisors are **not invertible**; division raises `NonInvertibleError`.
-Domain failures raise explicit errors. Principal branches, conditioning and the
-exact dual-function lift are specified in [mathematics.md](docs/mathematics.md).
-Exact equality and approximate `.isclose(...)` are deliberately separate.
+Install plotting with `python -m pip install -e '.[plot]'`. Run `ultracomplex-gui --view domain --formula 'cos(x)'` for an editable desktop explorer. See [setup and examples](docs/getting-started.md) for other platforms and views.
 
-## Formulas and systems
+## What is available
 
-```python
-from ultracomplexmath import (
-    BoundFormula,
-    Calculation,
-    Formula,
-    FormulaSystem,
-    solution_space,
-    solve,
-)
+| Area | Implemented | Important boundary / next step |
+| --- | --- | --- |
+| Scalar arithmetic | Full eight-component numerical and rational arithmetic; integer powers; inverses | Zero divisors have no inverse; rational coefficients do not include irrational results |
+| Functions and calculus | Numerical elementary/inverse functions, logarithm branches, first variations, intensity and phase derivatives | Stable small-component evaluation is complete for neither all functions nor all scales; general higher-derivative API is open |
+| Exact mathematics | Fraction formulas/JSON, matrices, complete linear solution families, polynomial arithmetic and Hermite interpolation | General rational powers, symbolic algebraic numbers and modular hypercomplex coefficients remain open |
+| Geometry | Intrinsic planar metrics/sectors, exact Cayley isometries, Euclidean predicates and intersections | General 3D poses, constraint systems and conic intersections need further work |
+| Transformations | Noncommuting `ModeOperator`, Möbius maps, unimodular projective points and mixed charts | Continuous matrix functions and automatic chart continuation are research priorities |
+| Applications | Tested wave, robotics, interference, root-basin and coupled-motion examples | These are specified models and demonstrations, not full engineering solvers |
 
-assert Formula("sin(x)^2 + cos(x)^2")({"x": 2 + EPS}).isclose(ONE)
-assert Calculation("2î + 10_log(100)").result().isclose(2 + 2 * I)
-f = BoundFormula("x²").set("x", 3)
-assert f.result() == Ultra(9)
-assert FormulaSystem("f=x²; x=sqrt(y); y=5").result().isclose(5)
-assert solve([[0, 2], [1, 3]], [4, 7]) == (Ultra(1), Ultra(2))
+The ambition is broad; operation domains remain explicit. There is no compatible field structure or total order on the whole algebra. See the [mathematical foundation](docs/mathematics.md), [operation atlas](docs/research/operations.md) and [prioritized gaps](docs/research/roadmap.md).
 
-family = solution_space([[EPS]], [EPS])
-assert EPS * family.at(1, 2, 3, 4)[0] == EPS
-```
+## Where next?
 
-`Formula` uses explicit multiplication and a restricted AST, with no `eval`/`exec`.
-`Calculation` additionally accepts the original implicit multiplication, prefix
-functions, superscripts, infix logarithms, `dot` and geometric word operators.
-`SimpleCalculation` evaluates in one closed two-dimensional algebra.
-`BoundFormula` provides live shared parameters; `FormulaSystem` resolves named
-assignments. Missing variables and dependency cycles raise `ExpressionError`.
+The strongest next projects are **exact geometric constraints**, **reliable mixed higher derivatives**, **structure-preserving dynamics** and **differentiable optical/transfer networks**. The [renewed research review](docs/research/README.md) compares all seven nonempty combinations of the three base algebras, names missing functionality and gives acceptance criteria for each priority.
 
-```sh
-python -m ultracomplexmath 'exp(pi*i)'
-ultracomplex '2î + 10_log(100)' --legacy --json
-```
+Development and verification: [CONTRIBUTING.md](CONTRIBUTING.md). API orientation: [docs/api.md](docs/api.md). Release changes: [CHANGELOG.md](CHANGELOG.md).
 
-## Additional modules
-
-| Module | Features |
-| --- | --- |
-| `numbers`, `coordinates` | Closed algebras, roots and branches, polar/Cartesian and hyperbolic forms, projections, sphere map |
-| `geometry`, `matrix` | Vectors, frames, lines, dual angles, real matrices, canonicalizing `M2R` experiment |
-| `mechanisms` | Joints, hierarchical mechanisms, axis mode, actors and scalar freedoms |
-| `linalg`, `polynomial` | Square solves, complete affine solution spaces over real parameters, Newton interpolation and next-value guessing |
-| `number_theory`, `modular` | Integer roots, primality, Fermat factors, extended Euclid, textbook RSA, residue orbits and ring tables |
-| `clustering` | k-means, DBSCAN, hierarchical, grid and subspace clustering, silhouette, seeded data generation |
-| `classification`, `rules`, `concepts` | Conditional probabilities, Apriori, association rules, property/term hierarchies and reduction |
-
-Run `python examples/discovery.py` for the migrated rule, concept, modular and
-number-theory demonstrations. The RSA functions reproduce a textbook arithmetic
-exercise; they do not implement a padded encryption protocol.
-
-## Interactive desktop explorers
-
-```sh
-python -m pip install -e '.[plot]'
-ultracomplex-gui
-ultracomplex-gui --view domain --formula 'cos(x)'
-ultracomplex-gui --view domain-clusters --formula 'sin(x)'
-ultracomplex-gui --view clustering
-ultracomplex-gui --view mechanism
-# Render without a graphical display:
-ultracomplex-gui --view paths --output euler.png
-```
-
-The formula window offers all eight component traces, parametric paths, complex/
-split/dual domain coloring, vector fields and four-dimensional domain clustering.
-Edit the formula, range and view bounds; change `t` or animate it. Click the domain
-or use arrows/WASD to move its probe. The toolbar provides pan, zoom and saving.
-Clustering offers all five methods and data regeneration. The mechanism window
-has shoulder, elevation and elbow controls.
-
-`visuals.domain_color_grid` also supports arbitrary Ultra input planes, selected
-output components and the two historical grid overlays. See the
-[examples and UI details](docs/migration.md#visuals-and-demonstrations).
-
-## Development and verification
-
-```sh
-python -m pip install -r requirements-dev.lock -r requirements-plot.lock
-python -m pip install --no-build-isolation -e .
-python -m pytest
-python -m ruff check .
-python -m ruff format --check .
-python -m mypy
-python tools/check_migration.py
-python -m build --no-isolation
-```
-
-Alternatively: `uv sync --frozen --extra dev --extra plot`, then prefix commands
-with `uv run`. CI checks Python 3.12, 3.13 and 3.14, including graphical callbacks
-under a headless backend and an installed-wheel smoke test.
-
-Tests cover all 64 basis products, property-based algebra identities, independent
-complex and derivative oracles, all migrated feature families and deterministic
-legacy regressions. Java fixture reproduction and inventory validation:
-
-```sh
-python tools/legacy_probe.py ../legacy-ultracomplexmath
-python tools/legacy_extended_probe.py ../legacy-ultracomplexmath
-python tools/check_migration.py ../legacy-ultracomplexmath
-python tools/benchmark.py --iterations 1000
-```
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) and [the audit](docs/audit.md).
-
-## License
-
-[0BSD (Zero-Clause BSD)](LICENSE), selected by the original author. Use, modify
-and redistribute for any purpose, including commercially, with no attribution
-or source-disclosure condition.
+Licensed under [0BSD](LICENSE). [Project scope](docs/scope.md) explains the separation of unrelated algorithm experiments; [history and compatibility](docs/history.md) preserve access to the original work without crowding the current guides.

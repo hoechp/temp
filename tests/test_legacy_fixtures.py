@@ -7,7 +7,9 @@ import pytest
 
 from ultracomplexmath import Ultra
 
-CAPTURE = json.loads((Path(__file__).resolve().parents[1] / "docs/legacy-results.json").read_text())
+CAPTURE = json.loads(
+    (Path(__file__).resolve().parents[1] / "tests/fixtures/legacy-results.json").read_text()
+)
 BASELINE = "954c19190ea862ee93e5e1a18295cc15f69649dd"
 
 

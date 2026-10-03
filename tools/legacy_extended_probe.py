@@ -1,6 +1,6 @@
 """Reproduce geometry, matrix, number and mechanism fixtures from the Java baseline.
 
-Usage: python tools/legacy_extended_probe.py /path/to/legacy > docs/legacy-extended.json
+Usage: python tools/legacy_extended_probe.py /path/to/legacy > tests/fixtures/legacy-extended.json
 Uses the same isolated, encoding-normalized compiler workflow as legacy_probe.py.
 """
 

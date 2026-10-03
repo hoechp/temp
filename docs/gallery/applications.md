@@ -1,19 +1,18 @@
 # Three applications of ultracomplex arithmetic
 
-These experiments use the migrated `Ultra` implementation for the fields,
-kinematics and derivatives. They extend the [visual laboratory](README.md) with
-two inverse problems and an exact wave solution. Their shared mechanism is
+[Showcase](README.md) · [Documentation](../README.md) · [Next applications](../research/applications.md)
 
-$$p_\pm=\frac{1\pm j}{2},\qquad
-X=(z_++\varepsilon w_+)p_++(z_-+\varepsilon w_-)p_-.$$
+These implemented examples combine complex phase/geometry, split directions or independent seeds, and dual first variations. Their physical roles differ: opposing propagation in the wave model, separate Jacobian seeds in robotics, and paired sources in interference. The shared algebra retains their mixed terms throughout the computation.
 
-The two channels carry complex values; each also carries a complex first
-derivative. Choosing different seeds in the two channels lets one expression
-differentiate different parameters simultaneously. The core arithmetic is
-unchanged. NumPy handles sample arrays and the real least-squares updates;
-Matplotlib and Pillow render the results.
+| Application | C | S | D | Result |
+| --- | --- | --- | --- | --- |
+| Travelling waves | Carrier phase | Opposite characteristics | Speed derivative | Field and propagation sensitivity |
+| Planar robot | Rotation and endpoint | Separate parameter seeds | Jacobian columns | Tracking a prescribed curve |
+| Interference | Propagation phase | Paired source locations | Separation derivative | Recovering geometry from intensity |
 
-## 1. Travelling waves and sensitivity to speed
+Split eigenspaces are useful computational coordinates: `p±=(1±j)/2` and `X=(z+ + eps*w+)p+ + (z- + eps*w-)p-`. This representation supports these particular models without limiting the full union to one interpretation. NumPy handles sample arrays/real least-squares updates; Matplotlib and Pillow render.
+
+## Travelling waves and sensitivity to speed
 
 ![Two waves pass through one another](assets/travelling-waves.gif)
 
@@ -61,7 +60,7 @@ useful when studying propagation sensitivity or fitting a propagation speed.
 Background: MIT's [Waves II](https://ocw.mit.edu/ans7870/18/18.03/s06/tools/WavesIIHelp.html)
 explains the right/left decomposition of the d'Alembert solution.
 
-## 2. A robot arm follows a prescribed curve
+## A robot arm follows a prescribed curve
 
 ![Two-link arm follows a five-lobed curve](assets/robot-path.gif)
 
@@ -114,7 +113,7 @@ describes Jacobian-based iterative inverse kinematics and using the preceding
 solution to initialize the next pose. The damping and step limit above are
 the choices made in this example.
 
-## 3. Recover geometry from an interference pattern
+## Recover geometry from an interference pattern
 
 ![Interference field and reconstruction of source separation](assets/interference-inverse-design.png)
 
@@ -190,4 +189,4 @@ These examples show compact expressions and useful automatic derivatives.
 They do not benchmark speed against specialized array code or claim that the
 underlying wave, robotics or interference models are new. The practical
 contribution here is their explicit implementation and verification through
-the project's combined algebra.
+the project's combined algebra. The checked-in figure report describes its full render dataset; current tests independently check the models.

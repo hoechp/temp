@@ -8,13 +8,12 @@ from __future__ import annotations
 
 import argparse
 import math
-from typing import Any, cast
+from typing import Any
 
-from .clustering import generate_clusters, silhouette
 from .core import BASIS
-from .geometry import ZERO3, Vector
+from .geometry import ZERO3
 from .mechanisms import Actor, Freedom, Joint, Machine, Mechanism
-from .visuals import ALGEBRAS, cluster_domain, domain_color_grid, sample_curve
+from .visuals import ALGEBRAS, domain_color_grid, sample_curve
 
 
 def _plotting() -> tuple[Any, Any]:
@@ -42,7 +41,7 @@ class FormulaExplorer:
         self.limits = widgets.TextBox(
             self.figure.add_axes((0.57, 0.27, 0.34, 0.04)), "View bounds ", initial="auto"
         )
-        modes = ("components", "paths", "domain", "vectors", "domain-clusters")
+        modes = ("components", "paths", "domain", "vectors")
         self.mode = widgets.RadioButtons(
             self.figure.add_axes((0.10, 0.04, 0.20, 0.19)), modes, active=modes.index(mode)
         )
@@ -134,9 +133,7 @@ class FormulaExplorer:
                 axes.legend(ncol=4, fontsize=8)
                 message = f"{curve.undefined_count} undefined samples; gaps are left in the curves"
             else:
-                resolution = (
-                    min(count, 19) if mode in ("vectors", "domain-clusters") else min(count, 129)
-                )
+                resolution = min(count, 19) if mode == "vectors" else min(count, 129)
                 grid = domain_color_grid(
                     self.formula.text,
                     kind=kind,
@@ -145,13 +142,7 @@ class FormulaExplorer:
                     parameters=parameters,
                     legacy_colors=self.legacy.get_status()[0],
                 )
-                if mode == "domain-clusters":
-                    groups = cluster_domain(grid, min(5, resolution))
-                    for group in groups:
-                        xs, ys = zip(*sorted(group.data), strict=True)
-                        axes.scatter(xs, ys, s=18)
-                    axes.set(xlim=(start, stop), ylim=(start, stop), aspect="equal")
-                elif mode == "domain":
+                if mode == "domain":
                     axes.imshow(
                         grid.colors,
                         origin="lower",
@@ -207,83 +198,6 @@ class FormulaExplorer:
         except (ValueError, ArithmeticError, IndexError) as error:
             self.status.set_text(str(error))
             self.status.set_color("#ad2323")
-        self.figure.canvas.draw_idle()
-
-
-class ClusteringExplorer:
-    def __init__(self) -> None:
-        plt, widgets = _plotting()
-        self.figure, self.axes = plt.subplots(figsize=(10, 7))
-        self.figure.subplots_adjust(left=0.30, bottom=0.23)
-        self.method = widgets.RadioButtons(
-            self.figure.add_axes((0.02, 0.44, 0.22, 0.40)),
-            ("kmeans", "density", "hierarchical", "grid", "subspace"),
-        )
-        self.distribution = widgets.RadioButtons(
-            self.figure.add_axes((0.02, 0.20, 0.22, 0.20)), ("gaussian", "uniform", "nested")
-        )
-        self.settings = widgets.TextBox(
-            self.figure.add_axes((0.35, 0.12, 0.60, 0.05)),
-            "k, eps, min, grid ",
-            initial="3, 0.8, 3, 8",
-        )
-        self.seed = 0
-        self.regenerate = widgets.Button(self.figure.add_axes((0.03, 0.10, 0.20, 0.06)), "New data")
-        self.status = self.figure.text(0.30, 0.04, "", fontsize=9)
-        self.method.on_clicked(self.redraw)
-        self.distribution.on_clicked(self.redraw)
-        self.settings.on_submit(self.redraw)
-        self.regenerate.on_clicked(self.new_data)
-        self.redraw()
-
-    def new_data(self, event: Any = None) -> None:
-        self.seed += 1
-        self.redraw()
-
-    def redraw(self, event: Any = None) -> None:
-        from typing import Literal
-
-        try:
-            k, epsilon, minimum, divisions = map(float, self.settings.text.split(","))
-            if any(not v.is_integer() for v in (k, minimum, divisions)) or not 1 <= divisions <= 40:
-                raise ValueError("k/min/grid must be integers; grid in 1..40")
-            data = generate_clusters(
-                seed=self.seed,
-                distribution=cast(
-                    Literal["uniform", "gaussian", "nested"], self.distribution.value_selected
-                ),
-                points_per_cluster=20,
-            )
-            method = self.method.value_selected
-            noise: frozenset[Vector] = frozenset()
-            if method == "kmeans":
-                clusters = data.kmeans(int(k), restarts=3, seed=self.seed)
-            elif method == "hierarchical":
-                clusters = data.hierarchical().cut(int(k))
-            elif method == "grid":
-                clusters = data.grid(int(divisions))
-            else:
-                result = (
-                    data.density(int(minimum), epsilon)
-                    if method == "density"
-                    else data.subspace(int(divisions), int(minimum))
-                )
-                clusters, noise = result.clusters, result.noise
-            self.axes.clear()
-            for i, cluster in enumerate(clusters):
-                xs, ys = zip(*sorted(cluster.data), strict=True)
-                self.axes.scatter(xs, ys, label=f"{i + 1}: {len(cluster.data)}")
-            if noise:
-                xs, ys = zip(*sorted(noise), strict=True)
-                self.axes.scatter(xs, ys, marker="x", c="gray", label="noise")
-            self.axes.set_title(f"{method} · seed {self.seed}")
-            self.axes.set_aspect("equal")
-            self.axes.legend(fontsize=8)
-            self.status.set_text(
-                f"{len(clusters)} clusters · {len(noise)} noise points · silhouette {silhouette(clusters):.3f}"
-            )
-        except (ValueError, ArithmeticError) as error:
-            self.status.set_text(str(error))
         self.figure.canvas.draw_idle()
 
 
@@ -357,8 +271,6 @@ def main() -> None:
             "paths",
             "domain",
             "vectors",
-            "domain-clusters",
-            "clustering",
             "mechanism",
         ),
         default="components",
@@ -370,11 +282,9 @@ def main() -> None:
         import matplotlib
 
         matplotlib.use("Agg")
-    app: FormulaExplorer | ClusteringExplorer | MechanismExplorer
+    app: FormulaExplorer | MechanismExplorer
     app = (
-        ClusteringExplorer()
-        if args.view == "clustering"
-        else MechanismExplorer()
+        MechanismExplorer()
         if args.view == "mechanism"
         else FormulaExplorer(args.formula, args.view)
     )

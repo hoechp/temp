@@ -1,233 +1,38 @@
-# Completing the ultracomplex programme
+# Research agenda: the full union in use
 
-Research and implementation agenda, 2026-10-03 (Europe/Berlin).
-Code baseline: [`2a3caeffb29244e6f0289f0b0ea01d131c557155`](https://github.com/hoechp/temp/tree/2a3caeffb29244e6f0289f0b0ea01d131c557155), version 0.2.0.
+[Documentation](../README.md) · [Operation atlas](operations.md) · [Applications](applications.md) · [Roadmap](roadmap.md) · [Evidence](references.md)
 
-**Implementation update, 0.3.0:** the integer-exponent defect is corrected.
-Exact integer/rational coefficients, polynomial and linear algebra, intrinsic
-plane geometry, rational isometries, exact geometric predicates, coupled
-operators and projective maps are now implemented. The
-[status table](roadmap.md#implementation-status-in-030) distinguishes completed
-work from partial and open items. The owner's revised priority is correctness,
-then exact coefficients and geometry. Start with the new
-[exact arithmetic](../exact-arithmetic.md) and [geometry](../unified-geometry.md)
-guides for actual APIs; the atlas below retains the original research scope.
+This review starts from **complex, split-complex and dual algebra as a full union**, including all mixed directions. Its question is practical: which operations and constructions let this union do more useful work together?
 
-The goal is to make complex, split-complex and dual arithmetic useful together
-across as much mathematics as possible: ordinary calculation, geometry,
-trigonometry, analysis, exact arithmetic and applications. A completed migration
-of the old Java features is **not** completion of that goal.
+The implementation was reassessed from [the 0.3.0 source snapshot](https://github.com/hoechp/temp/tree/fb4870cbf8a47a89b4ac10cf3ff34f37fe0cc541), with the resulting documentation, scope cleanup and exponential correction included in 0.4.0. Exact coefficients, intrinsic planar geometry, coupled operators and projective points already exist. They must no longer be listed as wholly missing features.
 
-The guiding idea is the **full unification of complex, split-complex and dual
-algebras**, including their mixed products. The agenda starts from their
-geometries and operations, then asks what becomes possible when they share one
-calculus. Differentiable modelling is a strong application of that union, not
-its definition or its only purpose. The largest gains will come from connecting
-existing primitives, giving ambiguous operations explicit semantics, and adding
-operator and higher-order layers where the scalar algebra is insufficient.
+## The strongest findings
 
-## Reading map
-
-| Document | Purpose |
-| --- | --- |
-| [Operations atlas](operations.md) | Compare each base algebra and their combination across operation families, including domains and applications |
-| [Application proposals](applications.md) | Seven ranked projects, their equations, missing prerequisites and success criteria |
-| [Implementation backlog](roadmap.md) | Source-grounded gaps, one reproduced correctness defect, proposed APIs and acceptance gates |
-| [Sources and evidence](references.md) | Primary references, what each supports, and reproducible checks |
-| [Current mathematical contract](../mathematics.md) | What the released implementation actually promises |
-
-Status terms used here: **existing** means source-inspected functionality;
-**derived** means a consequence of the stated algebra, sometimes additionally
-checked numerically; **proposed** means an API or experiment not implemented;
-**research question** means an advantage still requiring evidence. Proposed API
-names in the original agenda are design sketches. The 0.3.0 guides and status
-table identify which capabilities now have production APIs and tests.
-
-## 1. One algebra, several equally valid viewpoints
-
-The defining algebra is
-
-$$A=\mathbb R[i,j,\varepsilon]/(i^2+1,j^2-1,\varepsilon^2),$$
-
-with commuting generators. This tensor product contains faithful copies of all
-three base algebras sharing the same real scalars, together with their mixed
-directions `ij`, `eps*i`, `eps*j`, and `eps*ij`. It is not merely their direct
-sum. Its universal property makes “unification” precise: compatible unital
-maps from the three factors into a commutative real algebra extend uniquely to
-a map from A.
-
-Useful viewpoints include:
-
-- **Geometric union:** circular, hyperbolic and infinitesimal behaviour and the
-  operations connecting them.
-- **Complexification:** complex-valued split/dual geometry, extending domains
-  of functions that are restricted inside a real 2D subalgebra.
-- **Dual extension:** first-order deformations of the combined complex/split
-  algebra; a tangent can describe variation of an entire geometric object.
-- **Bicomplex viewpoint:** two commuting complex structures, further extended
-  by dual directions.
-- **Idempotent or matrix representation:** useful for proofs, algorithms and
-  independent verification, without prescribing a physical interpretation.
-
-An Euler-style factorization makes the union visible before choosing any
-computational representation. For real r, theta, eta, chi and
-`V=a+i*b+j*c+ij*d`, commutativity gives
-
-$$\exp(r+i\theta+j\eta+ij\chi+\varepsilon V)=
-e^r(\cos\theta+i\sin\theta)
-(\cosh\eta+j\sinh\eta)
-(\cos\chi+ij\sin\chi)(1+\varepsilon V).$$
-
-One expression combines scale, a circular factor, a hyperbolic factor,
-a mixed circular factor and a deformation spanning all four dual directions.
-Every unit of A admits such a representation through a choice of logarithm;
-it is not unique. In a physical model these factors can describe common phase,
-relative phase, differential gain and geometric or parameter variations.
-That interpretation is a modelling choice, not dictated by a storage layout.
-
-In the idempotent representation the structural decomposition is
-
-$$p_\pm=(1\pm j)/2,\qquad
-X=(z_++\varepsilon w_+)p_+ +(z_-+\varepsilon w_-)p_-,\qquad
-A\cong\mathbb C[\varepsilon]/(\varepsilon^2)\times
-\mathbb C[\varepsilon]/(\varepsilon^2).$$
-
-This is a change of basis retaining all eight real coordinates, not a reduction
-of the project's meaning to a two-channel application. For a local
-holomorphic function,
-
-$$f(X)=\sum_{s\in\{+,-\}}\bigl(f(z_s)+\varepsilon f'(z_s)w_s\bigr)p_s.$$
-
-Consequently there are two distinct useful encodings:
-
-- **Two states, one sensitivity per state:** both complex bodies can differ;
-  all eight real coordinates may be independent.
-- **One state, two derivative directions:** duplicate the complex body and seed
-  the two tangent channels differently. A complex output then contains its value
-  and two complex directional derivatives, with a duplicated body.
-
-This is structural batching, not a demonstrated speedup. It is also not an
-eight-variable gradient or a Hessian. The current robotics and wave examples
-already demonstrate these two encodings.
-
-| Algebra | Structure | Useful interpretation | What the combination adds |
-| --- | --- | --- | --- |
-| Complex, C | `i² = −1` | Planar rotation, phase, oscillation | Complex amplitudes and analytic continuation |
-| Split-complex, S | `j² = +1`; R × R | Rapidity, squeezing, two characteristic coordinates | Exact separation into two real channels |
-| Dual, D | `eps² = 0` | First-order tangent or infinitesimal displacement | Chain-rule propagation without a finite-difference step |
-| C ⊗ S | C × C | Two complex modes, frequencies, polarizations or scenarios | Independent complex branches and coherent-mode bookkeeping |
-| C ⊗ D | Complex dual numbers | Complex response and its parameter derivative | Differentiable phasors, impedance, planar kinematics |
-| S ⊗ D | D × D | Two real scenarios or characteristic waves and tangents | Parallel sensitivity calculations, boost sensitivity |
-| C ⊗ S ⊗ D | Two complex dual channels | Two complex states plus their derivatives | Shared formulas for forward models, measurements and local inverse design |
-
-There is another useful connection: `k = i*j` also satisfies `k² = −1`.
-Thus C ⊗ S is also a representation of the **bicomplex algebra** generated by
-the commuting complex units `i` and `k`, with `j = −i*k`. This is an equivalence,
-not an extra dimension or an extra independent derivative slot. The four
-epsilon basis directions all belong to the same square-zero ideal.
-
-## 2. A precise replacement for “everything real numbers can do”
-
-Four different tasks must not be confused:
-
-1. **Algebraic completion:** implement every well-defined operation with its
-   actual domain and return complete solution sets when results are not unique.
-2. **Functional calculus:** extend functions with the correct derivative,
-   branch and singularity contracts, including non-holomorphic measurements.
-3. **Chosen geometry:** specify what length, angle, ordering or distance means.
-   Multiple useful choices can coexist under different names.
-4. **Larger structures:** use matrices, independent nilpotents or exact
-   coefficient rings when the original eight-dimensional scalar cannot express
-   the desired operation.
-
-Some restrictions are mathematical, not missing implementation:
-
-- **No division by every nonzero element.** `(1+j)*(1−j)=0` and `eps²=0`.
-  Division by a zero divisor may instead be posed as an equation with no
-  solutions or a family of solutions. The existing `solution_space` already
-  supports this approach.
-- **No compatible real-style total order.** A ring order in which nonzero
-  squares are positive cannot contain `i²=−1`. Sorting coefficients or choosing
-  a body-channel order is a policy, not the ordered-real-number structure.
-- **No positive-definite multiplicative norm.** If such a norm existed,
-  `N(eps)²=N(eps²)=0` would contradict `eps != 0`. A numerical error norm, an
-  indefinite metric and a physical intensity serve different purposes.
-- **No global single-valued inverse trigonometry or logarithm.** Periodicity,
-  independent channel windings and branch points remain. All units have a
-  logarithm in A; this does not make the logarithm unique or continuous globally.
-- **Not every number has a square root.** `eps` has none. A root's body would
-  have to vanish in both complex channels, forcing its square to be zero.
-- **No exact second derivative from the existing epsilon ideal in one lift.**
-  For `N = eps*A`, `N²=0`; every product of two tangent seeds vanishes. Repeated
-  evaluation of a separately differentiated function is possible, but is not
-  automatic nested AD in the current scalar type.
-- **No general 3D rotation group from scalar multiplication.** Ultra products
-  commute; general rotations and rigid motions do not. Existing real matrix
-  geometry is useful, but does not remove this distinction.
-- **No canonical extension of every arbitrary real function.** A first-order
-  lift needs a derivative. At a kink, discontinuity or branch boundary a
-  generalized derivative or one-sided rule must be chosen explicitly.
-
-These constraints suggest richer outputs and explicit semantics rather than
-invented finite answers. They constrain what the union can mean mathematically;
-they do not make its idempotent representation the preferred way to discover
-applications.
-
-## 3. Synergies that are still underused
-
-**Computation → measurement → inverse problem.** The current engine transports
-complex derivatives, but users still manually extract amplitudes and apply real
-measurement derivatives. Differentiable intensity, phase, normalization and
-residuals would connect optics, circuits, wave fitting and robotics end to end.
-
-**Independent channels → interacting modes.** Ordinary Ultra multiplication
-never transfers information between the two idempotent channels. The existing
-automorphism `X.conjugate("j")` swaps them. Combining multiplication with this
-swap represents any complex-dual 2 × 2 operator; composition is generally
-noncommutative. This is a particularly small, concrete extension with substantial
-new modelling reach. See [proposal 1](applications.md#1-differentiable-two-mode-optics-and-operators).
-
-**Circular → hyperbolic → parabolic dynamics.** Stable generalized sine and
-cosine functions of a squared generator can describe underdamping, overdamping
-and critical damping continuously. This requires a quadratic-algebra or matrix
-layer that retains the generator, not merely changing a number's type based on
-the sign of a discriminant. It connects a clear visual demo to a real numerical
-problem at repeated eigenvalues.
-
-**Roots → sensitivity → exact modular lifting.** The linearization governing a
-dual root is the same polynomial Taylor mechanism used in Hensel lifting.
-An exact backend could make the integer utilities and hypercomplex arithmetic
-parts of one coherent subject rather than neighbouring modules.
-
-**Geometry → derivatives → calibration.** A phase, a boost parameter and a
-dual slope are different quantities with related composition laws. A typed
-angle/metric layer can preserve these differences while making the same
-calibration and optimization tools operate on each.
-
-## 4. Original recommended order
-
-This was the original audit's order. The owner subsequently prioritized exact
-coefficients and geometry immediately after defect correction; 0.3.0 follows
-that direction, as recorded in the [implementation status](roadmap.md).
-
-| Order | Investment | Why now |
+| Finding | Why it matters | Present status |
 | --- | --- | --- |
-| 1 | Fix integer exponent coercion; clarify metrics and conversions | A correctness defect and semantic ambiguity undermine every later demo |
-| 2 | Public tangent API, non-holomorphic measurements, stable elementary functions | Makes existing successful demos reusable and prevents silent derivative loss |
-| 3 | Unified geometry and critical-damping / propagation-cutoff laboratory | Unifies the three base behaviours and tests numerical robustness at their boundary |
-| 4 | Two-mode operator API and an inverse-design optics demo | Builds on existing primitives while adding actual mode interaction |
-| 5 | Complete roots, branch continuation and implicit differentiation | Makes singularities and solution families useful rather than unexplained failures |
-| 6 | Independent higher-order jets; exact and modular coefficient backends | Opens Hessians and a substantial discrete/continuous connection; larger implementation scope |
+| `i*j` is a second commuting imaginary unit | CS supports bicomplex finite-step second derivatives; epsilon can add a mixed third derivative | Derived and checked; exponential cancellation fixed; other primitives need componentwise accuracy work |
+| Rational geometry extends naturally into dynamics | Cayley maps can preserve geometric forms and first variations exactly over Q | Existing API, new symplectic/reversibility checks; no general integrator yet |
+| Optics, wave interfaces and impedance share transfer geometry | Phase, opposing directions, projective ratios and sensitivities can use one operator framework | Building blocks exist; physical components and stable scattering composition remain open |
+| Projective boundaries are richer than one infinity | Mixed charts retain valid states when neither full coordinate is a unit | Point/map APIs exist; automatic continuation and incidence geometry are missing |
+| Thermodynamic response is a strong additional candidate | Derivatives of a potential link pressure, response and parameter sensitivity | Established external multicomplex precedent; stable higher-derivative primitives are needed first |
+| Modular coefficients reveal different behavior | Characteristic two turns body generators into extra nilpotents | Derived and exhaustively checked in a 256-element probe; no public backend yet |
 
-The flagship mathematical demonstration should be **a smooth passage through
-critical damping**, accompanied by a geometry laboratory comparing the three
-base algebras. The strongest near-term engineering demonstration is **a
-differentiable optical circuit**. A distinctive long-term research track is the
-shared treatment of **root lifting, singularities and sensitivities**, including
-exact modular examples.
+These are opportunities grounded in algebra and existing literature. No mathematical novelty, universal superiority or engineering readiness is inferred merely from combining the generators.
 
-None of these proposals establishes a new algebra, a novel physical theory or
-superiority over NumPy/JAX/SciPy. Their value must be shown through explicit
-models, independent oracles, usable APIs and comparisons against direct complex
-and real formulations. The derivations here establish representability; the
-application and performance advantages remain hypotheses to test.
+## What to build first
+
+1. **Reliable coefficient-level numerics.** Extend the exponential fix to relevant division, logarithm and trigonometric paths. A full-value norm can conceal an incorrect tiny Hessian coefficient.
+2. **Exact geometric constraints and coefficient completeness.** Add rational nth roots where supported, algebraic-number boundaries, constraint Jacobians and exact rank/degeneracy classifications. This continues the owner's rational/geometric priorities.
+3. **Continuous circular–hyperbolic–parabolic dynamics.** Implement stable generalized sine/cosine across the critical parameter, retaining first variations; pair them with the exact discrete Cayley framework.
+4. **A differentiable transfer-network showcase.** Compose specified optical or wave components, verify flux/passivity assumptions and derivatives, then solve an identifiable inverse problem.
+
+The [roadmap](roadmap.md) supplies dependencies and completion criteria. [Applications](applications.md) compares usefulness, fit and prerequisites. [Experiments](experiments.md) gives derivations and reproducible checks.
+
+## Read the claims precisely
+
+- **Implemented:** a callable interface and tests exist here.
+- **Verified experiment:** a bounded script checks the stated example; it is not a production API.
+- **Derived:** a mathematical consequence of explicit assumptions.
+- **Proposed:** implementation and application validation remain necessary.
+
+The operation atlas examines C, S, D, CS, CD, SD and CSD in every domain. Split eigenspaces are one useful representation of the union, not its identity; they can also be the wrong numerical coordinates for tiny mixed components.

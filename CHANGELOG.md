@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.4.0 — focused scope and renewed research, unpublished on PyPI
+
+- Rebuild the README and documentation around a clear entry point, current APIs,
+  exact geometry, reproducible showcase and a separate research agenda.
+- Compare all seven combinations of complex/split-complex/dual algebra across
+  fourteen operation domains; prioritize exact constraints, rational powers,
+  stable higher derivatives, critical dynamics and transfer networks.
+- Fix exponential channel cancellation that erased small mixed coefficients;
+  test bicomplex second/third-derivative probes and compensated large inputs.
+- Add reproducible exact symplectic/projective checks and exhaustive F2 algebra
+  experiments. Document remaining inverse/log accuracy and rational-root gaps.
+- **API removal:** separate classification, clustering, association rules,
+  concept hierarchies, textbook RSA and their GUI/examples into the independent
+  `philipp-algorithm-experiments` source package. Integer/modular foundations stay.
+- Move mathematical legacy fixtures under tests; preserve historical migration
+  records through immutable Git links. Add documentation/snippet and probe CI.
+
 ## 0.3.0 — exact coefficients and unified geometry, unpublished on PyPI
 
 - Fix integer exponent rounding before dispatch, including the closed types:

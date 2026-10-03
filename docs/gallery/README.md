@@ -1,57 +1,26 @@
-# Ultracomplex visual laboratory
+# Visual showcase
 
-**New in 0.3.0:** the [unified geometry laboratory](../unified-geometry.md)
-constructs exact rational rotations, boosts, shears and coupled motion through
-the parabolic transition. Run `python -m examples.exact_geometry --plot` to
-reproduce its four-panel figure.
+[Documentation](../README.md) · [Applications](applications.md) · [Exact geometry](../unified-geometry.md) · [Research](../research/README.md)
 
-Ten reproducible figures, three animations and an offline interactive experiment,
-computed with the migrated Python library. The cosine maps and Euler curves
-revisit the original Java README; the angle surfaces, full-algebra Newton
-basins and sensitivity experiment develop those ideas further. The new
-[application demonstrations](applications.md) use the algebra for travelling
-waves, robot inverse kinematics and reconstruction from an interference pattern.
+Explore the union through exact constructions, three kinds of trigonometry, coupled motion and inverse problems. Each figure is computed from the library and accompanied by its formulas, interpretation and independent checks.
 
-![Two coupled modes exchanging intensity](assets/coupled-modes.gif)
+| Start with | What to notice |
+| --- | --- |
+| [Exact geometry](../unified-geometry.md) | Rational rotations, boosts and shears share one construction |
+| [Trigonometry and angles](#trigonometry-and-angles) | The same operation has different geometric behavior in C, S and D |
+| [Coupled motion](#coupled-motion-and-sensitivity) | Phase, split coupling and parameter sensitivity occupy all eight coefficients |
+| [Waves, robotics and interference](applications.md) | Geometric and field calculations feed concrete inverse problems |
+| [Root basins](#why-a-cubic-has-nine-roots-here) | Zero divisors change familiar polynomial root counting |
 
-**[Download the standalone interactive lab](https://raw.githubusercontent.com/hoechp/temp/master/docs/gallery/lab.html)**
-and open the saved HTML file in a browser. It works offline, including its data,
-sliders and animation. GitHub's normal file view displays source rather than
-executing the page. The lab can also be opened from a local checkout at
-`docs/gallery/lab.html`.
+## Exact geometry
 
-## Reproduce everything
+![Exact rational geometry across three planes](assets/rational-geometry.png)
 
-From the repository root, with Python 3.12+:
+The circular factor `(3/5,4/5)`, hyperbolic factor `(5/3,4/3)` and parabolic factor `(1,1)` all come from the same Cayley parameter 1/2. Their intrinsic quadrances equal one exactly. The fourth panel shows coupled rational steps through negative, zero and positive generator parameter. These are discrete Cayley maps; continuous-time evolution is a separate next step.
 
-```sh
-python -m pip install -e '.[plot]'
-python examples/gallery.py
-python -m examples.applications
-# Faster preview in a separate directory:
-python examples/gallery.py --quick --output /tmp/ultra-gallery
-python -m examples.applications --quick --output /tmp/ultra-applications
-# Rebuild one demonstration:
-python examples/gallery.py --only coupling
-python examples/gallery.py --only newton
-python -m examples.applications --only robot
-```
+Read the [geometry guide](../unified-geometry.md) or run `python -m examples.exact_geometry --plot`. Computation and invariant checks use fractions; plotting alone converts coordinates to float.
 
-The normal render evaluates 360 × 360 samples per domain image. The Newton
-image can take several minutes because **every pixel runs the actual `Ultra`
-arithmetic**, including its nilpotent coefficients. `--quick` reduces sampling.
-The lab stores 21 coupling values and 241 time samples computed by `Ultra.exp()`;
-JavaScript only draws the data and forms the first-order prediction. No CDN,
-server, external font or alternative algebra implementation is required.
-
-For the project's pinned Python packages, use `requirements-plot.lock` or
-`uv sync --frozen --extra plot`. The core remains dependency-free. NumPy,
-Matplotlib and Pillow are used by this optional example to arrange data and
-render graphics. Pixel appearance can differ between plotting-library versions.
-The application renderer uses 145 × 400 wave samples, 361 robot targets and
-a 260 × 260 interference grid in its full render.
-
-## 1. The cosine atlas
+## Trigonometry and angles
 
 ![Cosine in the complex, split-complex and dual planes](assets/cosine-atlas.png)
 
@@ -63,11 +32,9 @@ For the same real inputs x and y:
 | x + jy | cos(x) cos(y) − j sin(x) sin(y) |
 | x + εy | cos(x) − εy sin(x) |
 
-Every pixel calls the migrated `Ultra.cos()`, on the original square
-`−2π ≤ x,y ≤ 2π`. Colors now reproduce the original Java `Complex.color()`
-mapping: the **Euclidean direction of the two output coefficients** controls
-the RGB phases, zero is white, and large magnitudes become darker. The added
-rings and spokes of the first gallery version have been removed. This display
+Every pixel calls `Ultra.cos()`, on the square
+`−2π ≤ x,y ≤ 2π`. The coefficient-direction color mapping uses this convention: the **Euclidean direction of the two output coefficients** controls
+the RGB phases, zero is white, and large magnitudes become darker. This display
 angle does not assert a multiplicative Euclidean norm or an ordinary complex
 argument for the split-complex and dual algebras.
 
@@ -83,7 +50,7 @@ dual cosine a line. These are the **outputs of cosine**, so the circle/hyperbola
 roles differ from the generator exponentials below. All three use
 `−π ≤ y ≤ π`, with equal aspect within each panel and independent panel scales.
 
-## 2. Three Euler geometries
+### Three Euler geometries
 
 ![The three generator exponentials](assets/euler-triptych.png)
 
@@ -96,11 +63,11 @@ $$e^{it}=\cos t+i\sin t,\qquad
 
 These are separate embedded subalgebras inside the same eight-dimensional type.
 
-## 3. Hypercomplex angles become surfaces
+### Hypercomplex angles become surfaces
 
-![Sphere, cylinder and hyperboloid from the migrated angle map](assets/angle-surfaces.png)
+![Sphere, cylinder and hyperboloid from the hypercomplex angle map](assets/angle-surfaces.png)
 
-The original angle construction, now `geometry.vector_from_angle`, maps
+`geometry.vector_from_angle` maps
 `a + u*b` to `(r(b) cos(a), r(b) sin(a), z(b))`:
 
 | Angle type | r(b) | z(b) | Result |
@@ -115,7 +82,7 @@ different. The white paths vary both angle coordinates. Surface panels use
 independent display scales. These coordinates do not, by themselves, supply
 a general composition law for arbitrary 3D rotations.
 
-## 4. A concrete use for all eight coefficients
+## Coupled motion and sensitivity
 
 ![Coupled modes and exact parameter derivatives](assets/coupled-sensitivity.png)
 
@@ -168,7 +135,7 @@ Derivative growth records accumulating phase sensitivity, not energy growth.
 The 2D animation displays the two state modes; their derivatives are explored
 in the static chart and interactive lab.
 
-## 5. Why a cubic has nine roots here
+## Why a cubic has nine roots here
 
 ![Nine Newton basins in an ultracomplex slice](assets/newton-nine-roots.png)
 
@@ -225,3 +192,40 @@ conservation, all nine root residuals, and the second-order remainder of the
 linear prediction. The tests also check all three cosine identities, the
 three implicit surface equations, Newton convergence with nonzero nilpotent
 seeds and explicit treatment of a singular derivative.
+
+## Interactive laboratory
+
+![Two coupled modes](assets/coupled-modes.gif)
+
+[Download the standalone HTML](https://raw.githubusercontent.com/hoechp/temp/master/docs/gallery/lab.html) and open the saved file locally. It includes sliders, trajectories, derivatives and finite-change predictions, with no network dependency. GitHub displays HTML source rather than running it.
+
+## Reproduce everything
+
+From the repository root, with Python 3.12+:
+
+```sh
+python -m pip install -e '.[plot]'
+python examples/gallery.py
+python -m examples.applications
+# Faster preview in a separate directory:
+python examples/gallery.py --quick --output /tmp/ultra-gallery
+python -m examples.applications --quick --output /tmp/ultra-applications
+# Rebuild one demonstration:
+python examples/gallery.py --only coupling
+python examples/gallery.py --only newton
+python -m examples.applications --only robot
+```
+
+The normal render evaluates 360 × 360 samples per domain image. The Newton
+image can take several minutes because **every pixel runs the actual `Ultra`
+arithmetic**, including its nilpotent coefficients. `--quick` reduces sampling.
+The lab stores 21 coupling values and 241 time samples computed by `Ultra.exp()`;
+JavaScript only draws the data and forms the first-order prediction. No CDN,
+server, external font or alternative algebra implementation is required.
+
+For the project's pinned Python packages, use `requirements-plot.lock` or
+`uv sync --frozen --extra plot`. The core remains dependency-free. NumPy,
+Matplotlib and Pillow are used by this optional example to arrange data and
+render graphics. Pixel appearance can differ between plotting-library versions.
+The application renderer uses 145 × 400 wave samples, 361 robot targets and
+a 260 × 260 interference grid in its full render.

@@ -1,4 +1,4 @@
-"""Further applications of the migrated Ultra engine.
+"""Further applications of the Ultra engine.
 
 From the repository root: python -m examples.applications
 Use --quick for a lower-resolution preview, or --only to select one demo.
@@ -264,7 +264,7 @@ def arm_path(count=361):
 
 
 def arm_joints(theta):
-    # Link endpoints are also evaluated through the migrated exponential.
+    # Link endpoints are also evaluated through the ultracomplex exponential.
     elbow = LENGTHS[0] * (I * float(theta[0])).exp()
     tip, _ = arm_position_jacobian(theta)
     return np.array([[0, 0], [elbow.real, elbow.i], tip])

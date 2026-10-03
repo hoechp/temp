@@ -1,6 +1,6 @@
 """Reproduce selected Java behavior without changing the original checkout.
 
-Usage: python tools/legacy_probe.py /path/to/legacy-checkout > legacy-results.json
+Usage: python tools/legacy_probe.py /path/to/legacy-checkout > tests/fixtures/legacy-results.json
 Requires Java 17+ with the jdk.compiler module. No JUnit or external JARs needed.
 Encoding normalization occurs only in a temporary copy (the repo mixes encodings).
 """

@@ -2,4 +2,4 @@ include README.md CONTRIBUTING.md CHANGELOG.md LICENSE requirements-dev.lock req
 recursive-include docs *.md *.json *.html *.png *.gif
 recursive-include examples *.py *.html
 recursive-include tools *.py
-recursive-include tests *.py
+recursive-include tests *.py *.json

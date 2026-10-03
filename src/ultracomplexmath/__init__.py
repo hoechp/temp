@@ -1,4 +1,4 @@
-"""Commutative algebras, formulas, geometry and mathematical experiments."""
+"""The full union of complex, split-complex and dual algebra, with exact geometry."""
 
 from .coordinates import Cartesian2D, Polar2D
 from .core import (
@@ -52,7 +52,7 @@ from .plane_geometry import (
 from .polynomial import Polynomial, guess
 from .transformations import Mobius, ModeOperator, ProjectivePoint, cross_ratio
 
-__version__ = "0.3.0"
+__version__ = "0.4.0"
 __all__ = [
     "Actor",
     "Binary",

@@ -1,8 +1,8 @@
 # Circular, hyperbolic and parabolic geometry together
 
-[Home](../README.md) · [Exact arithmetic](exact-arithmetic.md) · [Operations atlas](research/operations.md)
+[Documentation](README.md) · [Exact arithmetic](exact-arithmetic.md) · [Operations atlas](research/operations.md)
 
-Version 0.3.0 makes the full union of complex, split-complex and dual geometry
+The library makes the full union of complex, split-complex and dual geometry
 usable through common constructions. It supplies intrinsic metrics and angles,
 rational isometries, exact Euclidean predicates, noncommuting coupled operators
 and projective geometry over the complete eight-dimensional algebra. Mixed
@@ -236,7 +236,7 @@ derived for this algebra.
 
 ## Measurements connecting geometry to applications
 
-The numerical `Ultra` API now provides `.primal`, `.tangent`, `.with_tangent`,
+The numerical `Ultra` API provides `.primal`, `.tangent`, `.with_tangent`,
 `real_part()`, `imag_part()`, `abs2()`, `amplitude()` and `phase()`.
 The last two return real values and real directional derivatives in each split
 mode; they are not presented as holomorphic functions:
@@ -256,21 +256,9 @@ These measurements let exact geometry, coupled complex fields and calibration
 share derivatives without confusing `.real` (one coefficient) with a
 derivative-preserving real projection.
 
-## Most promising next projects
+## Continue the geometry
 
-| Project | What is now available | Next concrete extension and success criterion |
-| --- | --- | --- |
-| Exact geometry and kinematic constraints | Rational rotations, affine composition, intersections, barycentric coordinates, Hermite curves | Add a constraint graph and exact Jacobian/rank diagnostics; verify a closed linkage without tolerance-dependent closure |
-| Circular–hyperbolic–critical motion laboratory | Retained generator, exact Cayley steps, sensitivities at kappa zero | Add stable continuous-time generalized sine/cosine and compare trajectories/parameter derivatives against an independent ODE reference |
-| Differentiable optical/transfer networks | Full complex-dual 2×2 coupling, projective maps and intensity/phase measurements | Add physically specified component models and conservation/loss checks, then recover parameters from synthetic measurements |
-| Projective calibration through chart boundaries | Unimodular points, mixed charts, exact cross ratios and rational tangents | Add automatic chart continuation and branch histories; traverse boundaries without losing a finite homogeneous solution |
-| Exact polynomial and geometric lifting | Rational coefficients, Hermite interpolation, full solution families | Add modular coefficient rings and Hensel lifting with characteristic-specific unit rules; compare exact residuals |
-
-The first two are the most direct continuation of the requested priorities.
-The optical and projective projects exercise the combined algebra especially
-strongly. None of these APIs claims general 3D rotations by scalar
-multiplication, higher epsilon derivatives without new generators, physical
-novelty or a measured performance advantage.
+The [research roadmap](research/roadmap.md) prioritizes exact constraints, rational roots, continuous critical dynamics, conic/projective constructions and chart continuation. [Application proposals](research/applications.md) connect these capabilities to calibration, transfer networks and higher derivatives. Those pages distinguish implemented primitives from missing higher-level solvers.
 
 ## Verification and references
 

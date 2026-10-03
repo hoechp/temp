@@ -7,7 +7,6 @@ import math
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 
-from .clustering import Cluster, Clustering
 from .core import Scalar, Ultra
 from .expressions import Calculation, FormulaSystem
 from .formula import ExpressionError, evaluate_system
@@ -164,31 +163,3 @@ def domain_color_grid(
         rows.append(tuple(values))
         colors.append(tuple(pixels))
     return DomainGrid(xs, ys, tuple(rows), tuple(colors))
-
-
-def cluster_domain(
-    grid: DomainGrid,
-    k: int = 5,
-    *,
-    weights: tuple[float, float, float, float] = (1, 1, 1000, 1000),
-    seed: int = 0,
-) -> tuple[Cluster, ...]:
-    """The original four-dimensional pixel experiment: (x, y, magnitude, angle).
-
-    Returned clusters contain display coordinates; feature weights do not
-    change those coordinates. Singular samples are omitted.
-    """
-    if len(weights) != 4 or not all(math.isfinite(w) and w > 0 for w in weights):
-        raise ValueError("Four finite positive feature weights are required")
-    features = {}
-    for y, row in zip(grid.ys, grid.values, strict=True):
-        for x, value in zip(grid.xs, row, strict=True):
-            if value is not None:
-                feature = tuple(
-                    v * w for v, w in zip((x, y, abs(value), value.angle), weights, strict=True)
-                )
-                features[feature] = (x, y)
-    return tuple(
-        Cluster(frozenset(features[p] for p in group.data))
-        for group in Clustering(features).kmeans(k, seed=seed)
-    )

@@ -1,13 +1,11 @@
-"""Integer exercises from BigInt; Python int supplies arbitrary precision.
+"""Integer and modular foundations; Python int supplies arbitrary precision.
 
-RSA here is the original textbook arithmetic exercise, without message padding.
 Primality is deterministic below 2**64 and probabilistic above it.
 """
 
 from __future__ import annotations
 
 import math
-import random
 import secrets
 from dataclasses import dataclass
 
@@ -121,59 +119,6 @@ def fermat_factors(n: int, *, max_steps: int | None = None) -> FermatFactors:
 def fermat_output(n: int, *, max_steps: int | None = None) -> str:
     f = fermat_factors(n, max_steps=max_steps)
     return f"{n} = {f.lower} × {f.upper} ({f.steps} steps)"
-
-
-@dataclass(frozen=True)
-class RSAData:
-    n: int
-    e: int
-    q: int
-    p: int
-    phi: int
-    d: int
-
-
-def generate_rsa(bits: int = 32, imbalance: int = 0, *, seed: int | None = None) -> RSAData:
-    sizes = bits // 2 - imbalance, (bits + 1) // 2 + imbalance
-    if min(sizes) < 3:
-        raise ValueError("Each prime needs at least three bits")
-    rng = random.Random(seed) if seed is not None else random.SystemRandom()
-
-    def prime(size: int) -> int:
-        while True:
-            candidate = rng.getrandbits(size) | (1 << (size - 1)) | 1
-            if is_prime(candidate):
-                return candidate
-
-    p, q = prime(sizes[0]), prime(sizes[1])
-    while p == q:
-        q = prime(sizes[1])
-    phi, e = (p - 1) * (q - 1), 3
-    while math.gcd(e, phi) != 1:
-        e = next_prime(e)
-    return RSAData(p * q, e, q, p, phi, pow(e, -1, phi))
-
-
-def rsa_transform(n: int, exponent: int, message: int) -> int:
-    if n <= 1 or exponent < 1 or not 0 <= message < n:
-        raise ValueError("Invalid RSA parameters")
-    return pow(message, exponent, n)
-
-
-encrypt_rsa = rsa_transform
-decrypt_rsa = rsa_transform
-
-
-def break_rsa(n: int, e: int, ciphertext: int, *, max_steps: int | None = None) -> int:
-    return rsa_transform(n, rsa_decoder(n, e, max_steps=max_steps), ciphertext)
-
-
-def rsa_decoder(n: int, e: int, *, max_steps: int | None = None) -> int:
-    factors = fermat_factors(n, max_steps=max_steps)
-    p, q = factors.lower, factors.upper
-    if p == q or not is_prime(p) or not is_prime(q):
-        raise ValueError("Expected a product of two distinct primes")
-    return pow(e, -1, (p - 1) * (q - 1))
 
 
 def congruent_prime(p: int, minimum_bits: int) -> tuple[int, int]:

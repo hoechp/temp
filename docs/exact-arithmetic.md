@@ -1,8 +1,8 @@
 # Exact integer and rational arithmetic
 
-[Home](../README.md) · [Unified geometry](unified-geometry.md) · [Research status](research/roadmap.md)
+[Documentation](README.md) · [Unified geometry](unified-geometry.md) · [Research status](research/roadmap.md)
 
-Version 0.3.0 implements the same full union of complex, split-complex and dual
+Exact arithmetic implements the full union of complex, split-complex and dual
 algebras over rational coefficients:
 
 $$A_{\mathbb Q}=\mathbb Q[i,j,\varepsilon]/(i^2+1,j^2-1,\varepsilon^2).$$
