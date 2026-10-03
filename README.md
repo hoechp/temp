@@ -15,6 +15,19 @@ in the [inventory](docs/inventory.md). The [migration guide](docs/migration.md)
 records API mappings and intentional differences. This is a functional migration,
 not a Java API compatibility layer or a pixel-identical Swing port.
 
+## Research and completion agenda
+
+**[Explore the research agenda](docs/research/README.md):** what is still needed
+to realize the full union of complex, split-complex and dual arithmetic.
+The [operations atlas](docs/research/operations.md) compares their geometry,
+angles, trigonometry, calculus, roots and exact arithmetic. Seven
+[application proposals](docs/research/applications.md) include a unified
+critical-damping calculus, interacting optical modes, projective geometry and
+the link between dual root sensitivities and modular lifting.
+The [source-grounded backlog](docs/research/roadmap.md) separates existing
+features, implementation gaps, a reproduced integer-exponent defect and
+mathematical limits. These are documented proposals, not additional shipped APIs.
+
 ## Visual laboratory
 
 ![Two coupled modes computed with the ultracomplex exponential](docs/gallery/assets/coupled-modes.gif)

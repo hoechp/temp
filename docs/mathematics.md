@@ -151,9 +151,16 @@ $$
 Complex scaled partial pivoting is performed separately in both channels.
 This handles invertible matrices whose entries are all zero divisors, e.g.
 `[[p+,p-],[p-,p+]]`. A single common algebra pivot is not required.
-The API supports square systems with unique solutions. It raises
+The `solve` API supports square systems with unique solutions. It raises
 `SingularSystemError` for singular or numerically rejected body matrices,
 without distinguishing inconsistent from underdetermined systems.
+
+The separate `solution_space` API expands the problem into real coefficients
+and supports rectangular and singular systems. It returns a particular solution
+and a basis of free directions parameterized by real scalars, or raises
+`InconsistentSystemError`. Its `basis_indices` option restricts unknowns to a
+chosen subspace while still enforcing every component of each equation.
+Both solvers are numerical and use explicit rank/pivot tolerances.
 
 ## Numerical contract
 
@@ -175,3 +182,13 @@ without distinguishing inconsistent from underdetermined systems.
 
 The algebraic derivation above explains the algorithm. It does not establish
 any proposed physical interpretation or novelty claim.
+
+## Beyond the current contract
+
+The [research agenda](research/README.md) treats the algebra as a union of
+complex, split-complex and dual structures, with several equivalent useful
+representations. Its [operations atlas](research/operations.md) distinguishes
+geometric angle/metric choices, analytic functions and derivative-preserving
+measurements. The [backlog](research/roadmap.md) documents unsupported operations
+and a known integer-exponent coercion defect; proposals there do not change
+the current API described on this page.
