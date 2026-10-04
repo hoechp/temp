@@ -4,6 +4,8 @@ Ultracomplex Math combines complex, split-complex and dual numbers, including th
 
 | Your goal | Start here | Continue with |
 | --- | --- | --- |
+| See a practical payoff | [Engineering showcase](gallery/impact.md) | [Interactive lab](gallery/impact-lab.html), [models and verification](gallery/impact.md#reproduce-and-extend) |
+| Simplify a model and its derivatives | [Formula compression](formula-compression.md) | [Linear algebra APIs](api.md), [exact arithmetic](exact-arithmetic.md) |
 | Add independent space and time | [UltraField guide](fields.md) | [Field showcase](gallery/fields.md), [mathematical consequences](research/fields.md) |
 | Install and calculate | [Getting started](getting-started.md) | [API map](api.md) |
 | Understand the number system | [Mathematical foundation](mathematics.md) | [Operation atlas](research/operations.md) |
@@ -15,5 +17,7 @@ Ultracomplex Math combines complex, split-complex and dual numbers, including th
 | Extend the project | [Contributing](../CONTRIBUTING.md) | [Scope](scope.md), [compatibility](compatibility.md) |
 
 The user guides describe shipped APIs. The research section labels derived possibilities, experimental evidence and unimplemented proposals separately. Numerical, exact and physical-model limitations are stated where they matter.
+
+For an application-first route, start with the engineering lab, read the relevant model's assumptions, then follow its API links. Optical design shows ordered projective composition; coating diagnostics shows complex solves with two sensitivities; damping shows how a critical operator survives without an eigenbasis switch. The formula guide explains the common algebra and its actual computational cost. These examples require a checkout; they do not add application solvers to the core package namespace.
 
 [Project overview](../README.md) · [Change log](../CHANGELOG.md) · [Historical material](history.md)

@@ -30,6 +30,8 @@ Sources checked for the renewed review and geometric follow-up on 2026-10-03–0
 
 The [implemented applications](../gallery/applications.md) also cite their own physical-model sources. References support only the background they discuss; actual package behavior is checked locally.
 
+The [engineering showcase](../gallery/impact.md) adds primary sources for multilayer optics (Byrnes), photovoltaic cover-glass coatings (Karin, Miller and Jain), coating equivalent circuits (Gamry), and damped mechanical modes (MIT). Their physical context is separate from the locally generated, synthetic example results.
+
 ## Project-specific derivations
 
 The seven subalgebras, unit criterion and epsilon ideal follow from the defining relations. This review additionally derives the bicomplex extraction sign, Cayley symplectic/quadratic identities, transfer/Riccati correspondence and characteristic-two presentation. Root tangent equations and limits on order, norms and rational closure follow similarly. These are direct calculations, not novelty claims.
@@ -54,5 +56,6 @@ python -m pytest
 | [Component regression tests](../../tests/test_component_accuracy.py) | Tiny exponential coefficients and compensated large values | Does not certify every other function |
 | [Exact geometry example](../../examples/exact_geometry.py) | Rational constructions/invariants | Float conversion only for display |
 | [Gallery tests](../../tests/test_gallery.py), [application tests](../../tests/test_applications.py) | Independent formulas, conservation, roots and inverse problems | Idealized models, not real-hardware measurements |
+| [Engineering tests](../../tests/test_impact_models.py), [full render report](../gallery/assets/impact-report.json) | Fresnel recursion and power balance; circuit derivatives and inverse fit; rational residuals; critical damping, dissipation and convergence | Specified model grids, synthetic observations and separate rational fixtures; includes small-channel numerical error |
 
 Checked-in figure reports describe their full render datasets; routine CI checks the models without regenerating all assets. New probes record version/source context. Tests, lint, formatting, typing, documentation checks, probes and builds protect this release. Their success does not imply that every proposed feature exists or every numerical corner case has been eliminated.

@@ -1,17 +1,25 @@
 # Visual showcase
 
-[Documentation](../README.md) · [Applications](applications.md) · [Exact geometry](../unified-geometry.md) · [Research](../research/README.md)
+[Documentation](../README.md) · [Engineering lab](impact.md) · [Waves and robotics](applications.md) · [Exact geometry](../unified-geometry.md) · [Research](../research/README.md)
 
 Explore the union through exact constructions, three kinds of trigonometry, coupled motion and inverse problems. Each figure is computed from the library and accompanied by its formulas, interpretation and independent checks.
 
 | Start with | What to notice |
 | --- | --- |
+| [Three engineering applications](impact.md) | Optical tolerances, impedance identification and critical damping combine response, derivatives and invariants |
+| [Formula compression](../formula-compression.md) | Three derivative equations become one algebraic solve; exactness and computational cost remain explicit |
 | [UltraField: space, time and surfaces](fields.md) | One rule generates spatial slices, sensitivity maps and seam-compatible surface values |
 | [Exact geometry](../unified-geometry.md) | Rational rotations, boosts and shears share one construction |
 | [Trigonometry and angles](#trigonometry-and-angles) | The same operation has different geometric behavior in C, S and D |
 | [Coupled motion](#coupled-motion-and-sensitivity) | Phase, split coupling and parameter sensitivity occupy all eight coefficients |
 | [Waves, robotics and interference](applications.md) | Geometric and field calculations feed concrete inverse problems |
 | [Root basins](#why-a-cubic-has-nine-roots-here) | Zero divisors change familiar polynomial root counting |
+
+## Engineering lab
+
+![Three-equation model compressed into one solve with an independent derivative check](assets/impact-formulas.png)
+
+The [new showcase](impact.md) adds three physical models and a fourth formula audit. Open the [offline engineering lab](impact-lab.html) to vary coating thickness and incidence angle, inspect measurement frequencies, and sweep a mode through critical damping. The guide includes four full figures, concrete synthetic results, model equations and reproduction commands.
 
 ## Exact geometry
 
@@ -208,6 +216,7 @@ From the repository root, with Python 3.12+:
 python -m pip install -e '.[plot]'
 python examples/gallery.py
 python -m examples.applications
+python -m examples.impact
 # Faster preview in a separate directory:
 python examples/gallery.py --quick --output /tmp/ultra-gallery
 python -m examples.applications --quick --output /tmp/ultra-applications

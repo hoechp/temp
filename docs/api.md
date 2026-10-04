@@ -46,3 +46,15 @@ This is a task-oriented map of the implemented interfaces. Mathematical domains 
 | `.channels()` | Faithful split-eigenspace coordinates; numerical conversion can lose small differences |
 
 There is no exported general `jacobian`, `hessian`, ODE solver, FFT, constraint graph, arbitrary-precision backend or `Ultra.roots()` in this release. Names proposed in the [roadmap](research/roadmap.md) are designs, not imports.
+
+## Follow an API into a complete example
+
+| Existing API | Demonstrated composition | Example entry point, from a checkout |
+| --- | --- | --- |
+| `Mobius`, `ProjectivePoint`, `.abs2()` | Ordered optical layers, s/p power and a thickness derivative | `examples.impact_models.coating_response` |
+| `solve`, `.channels()` | Kirchhoff response and two log-resistance derivatives, feeding an inverse fit | `examples.impact_models.impedance`, `fit_impedance` |
+| `ExactMatrix.solve` | A rational three-node circuit with zero residual in all coefficients | `examples.impact_models.exact_circuit_audit` |
+| `ModeOperator.from_matrix`, `.cayley` | Discrete damping through the critical point with sensitivity | `examples.impact_models.oscillator_path` |
+| `ExactUltra`, `ModeOperator` | Exact differentiated dissipation and distinct nilpotent roles | `examples.impact_models.exact_damping_audit` |
+
+These are example functions, not exported core application APIs. The [engineering guide](gallery/impact.md) defines their units and assumptions. The [formula guide](formula-compression.md) gives core-only executable snippets and explains how channel capacity is allocated: two polarizations with one derivative each, or one shared response with two derivatives.
