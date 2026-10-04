@@ -6,6 +6,7 @@ Ultracomplex Math combines complex, split-complex and dual numbers, including th
 | --- | --- | --- |
 | Install and calculate | [Getting started](getting-started.md) | [API map](api.md) |
 | Understand the number system | [Mathematical foundation](mathematics.md) | [Operation atlas](research/operations.md) |
+| Understand the connected geometries | [Geometry inside the full union](research/geometric-structure.md) | [Unified geometry APIs](unified-geometry.md) |
 | Keep every coefficient exact | [Exact arithmetic](exact-arithmetic.md) | [Unified geometry](unified-geometry.md) |
 | See useful computations | [Visual showcase](gallery/README.md) | [Waves, robotics and interference](gallery/applications.md) |
 | Build the next capability | [Research overview](research/README.md) | [Applications](research/applications.md), [roadmap](research/roadmap.md) |

@@ -1,8 +1,10 @@
 # Prioritized implementation roadmap
 
-[Agenda](README.md) · [Operations](operations.md) · [Applications](applications.md)
+[Agenda](README.md) · [Geometric structure](geometric-structure.md) · [Operations](operations.md) · [Applications](applications.md)
 
 Reviewed against 0.3.0 and updated for 0.4.0. **P0** protects numerical correctness; **P1** continues exact coefficients and geometry; **P2** broadens application coverage. Proposed APIs below are not imports.
+
+The geometric follow-up adds G16–G19 and changes the suggested sequence: full polar structure, critical dynamics and projective geometry lead the applications. Existing derivative proposals remain useful parts of the toolkit.
 
 ## Correctness before new promises
 
@@ -29,22 +31,27 @@ The same accuracy risk remains in other operations, including channel-based loga
 | G13 / P2 | Ecosystem interoperability | NumPy batching/ufunc policy, schemas, units and AD boundaries | Round trips, dtype/shape errors and benchmarks with equal requested work |
 | G14 / P2 | Validated application components | One transfer/scattering network, observations, fit and noise model | Model-specific conservation/passivity, independent solver, derivatives and identifiability |
 | G15 / P1 | Complete root families | Independent sheets, tangent families and singular classifications; exact counterparts where supported | n² unit roots, empty/infinite cases, residuals and path consistency |
+| G16 / P1 | Full polar structure and singular strata | Structured eight-parameter unit decomposition, coupled phase lattice, multiplication and zero-divisor classifications | Reconstruction across scales; branch-loop histories; singular boundaries; agreement with G01 accuracy contracts |
+| G17 / P1 | Geometric models and real structures | Quadric/tangent-chart adapters, coherency/Stokes conversions and explicit reality conditions | Exact quadric/tangent incidence, all chart overlaps, positivity and determinant invariants; physical model assumptions retained |
+| G18 / P2 | Analysis over the three geometries | Specified analytic domains, Cauchy–Riemann operators, characteristic/contour examples and scoped mixed extensions | Independent harmonic/wave/contact examples; characteristic singularities and boundary data; no identification of dual analyticity with diffusion |
+| G19 / P1 | Independent geometric and perturbation directions | Explicit direction semantics; separate nilpotent operators or an optional larger coefficient algebra when two roles are required | Nonvanishing mixed-direction examples; deliberate truncation rules; no silent reuse of one epsilon for independent variables |
 
 ## Suggested sequence
 
-**Milestone A: trustworthy exact geometry and derivatives.** G01, the small rational-root portion of G02, G04 linearized constraints and G06 first-order helpers. Deliver a closed-linkage showcase with exact residuals. Introduce G03 abstractions around concrete coefficient needs.
+**Milestone A: trustworthy exact and polar geometry.** G01, the small rational-root portion of G02, G16 polar/stratum structure and G04 exact constraints. Deliver polar reconstruction with correct branch metadata and a closed-linkage showcase with exact residuals. Introduce G03 abstractions around concrete coefficient needs; use G06 helpers where they serve the geometry.
 
-**Milestone B: motion and charts.** G05 generalized functions with existing exact Cayley steps, plus G07 continuation. Show all three motion regimes and their parameter sensitivities.
+**Milestone B: motion and charts.** G05 generalized functions with existing exact Cayley steps, plus G07 continuation. Show one oscillator and one optical cell across all three motion regimes. Include G17 tangent chart transitions and apply G19 whenever geometric and perturbation nilpotents meet.
 
-**Milestone C: a full-union application.** G14's transfer network using the relevant G10/G13 pieces. Compare transfer/scattering stability and solve an identifiable inverse problem.
+**Milestone C: a full-union application.** G14's optical/transfer network with G17 Stokes/coherency observables and the relevant G10/G13 pieces. Connect phase, boosts, shears and projective observations. Compare transfer/scattering stability and solve an identifiable inverse problem.
 
-**Research branch:** after G01, investigate bicomplex/dual higher derivatives on a thermodynamic potential. Modular G11 work can proceed independently of the numerical calculus. These are dependency recommendations, not implementations already underway.
+**Research branches:** develop the G18 field-equation foundations and the G17 quadric/null-geometry interpretation with explicit domains and reality conditions. After G01, investigate bicomplex/dual higher derivatives on a thermodynamic potential. Modular G11 work can proceed independently. These are dependency recommendations, not implementations already underway.
 
 ## Decisions that remain explicit
 
 - Full-algebra order, floor, remainder and probability need chosen semantics; naming them does not inherit real-number laws.
 - Exact coefficient domains must state their closure. Q excludes generic radicals; a small algebraic extension excludes generic transcendental values.
 - The epsilon ideal alone gives first-order jets. Arbitrary exact higher jets need a larger algebra; bicomplex finite steps are a different opportunity within the current algebra.
+- A finite geometric shear and a parameter derivative can require independent square-zero directions. G19 must preserve that distinction; adding a second scalar generator changes the eight-dimensional coefficient algebra.
 - General 3D poses need noncommuting operators or another extension. Keep scalar, operator and point types distinct.
 - Accuracy contracts must identify protected components, not merely a body-dominated total norm.
 

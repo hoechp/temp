@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased — geometry-first research
+
+- Reframe the overview around circular, hyperbolic and parabolic geometry.
+- Derive the full unit polar form, its branch lattice, the EPH classification
+  of real 2×2 generators and the projective tangent-quadric interpretation.
+- Connect finite dual shear, damping, optical cells, polarization and field
+  equations; distinguish scalar multiplication from operator composition.
+- Add reproducible rational/numerical research checks to CI and prioritize
+  missing polar, incidence, field-analysis and independent-direction APIs.
+
 ## 0.4.0 — focused scope and renewed research, unpublished on PyPI
 
 - Rebuild the README and documentation around a clear entry point, current APIs,

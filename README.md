@@ -1,14 +1,16 @@
 # Ultracomplex Math
 
-**Complex rotation, split-complex geometry and dual differentiation — united in one eight-dimensional algebra.**
+**Circular, hyperbolic and parabolic geometry — united in one eight-dimensional algebra.**
 
-A Python library by **Philipp Kolodziej** for exploring what these geometries can do together: exact rational constructions, mixed trigonometry, coupled motion, parameter sensitivity and projective transformations.
+A Python library by **Philipp Kolodziej** for exploring what these geometries can do together: exact rational constructions, mixed trigonometry, rotations, boosts, shears, coupled motion and projective transformations. Derivatives arise naturally from the same structure.
 
 $$\mathcal A_K=K[i,j,\varepsilon]/(i^2+1,\;j^2-1,\;\varepsilon^2),\qquad ij=ji,\quad i\varepsilon=\varepsilon i,\quad j\varepsilon=\varepsilon j.$$
 
 Choose numerical real coefficients (`Ultra`) or exact rational coefficients (`ExactUltra`). The mixed directions `ij`, `eps*i`, `eps*j` and `eps*i*j` are first-class parts of the same number. The goal is a coherent mathematical toolbox that brings the strengths of all three algebras into shared computations.
 
 [Get started](docs/getting-started.md) · [Documentation](docs/README.md) · [Showcase](docs/gallery/README.md) · [Research agenda](docs/research/README.md)
+
+The [geometry inside the full union](docs/research/geometric-structure.md) explains its complete polar form, the shared structure of oscillators and optical systems, and its projective connection to a tangent quadric. It separates mathematical derivations from implemented APIs.
 
 ![Exact circular, hyperbolic and parabolic geometry with coupled motion](docs/gallery/assets/rational-geometry.png)
 
@@ -20,6 +22,7 @@ Choose numerical real coefficients (`Ultra`) or exact rational coefficients (`Ex
 | [Coupled motion](docs/gallery/README.md#coupled-motion-and-sensitivity) | Complex phase, split coupling and dual parameter derivatives | `python -m examples.gallery --only coupling` |
 | [Waves and inverse problems](docs/gallery/applications.md) | Travelling waves, robot Jacobians and interference-based geometry recovery | `python -m examples.applications` |
 | [Trigonometric atlas](docs/gallery/README.md#trigonometry-and-angles) | The same function in circular, hyperbolic, parabolic and mixed directions | `python -m examples.gallery --only cosine` |
+| [Geometric structure](docs/research/geometric-structure.md) | Full polar form, critical motion, polarization and projective tangent geometry | `python tools/geometric_structure_probe.py` |
 
 ![Coupled complex modes](docs/gallery/assets/coupled-modes.gif)
 
@@ -37,18 +40,18 @@ python -m ultracomplexmath 'exp(i*j*(1+eps))'
 python -m ultracomplexmath --exact '(1/3+i+j+eps)^3' --json
 ```
 
-One exponential combines complex oscillation, split coupling and its first variation:
+Circular, hyperbolic and parabolic factors compose within the same number system:
 
 ```python
-from ultracomplexmath import I, J, EPS
+from ultracomplexmath import I, J, EPS, Ultra
 
-omega, coupling, time = 1.8, 0.36, 5.0
-state = (time * I * (omega + J * (coupling + EPS))).exp()
-mode1 = complex(state.real, state.i)
-mode2 = complex(state.j, state.ij)
-sensitivity1 = complex(state.eps, state.eps_i)
-sensitivity2 = complex(state.eps_j, state.eps_ij)
-assert abs(abs(mode1) ** 2 + abs(mode2) ** 2 - 1) < 1e-12
+rotation = (I * 0.6).exp()
+boost = (J * 0.35).exp()
+relative_phase = (I * J * 0.2).exp()
+v = Ultra(real=0.4, j=-0.2, i=0.1, ij=0.3)
+shear = (EPS * v).exp()
+value = 2 * rotation * boost * relative_phase * shear
+assert value.isclose(2 * (I * 0.6 + J * 0.35 + I * J * 0.2 + EPS * v).exp())
 ```
 
 Exact geometry uses the same algebraic laws without rounding coefficients:
@@ -81,7 +84,7 @@ The ambition is broad; operation domains remain explicit. There is no compatible
 
 ## Where next?
 
-The strongest next projects are **exact geometric constraints**, **reliable mixed higher derivatives**, **structure-preserving dynamics** and **differentiable optical/transfer networks**. The [renewed research review](docs/research/README.md) compares all seven nonempty combinations of the three base algebras, names missing functionality and gives acceptance criteria for each priority.
+The strongest next projects are **complete polar and singular geometry**, **continuous circular–hyperbolic–parabolic dynamics**, **exact geometric constraints** and **optical/projective geometry**. The [research review](docs/research/README.md) compares all seven nonempty combinations of the three base algebras, names missing functionality and gives acceptance criteria. Reliable derivatives remain part of this toolkit, alongside the geometries themselves.
 
 Development and verification: [CONTRIBUTING.md](CONTRIBUTING.md). API orientation: [docs/api.md](docs/api.md). Release changes: [CHANGELOG.md](CHANGELOG.md).
 

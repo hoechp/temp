@@ -33,6 +33,7 @@ jobs:
       - run: python tools/check_docs.py
       - run: python tools/research_probe.py
       - run: python tools/frontier_probe.py
+      - run: python tools/geometric_structure_probe.py
       - run: python -m build --no-isolation
       - name: Installed wheel smoke test outside source tree
         shell: bash

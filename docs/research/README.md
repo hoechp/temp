@@ -1,8 +1,10 @@
 # Research agenda: the full union in use
 
-[Documentation](../README.md) · [Operation atlas](operations.md) · [Applications](applications.md) · [Roadmap](roadmap.md) · [Evidence](references.md)
+[Documentation](../README.md) · [Geometric structure](geometric-structure.md) · [Operation atlas](operations.md) · [Applications](applications.md) · [Roadmap](roadmap.md) · [Evidence](references.md)
 
-This review starts from **complex, split-complex and dual algebra as a full union**, including all mixed directions. Its question is practical: which operations and constructions let this union do more useful work together?
+This review starts from **complex, split-complex and dual algebra as a full union**, including all mixed directions. Its central question is which geometries, invariants and physical structures become understandable and computable together. Derivative extraction is one useful consequence; it does not exhaust the meaning of the additional directions.
+
+Begin with [the geometry inside the full union](geometric-structure.md): a complete polar form, three regimes of the same dynamical equation, optics/Lorentz connections, and the projective tangent quadric. Then use the operation atlas and roadmap to turn those structures into reliable interfaces.
 
 The implementation was reassessed from [the 0.3.0 source snapshot](https://github.com/hoechp/temp/tree/fb4870cbf8a47a89b4ac10cf3ff34f37fe0cc541), with the resulting documentation, scope cleanup and exponential correction included in 0.4.0. Exact coefficients, intrinsic planar geometry, coupled operators and projective points already exist. They must no longer be listed as wholly missing features.
 
@@ -10,6 +12,10 @@ The implementation was reassessed from [the 0.3.0 source snapshot](https://githu
 
 | Finding | Why it matters | Present status |
 | --- | --- | --- |
+| Every invertible value has a full eight-parameter polar form | Common scale, reciprocal stretching, two phases and four shear coordinates compose coherently | Derived, with a coupled phase lattice; bounded reconstruction checks; structured API and continuation missing |
+| Real nonscalar 2×2 generators have complex, split or dual type | Underdamping, overdamping and critical damping belong to one continuous family | Classification and rational examples checked; stable continuous operator functions missing |
+| Two different shears can compose into rotation or hyperbolic motion | Lens/propagation order and critical transitions reveal a connection between the geometries | Exact optical-cell checks; general composition uses existing operators, not scalar multiplication |
+| The projective line is the tangent bundle of a complex quadric | The full union has a shared surface with two line families and tangent directions | Derived through chart transitions; rational incidence examples checked; geometric API missing |
 | `i*j` is a second commuting imaginary unit | CS supports bicomplex finite-step second derivatives; epsilon can add a mixed third derivative | Derived and checked; exponential cancellation fixed; other primitives need componentwise accuracy work |
 | Rational geometry extends naturally into dynamics | Cayley maps can preserve geometric forms and first variations exactly over Q | Existing API, new symplectic/reversibility checks; no general integrator yet |
 | Optics, wave interfaces and impedance share transfer geometry | Phase, opposing directions, projective ratios and sensitivities can use one operator framework | Building blocks exist; physical components and stable scattering composition remain open |
@@ -21,10 +27,10 @@ These are opportunities grounded in algebra and existing literature. No mathemat
 
 ## What to build first
 
-1. **Reliable coefficient-level numerics.** Extend the exponential fix to relevant division, logarithm and trigonometric paths. A full-value norm can conceal an incorrect tiny Hessian coefficient.
-2. **Exact geometric constraints and coefficient completeness.** Add rational nth roots where supported, algebraic-number boundaries, constraint Jacobians and exact rank/degeneracy classifications. This continues the owner's rational/geometric priorities.
-3. **Continuous circular–hyperbolic–parabolic dynamics.** Implement stable generalized sine/cosine across the critical parameter, retaining first variations; pair them with the exact discrete Cayley framework.
-4. **A differentiable transfer-network showcase.** Compose specified optical or wave components, verify flux/passivity assumptions and derivatives, then solve an identifiable inverse problem.
+1. **Reliable coefficient-level numerics and exact domains.** Extend the exponential fix to division/log/trig, and complete supported rational powers. Small geometric components deserve accuracy even when no derivative is being extracted.
+2. **Complete polar, branch and singular geometry.** Expose the full polar coordinates, their phase lattice and winding histories; classify zero-divisor strata and retain exact constructions where possible.
+3. **Continuous circular–hyperbolic–parabolic dynamics.** Implement stable generalized sine/cosine across the critical parameter, with full generators and exact discrete Cayley maps. Demonstrate a mechanical/RLC equation and an optical cell together.
+4. **Exact projective/contact geometry and optics.** Develop constraint and incidence operations, tangent chart transitions and specified optical components. Keep geometric nilpotents distinct from independently requested perturbation directions.
 
 The [roadmap](roadmap.md) supplies dependencies and completion criteria. [Applications](applications.md) compares usefulness, fit and prerequisites. [Experiments](experiments.md) gives derivations and reproducible checks.
 
@@ -35,4 +41,4 @@ The [roadmap](roadmap.md) supplies dependencies and completion criteria. [Applic
 - **Derived:** a mathematical consequence of explicit assumptions.
 - **Proposed:** implementation and application validation remain necessary.
 
-The operation atlas examines C, S, D, CS, CD, SD and CSD in every domain. Split eigenspaces are one useful representation of the union, not its identity; they can also be the wrong numerical coordinates for tiny mixed components.
+The operation atlas examines C, S, D, CS, CD, SD and CSD in every domain. Split eigenspaces give a faithful representation of the union. Geometric interpretation additionally carries the forms, involutions and chosen transformation actions; numerically, these coordinates can also lose tiny mixed components on reconstruction.

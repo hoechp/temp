@@ -1,20 +1,23 @@
 # Applications worth pursuing
 
-[Agenda](README.md) · [Operations](operations.md) · [Roadmap](roadmap.md) · [Implemented showcase](../gallery/README.md)
+[Agenda](README.md) · [Geometric structure](geometric-structure.md) · [Operations](operations.md) · [Roadmap](roadmap.md) · [Implemented showcase](../gallery/README.md)
 
-The ranking favors exact coefficients and geometry, followed by applications giving the three algebras clear shared roles. Projects below are proposals unless identified as implemented examples. Accuracy, speed and usability advantages must be tested against appropriate baselines.
+The ranking favors the shared geometric structure and exact coefficients. The [geometric investigation](geometric-structure.md) derives the links behind the proposals: damping regimes, optical cells, polarization/Lorentz invariants and the tangent quadric. Derivative applications remain valuable without defining the project's identity. Projects below are proposals unless identified as implemented examples; accuracy, speed and usability advantages require appropriate baselines.
 
 ## Candidate comparison
 
 | Priority | Application | Combined contribution | Starting point | Main missing capability |
 | --- | --- | --- | --- | --- |
 | 1 | Exact geometric constraints/calibration | C rotations, S alternate geometric forms, D variations | Exact predicates, Cayley isometries, matrices, curves | Constraint graph, implicit derivatives, rank events, algebraic coordinates |
-| 2 | Higher derivatives of geometry and thermodynamic potentials | `i` and `ij` probe curvature; epsilon adds parameter differentiation | Corrected exponential and polynomial calculus | Stable mixed-component primitives and derivative API |
-| 3 | Structure-preserving critical dynamics | Circular, hyperbolic, parabolic generators plus rational invariants and dual sensitivity | Exact Cayley operators | Continuous functions, time-step control, matrix Fréchet derivatives |
-| 4 | Optical/wave transfer networks | C phase, S direction/flux structure, D material/geometry derivatives | Mode operators, projectivities, observables | Physical components, scattering composition, conditioning |
-| 5 | Projective continuation and Riccati models | C/S/D fractional maps and tangent data in mixed charts | Möbius maps, unimodular points, cross ratios | Automatic charts, path events, incidence geometry |
-| 6 | Frequency-domain identification | Complex response, split modes, dual derivatives | Interference fit and coupled motion | Arrays, response blocks, noise/uncertainty and passivity models |
-| 7 | Finite coefficients and polynomial lifting | Field-specific C/S factors and nilpotents | Scalar residues, exact polynomials, exhaustive F2 probe | Modular backend, Hensel/Hasse, reconstruction |
+| 2 | Structure-preserving critical dynamics | Circular, hyperbolic and parabolic regimes of one equation, with rational invariants | Exact Cayley operators and checked damping classification | Continuous functions, time-step control, complete generator metadata |
+| 3 | Optical cells, polarization and wave transfer | C phase, S reciprocal scales/null structure, D shear and critical behavior | Mode operators, exact optical/Stokes checks, projectivities | Physical components, coherency/Stokes API, scattering composition, conditioning |
+| 4 | Full polar geometry and projective continuation | Shared scale, two phases, hyperbolic scale, shear and tangent-quadric charts | Log/exp, projective points, cross ratios, derived polar and chart laws | Structured polar object, branches, singular strata, quadric incidence and real structures |
+| 5 | Harmonic, wave and contact-field models | Different analyticity equations encode different geometric laws | Scalar functions, polynomial examples and derived CR relations | Domain/regularity definitions, characteristic and integral machinery, boundary-value models |
+| 6 | Higher derivatives of geometry and thermodynamic potentials | `i` and `ij` probe curvature; epsilon adds parameter differentiation | Corrected exponential and polynomial calculus | Stable mixed-component primitives and derivative API |
+| 7 | Frequency-domain identification | Complex response, split modes, dual derivatives | Interference fit and coupled motion | Arrays, response blocks, noise/uncertainty and passivity models |
+| 8 | Finite coefficients and polynomial lifting | Field-specific C/S factors and nilpotents | Scalar residues, exact polynomials, exhaustive F2 probe | Modular backend, Hensel/Hasse, reconstruction |
+
+The complete polar form is foundational mathematics rather than an engineering solver. Its immediate application is an explorer that follows phase winding, reciprocal stretching and shear through products, then shows what breaks at each zero-divisor stratum. The projective follow-up tracks the same constructions across finite and infinite charts. Both should retain the exact/rational representation wherever the coordinates permit it.
 
 ## Exact constraints: geometry that remains auditable
 

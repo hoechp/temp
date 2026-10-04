@@ -258,7 +258,7 @@ derivative-preserving real projection.
 
 ## Continue the geometry
 
-The [research roadmap](research/roadmap.md) prioritizes exact constraints, rational roots, continuous critical dynamics, conic/projective constructions and chart continuation. [Application proposals](research/applications.md) connect these capabilities to calibration, transfer networks and higher derivatives. Those pages distinguish implemented primitives from missing higher-level solvers.
+The [geometry inside the full union](research/geometric-structure.md) derives a complete unit polar form and connects critical dynamics, optical transformations, field equations and the projective tangent quadric. The [research roadmap](research/roadmap.md) prioritizes the missing polar/branch APIs, exact constraints, continuous critical dynamics and projective constructions. [Application proposals](research/applications.md) connect them to calibration, optics and mechanics. Those pages distinguish implemented primitives from missing higher-level solvers.
 
 ## Verification and references
 

@@ -2,7 +2,7 @@
 
 [Agenda](README.md) · [Experiments](experiments.md) · [Roadmap](roadmap.md)
 
-Sources checked for the renewed review on 2026-10-03 (UTC). Established background is separate from project derivations, implementation findings and proposals. This is a focused feasibility review, not an exhaustive novelty search.
+Sources checked for the renewed review and geometric follow-up on 2026-10-03–04 (UTC). Established background is separate from project derivations, implementation findings and proposals. This is a focused feasibility review, not an exhaustive novelty search.
 
 ## Primary sources
 
@@ -20,6 +20,13 @@ Sources checked for the renewed review on 2026-10-03 (UTC). Established backgrou
 | R10 | Swastik Kopparty, [Some remarks on multiplicity codes](https://arxiv.org/abs/1505.07547) | Finite-field polynomial/derivative evaluations; no coding backend is shipped |
 | R11 | NIST DLMF, [§4.14](https://dlmf.nist.gov/4.14), [§4.23](https://dlmf.nist.gov/4.23) | Complex trigonometry and inverse branches |
 | R12 | JAX authors, [Complex numbers and differentiation](https://docs.jax.dev/en/latest/301/cookbook.html#complex-numbers-and-differentiation) | Real-linear complex differentiation as an ecosystem comparison; no JAX adapter exists here |
+| R13 | Rooney, [On the Three Types of Complex Number and Planar Transformations](https://journals.sagepub.com/doi/10.1068/b050089), 1978 | Accessible author abstract: rotation, Lorentz boost and dual shear; paywalled full text was not used |
+| R14 | Bașkal and Kim, [Lorentz Group in Ray and Polarization Optics](https://arxiv.org/abs/1204.5071), 2012 | Primary exposition of optical matrices and their group geometry; explicit cell identities here are independently calculated |
+| R15 | Han, Kim and Noz, [Stokes Parameters as a Minkowskian Four-vector](https://arxiv.org/abs/physics/9707016), 1997 | Jones/coherency/Stokes relation and Lorentz structure; applies to the specified normalized, nondepolarizing actions |
+| R16 | Libine, [Hyperbolic Cauchy Integral Formula for the Split Complex Numbers](https://arxiv.org/abs/0712.0375), 2007 | Split analytic functions, wave operator and hyperbolic Cauchy integration; no mixed-algebra PDE solver is implied |
+| R17 | Stacks Project, [§33.16: Tangent spaces](https://stacks.math.columbia.edu/tag/0B28) | Geometric meaning of points with values in dual numbers |
+| R18 | Vakil, [Foundations of Algebraic Geometry, classes 15–16](https://math.stanford.edu/~vakil/0708-216/216class1516.pdf) | Segre embedding and the two rulings of a smooth quadric |
+| R19 | Chaniotakis and Cory, MIT [Sinusoidal Steady State Response of Linear Circuits](https://ocw.mit.edu/courses/6-071j-introduction-to-electronics-signals-and-measurement-spring-2006/96c80ce0d5513139310a9526fdadb419_sss_phsor_impdce.pdf), 2006 | Separate voltage/current phasors related by impedance |
 
 The [implemented applications](../gallery/applications.md) also cite their own physical-model sources. References support only the background they discuss; actual package behavior is checked locally.
 
@@ -27,11 +34,14 @@ The [implemented applications](../gallery/applications.md) also cite their own p
 
 The seven subalgebras, unit criterion and epsilon ideal follow from the defining relations. This review additionally derives the bicomplex extraction sign, Cayley symplectic/quadratic identities, transfer/Riccati correspondence and characteristic-two presentation. Root tangent equations and limits on order, norms and rational closure follow similarly. These are direct calculations, not novelty claims.
 
+The [geometric follow-up](geometric-structure.md) supplies explicit derivations of the full polar factorization and phase lattice, real 2×2 classification, finite shear, optical-cell transition and the projective tangent-quadric identification. It states the scalar/operator distinction and real-structure assumptions. These arguments supply the general conclusions; bounded numerical and exact examples check specified calculations rather than proving a global theorem by sampling.
+
 ## Reproduce
 
 ```sh
 python tools/research_probe.py
 python tools/frontier_probe.py
+python tools/geometric_structure_probe.py
 python -m examples.exact_geometry
 python -m pytest
 ```
@@ -40,6 +50,7 @@ python -m pytest
 | --- | --- | --- |
 | [research_probe.py](../../tools/research_probe.py), [verification.json](verification.json) | Trig/operator identities, intensity, critical series, unit-root examples, one Hensel lift | Selected bounded cases; not a general function library |
 | [frontier_probe.py](../../tools/frontier_probe.py), [frontier-verification.json](frontier-verification.json) | Mixed derivatives, exact steps/maps, exhaustive F2 and rational-power gap | Specified functions/ranges and one small finite ring |
+| [geometric_structure_probe.py](../../tools/geometric_structure_probe.py), [geometric-verification.json](geometric-verification.json) | Unit polar reconstruction/branches; 81 exact matrix classifications; finite shear; optical cells; Stokes invariants; quadric/chart equations; analytic cubics | Moderate numerical units and specified rational examples; no global accuracy, topology-by-sampling or physical-device validation |
 | [Component regression tests](../../tests/test_component_accuracy.py) | Tiny exponential coefficients and compensated large values | Does not certify every other function |
 | [Exact geometry example](../../examples/exact_geometry.py) | Rational constructions/invariants | Float conversion only for display |
 | [Gallery tests](../../tests/test_gallery.py), [application tests](../../tests/test_applications.py) | Independent formulas, conservation, roots and inverse problems | Idealized models, not real-hardware measurements |
