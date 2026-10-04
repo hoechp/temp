@@ -5,7 +5,7 @@ Use Python 3.12+. Keep code and documentation in English and preserve attributio
 ## Set up and verify
 
 ```sh
-python -m pip install -r requirements-dev.lock -r requirements-plot.lock
+python -m pip install -r requirements-dev.lock -r requirements-plot.lock -r requirements-arrays.lock
 python -m pip install --no-build-isolation -e .
 python -m pytest
 python -m ruff check .

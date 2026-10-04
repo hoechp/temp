@@ -6,6 +6,10 @@ This is a task-oriented map of the implemented interfaces. Mathematical domains 
 
 | Task | Public interface / module | Guide |
 | --- | --- | --- |
+| Located values and rule-defined fields | `CoordinateSpace`, `SpaceTimePoint`, `LocatedUltra`, `UltraField`; `fields` | [UltraField](fields.md) |
+| Slices, grids and array exports | `FieldView`, `FieldGrid`, `.slice()`, `.sample()`, `.to_numpy()`, `.to_xarray()` | [Field views](fields.md#slices-views-and-samples) |
+| External coordinate calculus | `.partial()`, `.gradient()`, `.laplacian()`, `.wave_operator()` | [Coordinate derivatives](fields.md#differentiate-coordinates-without-consuming-epsilon) |
+| Surface geometry and fields | `CoordinateMap`, `ParametricSurface`, `torus`, `mobius_strip`, `SurfaceSeam`, `SeamReport` | [Surface fields](fields.md#coordinate-maps-and-surfaces) |
 | Full numerical algebra | `Ultra`, `ONE`, `ZERO`, `I`, `J`, `EPS`; `core` | [Foundation](mathematics.md) |
 | Closed numerical planes | `Complex`, `Binary`, `Dual`, `RootSet`; `numbers` | [Geometry](unified-geometry.md) |
 | Exact coefficients | `ExactUltra`, `ExactComplex`, `ExactBinary`, `ExactDual`, `QONE`, `QZERO`, `QI`, `QJ`, `QEPS`; `exact` | [Exact arithmetic](exact-arithmetic.md) |

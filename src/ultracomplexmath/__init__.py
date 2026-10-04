@@ -27,6 +27,15 @@ from .exact_geometry import (
 from .exact_linalg import ExactLinearSolution, ExactMatrix, exact_solution_space, exact_solve
 from .exact_polynomial import ExactPolynomial
 from .expressions import BoundFormula, Calculation, FormulaSystem, Parameter, SimpleCalculation
+from .fields import (
+    CoordinateMap,
+    CoordinateSpace,
+    FieldGrid,
+    FieldView,
+    LocatedUltra,
+    SpaceTimePoint,
+    UltraField,
+)
 from .formula import ExpressionError, Formula, evaluate, evaluate_system
 from .linalg import (
     InconsistentSystemError,
@@ -50,9 +59,10 @@ from .plane_geometry import (
     metric_reflect,
 )
 from .polynomial import Polynomial, guess
+from .surfaces import ParametricSurface, SeamReport, SurfaceSeam, mobius_strip, torus
 from .transformations import Mobius, ModeOperator, ProjectivePoint, cross_ratio
 
-__version__ = "0.4.0"
+__version__ = "0.5.0"
 __all__ = [
     "Actor",
     "Binary",
@@ -130,4 +140,16 @@ __all__ = [
     "barycentric2d",
     "circumcircle2d",
     "incircle2d",
+    "CoordinateMap",
+    "CoordinateSpace",
+    "FieldGrid",
+    "FieldView",
+    "LocatedUltra",
+    "SpaceTimePoint",
+    "UltraField",
+    "ParametricSurface",
+    "SeamReport",
+    "SurfaceSeam",
+    "mobius_strip",
+    "torus",
 ]

@@ -2,7 +2,9 @@
 
 [Agenda](README.md) · [Geometric structure](geometric-structure.md) · [Operations](operations.md) · [Applications](applications.md)
 
-Reviewed against 0.3.0 and updated for 0.4.0. **P0** protects numerical correctness; **P1** continues exact coefficients and geometry; **P2** broadens application coverage. Proposed APIs below are not imports.
+Reviewed against 0.3.0 and updated for 0.5.0. **P0** protects numerical correctness; **P1** continues exact coefficients and geometry; **P2** broadens application coverage. Proposed APIs below are not imports.
+
+Version 0.5.0 ships the [UltraField foundation](../fields.md): independent real space/time coordinates, located values, lazy numerical fields, slices, sampling, coordinate derivatives, torus/Möbius geometry, induced surface calculus and optional array adapters. These implement specific parts of G08/G12/G13/G18/G19; they do not complete a PDE solver, general geometric transport or independent higher parameter jets. See the [field consequences](fields.md) for verified identities and the next model-driven steps.
 
 The geometric follow-up adds G16–G19 and changes the suggested sequence: full polar structure, critical dynamics and projective geometry lead the applications. Existing derivative proposals remain useful parts of the toolkit.
 

@@ -10,6 +10,7 @@ GUIDES = (
     "docs/getting-started.md",
     "docs/exact-arithmetic.md",
     "docs/unified-geometry.md",
+    "docs/fields.md",
 )
 
 

@@ -1,6 +1,25 @@
 # Changelog
 
-## Unreleased — geometry-first research
+## 0.5.0 — independent space/time fields, unpublished on PyPI
+
+- Add immutable real coordinate spaces and points, with 3+1 defaults, 0–n
+  spatial axes, optional time and independently usable `LocatedUltra` values.
+- Add rule-defined `UltraField`, safe formulas, pointwise arithmetic, explicit
+  coordinate maps, slices retaining full locations and bounded/streamed sampling.
+- Add optional NumPy/xarray exports with named axes and all eight coefficients.
+- Add coefficient-preserving real-coordinate derivatives, analytic first-partial
+  hooks, Cartesian Laplacian and a flat-space wave operator; preserve existing
+  epsilon sensitivities without reusing them as spatial differentiation seeds.
+- Add static parametric torus/Möbius surfaces, induced metrics, tangent gradients,
+  Laplace–Beltrami, midpoint area quadrature and coefficientwise seam diagnostics.
+- Allow Ultra division to dispatch to compatible reflected container operations,
+  matching the existing addition/multiplication protocol; scalar laws are unchanged.
+- Add field/surface regression tests, executable guidance, reproducible spatial
+  and surface figures, a time-slice animation and a report with seam/area checks.
+- Document the distinct homogeneous wave and inhomogeneous sensitivity equations,
+  Möbius transition laws and limits of possible physical interpretations.
+
+### Geometry-first research carried forward
 
 - Reframe the overview around circular, hyperbolic and parabolic geometry.
 - Derive the full unit polar form, its branch lattice, the EPH classification

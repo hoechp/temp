@@ -6,6 +6,7 @@ Explore the union through exact constructions, three kinds of trigonometry, coup
 
 | Start with | What to notice |
 | --- | --- |
+| [UltraField: space, time and surfaces](fields.md) | One rule generates spatial slices, sensitivity maps and seam-compatible surface values |
 | [Exact geometry](../unified-geometry.md) | Rational rotations, boosts and shears share one construction |
 | [Trigonometry and angles](#trigonometry-and-angles) | The same operation has different geometric behavior in C, S and D |
 | [Coupled motion](#coupled-motion-and-sensitivity) | Phase, split coupling and parameter sensitivity occupy all eight coefficients |
