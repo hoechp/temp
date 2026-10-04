@@ -8,6 +8,8 @@ Version 0.5.0 ships the [UltraField foundation](../fields.md): independent real 
 
 The geometric follow-up adds G16–G19 and changes the suggested sequence: full polar structure, critical dynamics and projective geometry lead the applications. Existing derivative proposals remain useful parts of the toolkit.
 
+The [engineering showcase](../gallery/impact.md) now gives bounded baselines for G05/G14/G19: a two-polarization optical stack with tolerance prediction, an identifiable impedance fit with frequency-information analysis, and discrete critical damping with exact differentiated energy balance. Its [formula audit](../formula-compression.md) also makes G10 concrete: the current packed solve repeats the shared body solve rather than reusing a factorization. These examples do not complete continuous operator functions, general scattering networks or application validation against measured devices.
+
 ## Correctness before new promises
 
 The huge-integer exponent bug is fixed: `I**(2**53+1)==I`. Rational coefficients, exact matrices/polynomials and geometry are implemented. The renewed review found a different defect: channel reconstruction erased the `j` coefficient of `exp(1+i*h+ij*h)`. Version 0.4.0 uses component-preserving factors and scaled real exponentials, with tests down to h=`1e-100` and large compensated split exponents.

@@ -1,5 +1,20 @@
 # Changelog
 
+## Unreleased — engineering applications and formula audit
+
+- Add reproducible antireflection design/tolerance, coating-impedance inference
+  and critical-damping demonstrations using existing core APIs.
+- Add a fourth demonstration deriving and checking one packed linear solve for
+  a complex response and two first variations, with an explicit internal cost model.
+- Add four scientific figures and an offline, responsive four-tab engineering
+  lab with thickness/angle, measurement-band, damping and derivative-step controls.
+- Verify independent Fresnel and circuit references, exact rational residuals,
+  differentiated energy dissipation, critical sensitivities and time convergence.
+- Record source hashes, model parameters, synthetic-noise settings and measured
+  per-output errors in the full render report, including small-channel roundoff.
+- Revise documentation navigation, application status and roadmap; add executable
+  formula guidance. Core algebra and mandatory dependencies are unchanged.
+
 ## 0.5.0 — independent space/time fields, unpublished on PyPI
 
 - Add immutable real coordinate spaces and points, with 3+1 defaults, 0–n

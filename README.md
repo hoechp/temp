@@ -18,6 +18,8 @@ The [geometry inside the full union](docs/research/geometric-structure.md) expla
 
 | Explore | What comes together | Run from a checkout |
 | --- | --- | --- |
+| [Engineering showcase](docs/gallery/impact.md) | Optical tolerances, impedance diagnostics and vibration settling, with independent references | `python -m examples.impact` |
+| [Formula compression](docs/formula-compression.md) | A complex solution and two sensitivities in one model expression; exact residual and cost audit | `python -m examples.impact --only formulas` |
 | [UltraField](docs/fields.md) | Values in (3+1) dimensions, slices, sensitivity and fields on curved surfaces | `python -m examples.fields --animate` |
 | [Exact geometry](docs/unified-geometry.md) | Rational rotations, boosts, shears, intersections and projective maps | `python -m examples.exact_geometry --plot` |
 | [Coupled motion](docs/gallery/README.md#coupled-motion-and-sensitivity) | Complex phase, split coupling and dual parameter derivatives | `python -m examples.gallery --only coupling` |
@@ -28,6 +30,8 @@ The [geometry inside the full union](docs/research/geometric-structure.md) expla
 ![Coupled complex modes](docs/gallery/assets/coupled-modes.gif)
 
 The [offline interactive lab](docs/gallery/lab.html) explores motion and sensitivity. Download the HTML and open it locally; GitHub displays its source. Every numerical plot is reproducible, with model assumptions and independent checks in the showcase.
+
+The new [engineering lab](docs/gallery/impact-lab.html) adds four interactive tabs: optical thickness/angle tradeoffs, measurement-band information, damping through the critical point, and a formula-compression audit. Its [guide](docs/gallery/impact.md) states what the synthetic experiments establish and where the models stop. The strongest demonstrated simplification is carrying a solution and its derivatives in one composable expression; no runtime advantage is claimed.
 
 ## Try it
 
@@ -81,7 +85,7 @@ Install plotting with `python -m pip install -e '.[plot]'`. Run `ultracomplex-gu
 | Transformations | Noncommuting `ModeOperator`, Möbius maps, unimodular projective points and mixed charts | Continuous matrix functions and automatic chart continuation are research priorities |
 | Space and time | `LocatedUltra`, rule-defined `UltraField`, 0–n spatial axes, separate time, slices, grids and optional NumPy/xarray adapters | Real coordinates are independent of the scalar algebra; numerical fields and explicit coordinate maps |
 | Surface fields | Torus and Möbius strip, induced metric, tangent gradients, Laplace–Beltrami, area quadrature and seam diagnostics | Static parametric surfaces; no general atlas, boundary solver or automatic physical transport |
-| Applications | Tested wave, robotics, interference, root-basin and coupled-motion examples | These are specified models and demonstrations, not full engineering solvers |
+| Applications | Tested optical stacks, coating-impedance fits, critical damping, waves, robotics, interference and root basins | Specified models with independent references; no real-device calibration or general engineering solver |
 
 The ambition is broad; operation domains remain explicit. The scalar algebra is not a field in the algebraic sense (it has zero divisors), and has no compatible total order. This differs from a spatial field of values such as `UltraField`. See the [mathematical foundation](docs/mathematics.md), [operation atlas](docs/research/operations.md) and [prioritized gaps](docs/research/roadmap.md).
 

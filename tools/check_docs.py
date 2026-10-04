@@ -11,6 +11,7 @@ GUIDES = (
     "docs/exact-arithmetic.md",
     "docs/unified-geometry.md",
     "docs/fields.md",
+    "docs/formula-compression.md",
 )
 
 

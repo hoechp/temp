@@ -4,6 +4,10 @@
 
 The ranking favors the shared geometric structure and exact coefficients. The [geometric investigation](geometric-structure.md) derives the links behind the proposals: damping regimes, optical cells, polarization/Lorentz invariants and the tangent quadric. Derivative applications remain valuable without defining the project's identity. Projects below are proposals unless identified as implemented examples; accuracy, speed and usability advantages require appropriate baselines.
 
+## Implemented engineering baselines
+
+The [engineering showcase](../gallery/impact.md) now supplies three concrete baselines: lossless two-polarization optical stacks with thickness sensitivity; a two-parameter coating-impedance fit with local frequency information; and damped midpoint dynamics through criticality with exact differentiated dissipation. A [fourth demo](../formula-compression.md) proves the packed-solve identity and states its computational cost. These are bounded examples built on existing APIs, not general optical, electrochemical or ODE solvers.
+
 ## Candidate comparison
 
 | Priority | Application | Combined contribution | Starting point | Main missing capability |
@@ -41,7 +45,7 @@ Division, logarithm and other primitives need the same care as the corrected exp
 
 For `B_kappa=[[0,1],[kappa,0]]`, `B_kappa²=kappa*I`. Entire functions of kappa express the exponential without taking a singular derivative of `sqrt(kappa)` at zero. Exact Cayley maps already cover all three regimes discretely.
 
-**First deliverable:** compare rational midpoint steps with a stable continuous solution and parameter derivatives while crossing kappa zero. Check symplecticity for Hamiltonian generators, chosen quadratic invariants and their differentiated identities. The established midpoint context is documented by Hairer [R5](references.md).
+**Implemented baseline:** the [vibration demo](../gallery/impact.md#3-vibration-settling-through-critical-damping) compares rational midpoint steps with independent continuous solutions across critical damping. It checks second-order convergence, parameter derivatives, exact differentiated dissipation and the nonvanishing product of the critical Jordan operator with epsilon. General continuous operator functions and step control remain open. The established midpoint context is documented by Hairer [R5](references.md).
 
 Exact geometry and numerical evolution can share generators and invariants. But invariant preservation does not guarantee trajectory accuracy. Fraction denominators grow; Cayley poles, time-step choice and damping/loss models require explicit handling. General noncommuting perturbations require a Fréchet derivative.
 
@@ -51,7 +55,7 @@ A complex pair can represent forward/backward fields. Interfaces and layers mix 
 
 Epsilon carries thickness, refractive-index or frequency sensitivity through a network. Transmission-line impedance and Riccati propagation share this **mathematical pattern**, with different physical meanings and admissibility conditions.
 
-**First deliverable:** a small lossless multilayer or line network with specified conventions. Verify composition, conserved flux, reflection/transmission and derivatives; recover one parameter from synthetic data.
+**Implemented baseline:** the [optical demo](../gallery/impact.md#1-antireflection-coatings-with-manufacturing-tolerances) composes a small lossless stack with stated field conventions, both polarizations and thickness sensitivity. It checks Fresnel recursion, R+T and its derivative, and a sampled design/tolerance problem. Optical parameter recovery, stable long-stack scattering and loss remain open; the separate impedance demo supplies an inverse-problem baseline in a different physical model.
 
 Long stacks and evanescent fields can make transfer matrices ill-conditioned. Provide scattering composition and conversions alongside them. Loss, total internal reflection and normalization affect the relevant metric/group; SU(1,1) is not a universal label. Full 3D Maxwell simulation is outside this first project.
 
@@ -67,7 +71,7 @@ This brings together projective calibration, impedance/Riccati evolution and mod
 
 Extend the current wave/interference examples with explicit response blocks, weighted real residuals and covariance propagation through a Jacobian. Amplitude, phase and power are different observations with different singularities.
 
-**First deliverable:** estimate two identifiable parameters of a small transfer model. Compare derivatives and updates with an independent reference; quantify conditioning under a stated noise model.
+**Implemented baseline:** the [coating-impedance demo](../gallery/impact.md#2-impedance-diagnostics-identify-the-parameters-not-just-a-curve) estimates two positive resistances using one complex solve with two tangent channels. Synthetic observations come from an independent series/parallel formula. The example reports weighted residuals, known-noise local information and the collapse of identifiability in a restricted frequency band. Real data, nuisance parameters and model selection remain open.
 
 Arrays and reusable factorizations are likely essential to performance. Epsilon is a derivative, not a noise distribution. Phase needs zero handling and path unwrapping. Compare equal outputs/accuracy against ordinary complex arrays plus an established AD library before claiming a speed advantage.
 
