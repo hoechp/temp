@@ -1,4 +1,4 @@
-include README.md CONTRIBUTING.md CHANGELOG.md LICENSE requirements-dev.lock requirements-plot.lock uv.lock
+include README.md CONTRIBUTING.md CHANGELOG.md LICENSE requirements-dev.lock requirements-plot.lock requirements-arrays.lock uv.lock
 recursive-include docs *.md *.json *.html *.png *.gif
 recursive-include examples *.py *.html
 recursive-include tools *.py

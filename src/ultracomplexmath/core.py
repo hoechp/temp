@@ -248,7 +248,12 @@ class Ultra:
         return Ultra.from_channels(result[0], result[1])
 
     def __truediv__(self, other: Scalar) -> Ultra:
-        value = self.coerce(other)
+        try:
+            value = self.coerce(other)
+        except TypeError:
+            # Let compatible containers (e.g. UltraField) implement reflected
+            # division, just as addition and multiplication already do.
+            return NotImplemented
         # Divide channels directly to avoid forming an overflowing reciprocal.
         result = []
         for (z, w), (v, t) in zip(self.channels(), value.channels(), strict=True):

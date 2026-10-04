@@ -9,6 +9,8 @@ The project centers on the full union of complex, split-complex and dual algebra
 - Numerical and rational coefficient arithmetic, formulas, linear systems and polynomials.
 - Circular, hyperbolic, parabolic, Euclidean and projective geometry; matrices and geometric mechanisms.
 - Elementary functions, angles, first variations and physical observables.
+- Located values and rule-defined numerical fields on independent real spatial/time coordinates; slices, sampling, coordinate derivatives and optional labeled-array exports.
+- Static parametric surfaces, induced Euclidean metrics, scalar surface calculus and explicit seam diagnostics. These add domain geometry without changing the value algebra.
 - Wavelength/phase, characteristic directions, coupled motion and geometric inverse-problem examples.
 - Integer roots, Bézout identities, primality, factorization and scalar residue rings as foundations for exact and future modular algebra. These helpers do not imply an implemented modular hypercomplex backend.
 - Mathematical regression fixtures and narrowly identified compatibility interfaces.

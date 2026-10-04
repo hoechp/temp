@@ -4,6 +4,7 @@ Ultracomplex Math combines complex, split-complex and dual numbers, including th
 
 | Your goal | Start here | Continue with |
 | --- | --- | --- |
+| Add independent space and time | [UltraField guide](fields.md) | [Field showcase](gallery/fields.md), [mathematical consequences](research/fields.md) |
 | Install and calculate | [Getting started](getting-started.md) | [API map](api.md) |
 | Understand the number system | [Mathematical foundation](mathematics.md) | [Operation atlas](research/operations.md) |
 | Understand the connected geometries | [Geometry inside the full union](research/geometric-structure.md) | [Unified geometry APIs](unified-geometry.md) |

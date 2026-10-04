@@ -25,6 +25,7 @@ jobs:
           cache-dependency-path: requirements-dev.lock
       - run: python -m pip install -r requirements-dev.lock
       - run: python -m pip install -r requirements-plot.lock
+      - run: python -m pip install -r requirements-arrays.lock
       - run: python -m pip install --no-build-isolation -e .
       - run: python -m pytest
       - run: python -m ruff check .
@@ -42,4 +43,5 @@ jobs:
           python -m pip install --no-deps dist/*.whl
           cd "$RUNNER_TEMP"
           python -c 'from ultracomplexmath import I, EPS, ONE; assert I*I == -ONE; assert EPS*EPS == 0*ONE'
+          python -c 'from ultracomplexmath import UltraField, torus; f = UltraField.from_formula("x+eps*t"); assert f.slice(z=0,t=1).at(2,3).value.eps == 1; assert torus().area_density(torus().space.point(0,0)) > 0'
           python -m ultracomplexmath 'sqrt(-1)' --json
