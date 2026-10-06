@@ -14,6 +14,8 @@ python -m mypy
 python tools/check_docs.py
 python tools/research_probe.py
 python tools/frontier_probe.py
+python tools/geometric_structure_probe.py
+python tools/novelty_probe.py
 python -m build --no-isolation
 ```
 

@@ -16,6 +16,8 @@ The huge-integer exponent bug is fixed: `I**(2**53+1)==I`. Rational coefficients
 
 The same accuracy risk remains in other operations, including channel-based logarithm and inverse. A dominant body can be accurate while a tiny mixed coefficient is wrong. The frontier probe reports this explicitly; a general bicomplex Hessian API would currently promise too much.
 
+The [novelty investigations](novelty.md) now supply a guarded inverse prototype for G01 and an exact cubic critical-flow reference for G05/G19. The reciprocal tests demonstrate a specific inverse failure; the logarithm succeeds on that same family. Neither prototype is a general replacement for the core APIs. On the operator side, a [closed first-power rank derivation](first-power-rank.md) addresses a subproblem in current literature; deeper prior-art review and the higher-power boundary equations are the next research targets.
+
 ## Work packages
 
 | ID / priority | Gap | Next deliverable | Completion evidence |

@@ -38,12 +38,15 @@ The seven subalgebras, unit criterion and epsilon ideal follow from the defining
 
 The [geometric follow-up](geometric-structure.md) supplies explicit derivations of the full polar factorization and phase lattice, real 2×2 classification, finite shear, optical-cell transition and the projective tangent-quadric identification. It states the scalar/operator distinction and real-structure assumptions. These arguments supply the general conclusions; bounded numerical and exact examples check specified calculations rather than proving a global theorem by sampling.
 
+The [novelty investigation](novelty.md#sources-and-search-boundaries) adds a dated source ledger for Noferini's first-power rank subproblem and relevant graph/matrix-function/bicomplex prior art. Its [rank note](first-power-rank.md) includes a full derivation, explicitly separating proof, finite verification and unestablished publication novelty.
+
 ## Reproduce
 
 ```sh
 python tools/research_probe.py
 python tools/frontier_probe.py
 python tools/geometric_structure_probe.py
+python tools/novelty_probe.py
 python -m examples.exact_geometry
 python -m pytest
 ```
@@ -54,6 +57,7 @@ python -m pytest
 | [frontier_probe.py](../../tools/frontier_probe.py), [frontier-verification.json](frontier-verification.json) | Mixed derivatives, exact steps/maps, exhaustive F2 and rational-power gap | Specified functions/ranges and one small finite ring |
 | [geometric_structure_probe.py](../../tools/geometric_structure_probe.py), [geometric-verification.json](geometric-verification.json) | Unit polar reconstruction/branches; 81 exact matrix classifications; finite shear; optical cells; Stokes invariants; quadric/chart equations; analytic cubics | Moderate numerical units and specified rational examples; no global accuracy, topology-by-sampling or physical-device validation |
 | [Component regression tests](../../tests/test_component_accuracy.py) | Tiny exponential coefficients and compensated large values | Does not certify every other function |
+| [Novelty probe](../../tools/novelty_probe.py), [full report](novelty-verification.json) | First-power rank formulas versus exact elimination, graph and tensor representations; critical flows versus 4×4 rational blocks; reciprocal components versus exact arithmetic | ℓ=1 only; critical constant generators; reciprocal excludes near-zero-divisor cancellation; priority unconfirmed |
 | [Exact geometry example](../../examples/exact_geometry.py) | Rational constructions/invariants | Float conversion only for display |
 | [Gallery tests](../../tests/test_gallery.py), [application tests](../../tests/test_applications.py) | Independent formulas, conservation, roots and inverse problems | Idealized models, not real-hardware measurements |
 | [Engineering tests](../../tests/test_impact_models.py), [full render report](../gallery/assets/impact-report.json) | Fresnel recursion and power balance; circuit derivatives and inverse fit; rational residuals; critical damping, dissipation and convergence | Specified model grids, synthetic observations and separate rational fixtures; includes small-channel numerical error |

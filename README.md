@@ -26,6 +26,7 @@ The [geometry inside the full union](docs/research/geometric-structure.md) expla
 | [Waves and inverse problems](docs/gallery/applications.md) | Travelling waves, robot Jacobians and interference-based geometry recovery | `python -m examples.applications` |
 | [Trigonometric atlas](docs/gallery/README.md#trigonometry-and-angles) | The same function in circular, hyperbolic, parabolic and mixed directions | `python -m examples.gallery --only cosine` |
 | [Geometric structure](docs/research/geometric-structure.md) | Full polar form, critical motion, polarization and projective tangent geometry | `python tools/geometric_structure_probe.py` |
+| [Research investigations](docs/research/novelty.md) | A first-power rank classification, exact critical-jet flow and small-component reciprocal experiments | `python tools/novelty_probe.py` |
 
 ![Coupled complex modes](docs/gallery/assets/coupled-modes.gif)
 
