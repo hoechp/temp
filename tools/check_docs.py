@@ -1,10 +1,12 @@
 """Check local Markdown links/anchors and executable user-guide examples."""
 
 import re
+import sys
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))  # Checkout-only example modules used by research snippets.
 GUIDES = (
     "README.md",
     "docs/getting-started.md",
@@ -12,6 +14,7 @@ GUIDES = (
     "docs/unified-geometry.md",
     "docs/fields.md",
     "docs/formula-compression.md",
+    "docs/research/novelty.md",
 )
 
 

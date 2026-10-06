@@ -1,6 +1,19 @@
 # Changelog
 
-## Unreleased — engineering applications and formula audit
+## Unreleased — research investigations and engineering applications
+
+- Derive and implement a closed first-power rank classification for the Toeplitz
+  subproblem in Noferini's Problem 4.19, with a graph proof and aggregate defect
+  formula. Publication novelty is unconfirmed; higher powers remain unresolved.
+- Add experimental exact cubic critical flows and a one-term Cayley correction,
+  preserving independent operator and coefficient nilpotents.
+- Demonstrate a guarded direct-basis reciprocal that retains tiny mixed
+  components, with exact rational oracles and explicit numerical exclusions.
+- Add independent rank, tensor, graph and block-exponential checks, a reproducible
+  research report, counterexamples, source review and executable documentation.
+  These prototypes leave the public core API and mandatory dependencies unchanged.
+
+### Engineering applications and formula audit
 
 - Add reproducible antireflection design/tolerance, coating-impedance inference
   and critical-damping demonstrations using existing core APIs.

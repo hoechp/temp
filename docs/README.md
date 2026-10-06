@@ -14,6 +14,7 @@ Ultracomplex Math combines complex, split-complex and dual numbers, including th
 | See useful computations | [Visual showcase](gallery/README.md) | [Waves, robotics and interference](gallery/applications.md) |
 | Build the next capability | [Research overview](research/README.md) | [Applications](research/applications.md), [roadmap](research/roadmap.md) |
 | Reproduce new findings | [Research experiments](research/experiments.md) | [Sources and evidence](research/references.md) |
+| Assess possible novelty | [Three concrete investigations](research/novelty.md) | [First-power rank proof](research/first-power-rank.md), [exact verification](research/novelty-verification.json) |
 | Extend the project | [Contributing](../CONTRIBUTING.md) | [Scope](scope.md), [compatibility](compatibility.md) |
 
 The user guides describe shipped APIs. The research section labels derived possibilities, experimental evidence and unimplemented proposals separately. Numerical, exact and physical-model limitations are stated where they matter.
